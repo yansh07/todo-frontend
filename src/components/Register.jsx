@@ -2,7 +2,7 @@ import React from 'react'
 
 function Register() {
   return (
-    <div>Register</div>
+    <div className='min-h-screen bg-gradient-to-r from-[#413d3d] to-[#a4a3a6]'>Register</div>
   )
 }
 
