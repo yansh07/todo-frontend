@@ -1,11 +1,14 @@
-import './App.css'
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <h1 className='font-bold text-4xl'>Hi, I am priyanshu</h1>
-    </>
-  )
+    <div className="relative">
+      
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
