@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   // Validation function
   const validate = () => {
@@ -63,8 +65,10 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0 pt-20 lg:pt-32 xl:pt-28">
+    <div
+      className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
+ px-4 md:px-0 pt-20 lg:pt-32 xl:pt-28"
+    >
       <form
         onSubmit={handleSubmit}
         className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
@@ -72,7 +76,9 @@ function Register() {
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Sign up 🪪
         </h2>
-        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">Start your journey with PlanIt today 🚀</p>
+        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
+          Start your journey with PlanIt today 🚀
+        </p>
 
         {/* Name */}
         <div className="mb-4">
@@ -107,16 +113,24 @@ function Register() {
         </div>
 
         {/* Password */}
-        <div className="mb-4">
+        <div className="mb-6 relative">
           <label className="block text-gray-200 mb-1">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
+          {/* Eye button */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 mt-7 right-3 flex items-center text-gray-300 hover:text-white"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
           {errors.password && (
             <p className="text-red-400 text-sm mt-1">{errors.password}</p>
           )}
@@ -134,7 +148,9 @@ function Register() {
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
           {errors.confirmPassword && (
-            <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
+            <p className="text-red-400 text-sm mt-1">
+              {errors.confirmPassword}
+            </p>
           )}
         </div>
 

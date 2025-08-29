@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -8,19 +9,18 @@ function Login() {
   });
 
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   // Validation function
   const validate = () => {
     const newErrors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
       newErrors.name = "Enter a valid name";
     }
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (
@@ -29,7 +29,6 @@ function Login() {
       newErrors.email = "Invalid email address";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
@@ -50,21 +49,21 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       console.log("Form submitted ✅", formData);
-      // Yaha backend API call laga sakta hai
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
+    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
       <form
         onSubmit={handleSubmit}
-        className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
+        className="bg-transparent backdrop-brightness-150 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
       >
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Login 🔑
         </h2>
-        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">Welcome back, manage your tasks easily 📜</p>
+        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
+          Welcome back, manage your tasks easily 📜
+        </p>
 
         {/* Name */}
         <div className="mb-4">
@@ -99,16 +98,24 @@ function Login() {
         </div>
 
         {/* Password */}
-        <div className="mb-6">
+        <div className="mb-6 relative">
           <label className="block text-gray-200 mb-1">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
+          {/* Eye button */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 mt-7 right-3 flex items-center text-gray-300 hover:text-white"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
           {errors.password && (
             <p className="text-red-400 text-sm mt-1">{errors.password}</p>
           )}
