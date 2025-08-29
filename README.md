@@ -1,2 +1,2 @@
-# Leaf: ToDo app
-## A simple full stack todo app, building using ReactJS, Tailwind CSS, NodeJS, ExpressJS, MongoDB
+# PlanIt: Notes app
+## A simple full stack notes app, building using ReactJS, Tailwind CSS, NodeJS, ExpressJS, MongoDB
