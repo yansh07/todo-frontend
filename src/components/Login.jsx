@@ -59,7 +59,7 @@ function Login() {
  px-4 md:px-0">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
+        className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
       >
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Login 🔑

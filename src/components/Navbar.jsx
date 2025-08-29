@@ -6,7 +6,7 @@ function Navbar() {
     <div className="bg-gradient-to-r from-[#413d3d] to-[#a4a3a6] flex flex-row">
       <div>
         {/* Logo + Title */}
-        <div className="top-3 left-4 fixed p-1 flex items-center  md:ml-24 md:mt-4 lg:ml-52 lg:mt-8 xl:ml-92">
+        <div className="top-3 left-2 xl:left-0 fixed p-1 flex items-center  md:ml-24 md:mt-4 lg:ml-52 lg:mt-8 xl:ml-92">
           <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-5xl text-gray-50"></i>
           <span className="text-3xl font-[satoshi] font-extrabold text-gray-50 md:text-4xl xl:text-5xl">
             PlanIt
