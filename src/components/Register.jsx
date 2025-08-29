@@ -71,12 +71,12 @@ function Register() {
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
+        className="bg-transparent backdrop-brightness-150 mb-4 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
       >
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Sign up 🪪
         </h2>
-        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
+        <p className="text-blue-400 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
           Start your journey with PlanIt today 🚀
         </p>
 
@@ -157,13 +157,13 @@ function Register() {
         {/* Submit */}
         <button
           type="submit"
-          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-zinc-700 via-[#595905] to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Sign up
         </button>
         <div>
           <p className="font-[satoshi] text-gray-50 mt-4">Already have an account? 
-          <a href="/Login" className="p-2 text-blue-500 underline">Login</a>
+          <a href="/Login" className="p-2 text-blue-500 underline hover:font-bold">Login</a>
         </p>
         </div>
       </form>
