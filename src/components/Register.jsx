@@ -79,7 +79,7 @@ function Register() {
           <input
             type="text"
             name="name"
-            placeholder="e.g. Ram Singh"
+            placeholder="e.g. Priyanshu Singh"
             value={formData.name}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -95,7 +95,7 @@ function Register() {
           <input
             type="email"
             name="email"
-            placeholder="e.g. ram@example.com"
+            placeholder="e.g. priyanshu@example.com"
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
