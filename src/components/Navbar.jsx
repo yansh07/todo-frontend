@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -15,7 +16,7 @@ function Navbar() {
         {/* Buttons */}
         <div className="flex flex-row gap-4 md:gap-6  fixed right-4 top-3 md:mr-24 md:mt-4 lg:mr-52  lg:mt-8 xl:mr-92">
           {/* Login Button */}
-          <a href="#">
+          <Link to="/">
             <button
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
             bg-gradient-to-r from-white/50 to-gray-700
@@ -24,10 +25,10 @@ function Navbar() {
             >
               Login
             </button>
-          </a>
+          </Link>
 
           {/* Sign Up Button */}
-          <a href="#">
+          <Link to="/register">
             <button
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
             bg-gradient-to-r from-white/50 to-gray-700 
@@ -36,7 +37,7 @@ function Navbar() {
             >
               Sign up
             </button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
