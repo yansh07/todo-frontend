@@ -122,12 +122,14 @@ function Login() {
         </div>
 
         {/* Submit */}
+        
         <button
           type="submit"
           className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Login
         </button>
+        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<a href="/Register" className="p-2 text-blue-500 underline">Sign up</a></p>
       </form>
     </div>
   );

@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Sunrise, Sun, Sunset, Moon } from "lucide-react"; 
 
 const GreetingComponent = () => {
   const [time, setTime] = useState(new Date());
-  const [greeting, setGreeting] = useState('');
+  const [Icon, setIcon] = useState(() => Sun); // default
 
   useEffect(() => {
     const updateGreeting = () => {
-      const currentHour = time.getHours();
+      const currentHour = new Date().getHours();
+
       if (currentHour >= 5 && currentHour < 12) {
-        setGreeting('Good morning! ☀️');
+        setIcon(() => Sunrise); // Morning
       } else if (currentHour >= 12 && currentHour < 18) {
-        setGreeting('Good afternoon! 👋');
+        setIcon(() => Sun); // Afternoon
       } else if (currentHour >= 18 && currentHour < 22) {
-        setGreeting('Good evening! ✨');
+        setIcon(() => Sunset); // Evening
       } else {
-        setGreeting('Good night! 🌙');
+        setIcon(() => Moon); // Night
       }
     };
+
     updateGreeting();
 
     const timerID = setInterval(() => {
       setTime(new Date());
-    }, 60000); // Update every minute
+      updateGreeting();
+    }, 60000);
 
     return () => clearInterval(timerID);
-  }, [time]);
+  }, []);
 
   return (
     <div>
-      <h2>{greeting}</h2>
+      <Icon size={28} color="#facc15" strokeWidth={2} />
     </div>
   );
 };

@@ -67,7 +67,7 @@ function Register() {
   return (
     <div
       className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0 pt-20 lg:pt-32 xl:pt-28"
+ px-4 md:px-0 pt-20 md:pt-30 lg:pt-32 xl:pt-38"
     >
       <form
         onSubmit={handleSubmit}
@@ -161,6 +161,11 @@ function Register() {
         >
           Sign up
         </button>
+        <div>
+          <p className="font-[satoshi] text-gray-50 mt-4">Already have an account? 
+          <a href="/Login" className="p-2 text-blue-500 underline">Login</a>
+        </p>
+        </div>
       </form>
     </div>
   );
