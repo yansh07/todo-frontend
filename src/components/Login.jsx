@@ -55,7 +55,8 @@ function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-white/5 to-gray-700 px-4">
+    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
+ px-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 border border-white/20"

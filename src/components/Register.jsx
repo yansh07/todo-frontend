@@ -63,13 +63,14 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-[#413d3d] to-[#a4a3a6]">
+    <div className="pt-8 flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
+ px-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 border border-white/20"
       >
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
-          Register
+          Register 🪪
         </h2>
 
         {/* Name */}
