@@ -64,7 +64,7 @@ function Register() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0 pt-20">
+ px-4 md:px-0 pt-20 lg:pt-32 xl:pt-28">
       <form
         onSubmit={handleSubmit}
         className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"

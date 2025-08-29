@@ -21,7 +21,7 @@ function Navbar() {
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
             bg-transparent backdrop-brightness-150 border border-gray-700
             shadow-md hover:shadow-xl hover:scale-105 
-            transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl"
+            transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl hover:bg-gradient-to-r from-white/40 to-gray-700"
             >
               Login
             </button>
@@ -33,7 +33,7 @@ function Navbar() {
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
             bg-transparent backdrop-brightness-150 border border-gray-700 
             shadow-md hover:shadow-xl hover:scale-105 
-            transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl"
+            transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl hover:bg-gradient-to-r from-white/40 to-gray-700"
             >
               Sign up
             </button>
