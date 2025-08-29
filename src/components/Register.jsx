@@ -63,8 +63,8 @@ function Register() {
   };
 
   return (
-    <div className="pt-8 flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0">
+    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
+ px-4 md:px-0 pt-20">
       <form
         onSubmit={handleSubmit}
         className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
@@ -72,6 +72,7 @@ function Register() {
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Sign up 🪪
         </h2>
+        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">Start your journey with PlanIt today 🚀</p>
 
         {/* Name */}
         <div className="mb-4">
@@ -140,9 +141,9 @@ function Register() {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
-          Register
+          Sign up
         </button>
       </form>
     </div>

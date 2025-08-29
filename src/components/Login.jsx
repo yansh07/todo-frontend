@@ -56,7 +56,7 @@ function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
- px-4 md:px-0">
+ px-4 md:px-0 pt-16">
       <form
         onSubmit={handleSubmit}
         className="bg-transparent backdrop-brightness-150  backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
@@ -64,6 +64,7 @@ function Login() {
         <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
           Login 🔑
         </h2>
+        <p className="text-gray-50 font-[satoshi] mb-4 xl:text-xl font-medium text-center">Welcome back, manage your tasks easily 📜</p>
 
         {/* Name */}
         <div className="mb-4">
@@ -116,7 +117,7 @@ function Login() {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Login
         </button>

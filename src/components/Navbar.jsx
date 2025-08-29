@@ -19,7 +19,7 @@ function Navbar() {
           <Link to="/">
             <button
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
-            bg-gradient-to-r from-white/50 to-gray-700
+            bg-transparent backdrop-brightness-150 border border-gray-700
             shadow-md hover:shadow-xl hover:scale-105 
             transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl"
             >
@@ -31,7 +31,7 @@ function Navbar() {
           <Link to="/register">
             <button
               className="font-[satoshi] text-lg font-semibold text-white px-4 py-2 rounded-lg 
-            bg-gradient-to-r from-white/50 to-gray-700 
+            bg-transparent backdrop-brightness-150 border border-gray-700 
             shadow-md hover:shadow-xl hover:scale-105 
             transition-all duration-300 ease-in-out backdrop:blur-3xl xl:text-xl"
             >
