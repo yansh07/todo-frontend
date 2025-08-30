@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { Link } from "lucide-react";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -163,10 +164,11 @@ function Register() {
         </button>
         <div>
           <p className="font-[satoshi] text-gray-50 mt-4">Already have an account? 
-          <Link to="/Login" className="p-2 text-blue-500 underline hover:font-bold">Login</Link>
+          <a href="/login" className="p-2 text-blue-500 underline hover:font-bold">Login</a>
         </p>
         </div>
       </form>
+      
     </div>
   );
 }

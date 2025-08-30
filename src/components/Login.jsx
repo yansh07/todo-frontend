@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { Link } from "lucide-react";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -129,7 +130,7 @@ function Login() {
         >
           Login
         </button>
-        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<Link to="/Register" className="p-2 text-blue-500 underline hover:font-bold">Sign up</Link></p>
+        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<a href="/register" className="p-2 text-blue-500 underline hover:font-bold">Sign up</a></p>
       </form>
     </div>
   );
