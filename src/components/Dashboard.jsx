@@ -1,4 +1,3 @@
-// dashboard.jsx
 import React from 'react';
 import Usernav from './Usernav';
 import SearchBox from './Search';
