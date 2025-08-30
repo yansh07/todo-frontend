@@ -125,7 +125,7 @@ function Login() {
         
         <button
           type="submit"
-          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-zinc-700 via-[#595905] to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Login
         </button>
