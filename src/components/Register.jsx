@@ -163,7 +163,7 @@ function Register() {
         </button>
         <div>
           <p className="font-[satoshi] text-gray-50 mt-4">Already have an account? 
-          <a href="/Login" className="p-2 text-blue-500 underline hover:font-bold">Login</a>
+          <Link to="/Login" className="p-2 text-blue-500 underline hover:font-bold">Login</Link>
         </p>
         </div>
       </form>

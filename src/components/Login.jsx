@@ -129,7 +129,7 @@ function Login() {
         >
           Login
         </button>
-        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<a href="/Register" className="p-2 text-blue-500 underline hover:font-bold">Sign up</a></p>
+        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<Link to="/Register" className="p-2 text-blue-500 underline hover:font-bold">Sign up</Link></p>
       </form>
     </div>
   );
