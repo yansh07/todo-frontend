@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Usernav from "./components/Usernav";
 import Profile from "./components/Profile";
+import AddNote from "./components/AddNote";
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add-note" element={<AddNote />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
