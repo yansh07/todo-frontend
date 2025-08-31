@@ -13,14 +13,14 @@ function App() {
   const showNavbar = ["/", "/login", "/register"].includes(
     location.pathname.toLowerCase()
   );
-  const showUsernav = ["/dashboard"].includes(
-    location.pathname.toLowerCase()
-  );
+  // const showUsernav = ["/dashboard"].includes(
+  //   location.pathname.toLowerCase()
+  // );
 
   return (
     <div className="relative">
       {showNavbar && <Navbar />}
-      {showUsernav && <Usernav />}
+      {/* {showUsernav && <Usernav />} */}
 
       <Routes>
         <Route path="/" element={<Login />} />
