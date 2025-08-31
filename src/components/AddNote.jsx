@@ -79,7 +79,7 @@ function AddNote() {
 
   return (
     <div className="bg-gradient-to-tr from-[#060010] to-slate-600 min-h-screen">
-      <div className="px-5 py-4 md:px-22 md:py-10 lg:px-26 xl:px-32">
+      <div className="px-5 py-4 md:px-22 md:py-10 lg:px-44 xl:px-94">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="font-[satoshi] text-gray-50 font-bold text-2xl md:text-3xl lg:text-4xl">
