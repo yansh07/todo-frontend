@@ -35,10 +35,10 @@ function Dashboard() {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      // Replace with your actual API endpoint
+      // will replace with actual API endpoint
       const response = await fetch('/api/notes', {
         headers: {
-          // Add your auth headers here
+          // will add my auth headers here
         }
       });
       
@@ -50,7 +50,7 @@ function Dashboard() {
       }
     } catch (error) {
       console.error('Error fetching notes:', error);
-      // You might want to show an error toast here
+      // error toast will be placed here
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ function Dashboard() {
       const response = await fetch(`/api/notes/${noteId}`, {
         method: 'DELETE',
         headers: {
-          // Add your auth headers here
+          // will add my auth headers here
         }
       });
 
@@ -99,7 +99,7 @@ function Dashboard() {
         </div>
 
         {/* Add Note Button */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-4 mt-12">
           <button
             onClick={() => navigate('/add-note')}
             className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi] flex items-center gap-2"
@@ -111,19 +111,19 @@ function Dashboard() {
       </div>
 
       {/* notes section */}
-      <div className="mt-8 px-6 md:px-12 lg:px-20 xl:px-32">
+      <div className="px-6 md:px-12 lg:px-20 xl:px-32">
         {loading ? (
           <div className="flex justify-center">
             <p className="text-gray-300 text-lg font-[satoshi]">Loading your notes...</p>
           </div>
         ) : notes.length === 0 ? (
           <div className="text-center">
-            <p className="text-gray-300 italic text-lg font-[satoshi] xl:text-2xl mb-6">
+            <p className="text-gray-300 italic text-lg font-[satoshi] xl:text-2xl mb-8">
               You don't have any notes yet. Start by adding one! 📝
             </p>
             <button
               onClick={() => navigate('/add-note')}
-              className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi]"
+              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi]"
             >
               Create Your First Note
             </button>
