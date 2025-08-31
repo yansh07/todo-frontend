@@ -99,7 +99,7 @@ function Dashboard() {
         </div>
 
         {/* Add Note Button */}
-        <div className="flex justify-center mb-4 mt-12">
+        <div className="flex justify-center mb-4 mt-24 md:mt-32">
           <button
             onClick={() => navigate('/add-note')}
             className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi] flex items-center gap-2"
