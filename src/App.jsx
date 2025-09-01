@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Usernav from "./components/Usernav";
 import Profile from "./components/Profile";
 import AddNote from "./components/AddNote";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 
 function App() {
   const location = useLocation();
@@ -14,15 +14,15 @@ function App() {
   const showNavbar = ["/", "/login", "/register"].includes(
     location.pathname.toLowerCase()
   );
-  const showFooter = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
-    location.pathname.toLowerCase()
-  );
+  // const showFooter = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
+  //   location.pathname.toLowerCase()
+  // );
 
   return (
     <div className="relative">
       {showNavbar && <Navbar />}
       {/* {showUsernav && <Usernav />} */}
-      {showFooter && <Footer />}  
+      {/* {showFooter && <Footer />}   */}
 
       <Routes>
         <Route path="/" element={<Login />} />
