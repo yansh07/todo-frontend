@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Plus, Trash2, Edit3 } from "lucide-react";
 import Usernav from "./Usernav";
-import SearchBox from "./Search";
+// import SearchBox from "./Search";
 
 const LABEL_COLORS = {
-  work: "bg-blue-500/20 border-blue-400",
-  personal: "bg-green-500/20 border-green-400",
-  urgent: "bg-red-500/20 border-red-400",
-  ideas: "bg-purple-500/20 border-purple-400",
-  todo: "bg-yellow-500/20 border-yellow-400",
-  general: "bg-gray-500/20 border-gray-400"
+  work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
+  personal: "bg-gradient-to-br from-emerald-500/20 to-green-500/20 border-l-4 border-emerald-400 shadow-emerald-500/20",
+  urgent: "bg-gradient-to-br from-red-500/20 to-pink-500/20 border-l-4 border-pink-400 shadow-pink-500/20",
+  ideas: "bg-gradient-to-br from-purple-500/20 to-violet-500/20 border-l-4 border-violet-400 shadow-violet-500/20",
+  todo: "bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-l-4 border-orange-400 shadow-orange-500/20",
+  general: "bg-gradient-to-br from-gray-500/20 to-slate-500/20 border-l-4 border-slate-400 shadow-slate-500/20"
 };
 
 const LABEL_BADGE_COLORS = {
-  work: "bg-blue-500 text-blue-100",
-  personal: "bg-green-500 text-green-100",
-  urgent: "bg-red-500 text-red-100",
-  ideas: "bg-purple-500 text-purple-100",
-  todo: "bg-yellow-500 text-yellow-900",
-  general: "bg-gray-500 text-gray-100"
+  work: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30",
+  personal: "bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/30",
+  urgent: "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/30",
+  ideas: "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/30",
+  todo: "bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 shadow-lg shadow-yellow-500/30",
+  general: "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/30"
 };
 
 function Dashboard() {
   const navigate = useNavigate();
-  const userName = "Priyanshu"; // will fetch user's name from db
+  const userName = "Priyanshu";
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,10 +36,9 @@ function Dashboard() {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      // will replace with actual API endpoint
       const response = await fetch('/api/notes', {
         headers: {
-          // will add my auth headers here
+          // Add your auth headers here
         }
       });
       
@@ -50,7 +50,6 @@ function Dashboard() {
       }
     } catch (error) {
       console.error('Error fetching notes:', error);
-      // error toast will be placed here
     } finally {
       setLoading(false);
     }
@@ -61,7 +60,7 @@ function Dashboard() {
       const response = await fetch(`/api/notes/${noteId}`, {
         method: 'DELETE',
         headers: {
-          // will add my auth headers here
+          // Add your auth headers here
         }
       });
 
@@ -87,88 +86,126 @@ function Dashboard() {
   };
 
   return (
-    <div className="bg-gradient-to-tr from-[#060010] to-slate-600 min-h-screen">
-      <Usernav />
-      <div className="px-5 py-4 md:px-22 md:py-10 lg:px-26 xl:px-32">
-        {/* container holding name and search box */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-          <h1 className="font-[satoshi] text-gray-50 font-bold text-2xl md:text-3xl lg:text-4xl xl:text-4xl mb-4 sm:mb-0 sm:mr-4 lg:px-16 xl:-ml-5">
-            Hi {userName} 👋
-          </h1>
-          <SearchBox />
-        </div>
-
-        {/* Add Note Button */}
-        <div className="flex justify-center mb-4 mt-24 md:mt-32">
-          <button
-            onClick={() => navigate('/add-note')}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi] flex items-center gap-2"
-          >
-            <span className="text-xl">+</span>
-            Add New Note
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+      {/* Animated background particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-700"></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      {/* notes section */}
-      <div className="px-6 md:px-12 lg:px-20 xl:px-32">
-        {loading ? (
-          <div className="flex justify-center">
-            <p className="text-gray-300 text-lg font-[satoshi]">Loading your notes...</p>
+      <div className="relative z-10">
+        <Usernav />
+        
+        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-32">
+          {/* Header Section */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
+            <div className="mb-6 lg:mb-0">
+              <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4">
+                Welcome back, {userName} 👋
+              </h1>
+              <p className="text-gray-300 text-lg font-[satoshi]">
+                Ready to capture your thoughts and ideas?
+              </p>
+            </div>
+            {/* <SearchBox /> */}
           </div>
-        ) : notes.length === 0 ? (
-          <div className="text-center">
-            <p className="text-gray-300 italic text-lg font-[satoshi] xl:text-2xl mb-8">
-              You don't have any notes yet. Start by adding one! 📝
-            </p>
+
+          {/* Add Note Button */}
+          <div className="flex justify-center mb-12">
             <button
               onClick={() => navigate('/add-note')}
-              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-colors font-[satoshi]"
+              className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
-              Create Your First Note
+              <div className="flex items-center gap-3">
+                <Plus className="w-6 h-6" />
+                <span className="text-lg">Create New Note</span>
+              </div>
+              {/* Shine effect */}
+              <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
             </button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {notes.map((note) => (
-              <div
-                key={note._id || note.id}
-                className={`p-5 rounded-lg border-l-4 shadow-lg hover:shadow-xl transition-shadow ${LABEL_COLORS[note.label]}`}
-              >
-                {/* Note Header */}
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-white font-bold text-lg font-[satoshi] flex-1 mr-2">
-                    {note.heading}
-                  </h3>
-                  <button
-                    onClick={() => deleteNote(note._id || note.id)}
-                    className="text-gray-400 hover:text-red-400 transition-colors p-1"
-                    title="Delete note"
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
+        </div>
+
+        {/* Notes Section */}
+        <div className="px-6 md:px-12 lg:px-20 xl:px-32 pb-12">
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center">Loading your notes...</p>
+              </div>
+            </div>
+          ) : notes.length === 0 ? (
+            <div className="text-center py-2">
+              <div className="mb-8">
+                <div className="w-24 h-24 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mb-6">
+                  <Plus className="w-12 h-12 text-purple-400" />
                 </div>
-
-                {/* Label Badge */}
-                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${LABEL_BADGE_COLORS[note.label]}`}>
-                  {note.label.charAt(0).toUpperCase() + note.label.slice(1)}
-                </span>
-
-                {/* Description */}
-                <p className="text-gray-200 mb-4 font-[satoshi] leading-relaxed">
-                  {note.description}
-                </p>
-
-                {/* Date */}
-                <p className="text-gray-400 text-sm font-[satoshi]">
-                  {formatDate(note.createdAt)}
+                <h3 className="text-2xl font-bold text-white mb-4 font-[satoshi]">Your canvas is empty</h3>
+                <p className="text-gray-400 text-lg mb-8 font-[satoshi] max-w-md mx-auto">
+                  Start your journey by creating your first note. Every great idea begins with a single thought.
                 </p>
               </div>
-            ))}
-          </div>
-        )}
+              <button
+                onClick={() => navigate('/add-note')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi]"
+              >
+                Create Your First Note
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {notes.map((note) => (
+                <div
+                  key={note._id || note.id}
+                  className={`group relative backdrop-blur-sm rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${LABEL_COLORS[note.label]}`}
+                >
+                  {/* Note Header */}
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-white font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
+                      {note.heading}
+                    </h3>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <button
+                        onClick={() => {/* will add edit functionality */}}
+                        className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                        title="Edit note"
+                      >
+                        <Edit3 className="w-4 h-4 text-gray-300 hover:text-white" />
+                      </button>
+                      <button
+                        onClick={() => deleteNote(note._id || note.id)}
+                        className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors"
+                        title="Delete note"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-300 hover:text-red-200" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Label Badge */}
+                  <div className="flex justify-between items-center mb-4">
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${LABEL_BADGE_COLORS[note.label]}`}>
+                      {note.label}
+                    </span>
+                    <span className="text-gray-400 text-xs font-[satoshi]">
+                      {formatDate(note.createdAt)}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-200 font-[satoshi] leading-relaxed line-clamp-4">
+                    {note.description}
+                  </p>
+
+                  {/* Hover glow effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/0 via-pink-500/0 to-cyan-500/0 group-hover:from-purple-500/5 group-hover:via-pink-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
