@@ -11,11 +11,10 @@ import Footer from "./components/Footer";
 function App() {
   const location = useLocation();
 
-  // Pages jaha Navbar chahiye
   const showNavbar = ["/", "/login", "/register"].includes(
     location.pathname.toLowerCase()
   );
-  const Footer = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
+  const showFooter = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
     location.pathname.toLowerCase()
   );
 
@@ -23,7 +22,7 @@ function App() {
     <div className="relative">
       {showNavbar && <Navbar />}
       {/* {showUsernav && <Usernav />} */}
-      { showNavbar && <Footer />}
+      {showFooter && <Footer />}  
 
       <Routes>
         <Route path="/" element={<Login />} />
