@@ -54,15 +54,17 @@ function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900
+
+ dark scroll-smooth px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
       <form
         onSubmit={handleSubmit}
-        className="bg-transparent backdrop-brightness-150 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
+        className="bg-yellow-50/10 backdrop-brightness-150 backdrop-blur-xl  p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-yellow-300/50"
       >
-        <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
+        <h2 className="text-3xl font-[satoshi] font-bold text-center text-yellow-300 mb-6">
           Login 🔑
         </h2>
-        <p className="text-blue-400 font-[satoshi] mb-6 xl:text-xl font-medium text-center">
+        <p className="text-yellow-300 font-[satoshi] mb-6 xl:text-xl font-medium text-center">
           Welcome back, manage your tasks easily 📜
         </p>
 
@@ -75,7 +77,7 @@ function Login() {
             placeholder="e.g. Priyanshu Singh"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {errors.name && (
             <p className="text-red-400 text-sm mt-1">{errors.name}</p>
@@ -91,7 +93,7 @@ function Login() {
             placeholder="e.g. priyanshu@example.com"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {errors.email && (
             <p className="text-red-400 text-sm mt-1">{errors.email}</p>
@@ -107,7 +109,7 @@ function Login() {
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {/* Eye button */}
           <button
@@ -126,11 +128,11 @@ function Login() {
         
         <button
           type="submit"
-          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-yellow-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Login
         </button>
-        <p className="mt-4 font-[satoshi] text-gray-50">Don't have an account?<a href="/register" className="p-2 text-blue-500 underline hover:font-bold">Sign up</a></p>
+        <p className="mt-4 font-[satoshi] text-yellow-300">Don't have an account?<a href="/register" className="p-2 text-yellow-300 underline hover:font-bold">Sign up</a></p>
       </form>
     </div>
   );

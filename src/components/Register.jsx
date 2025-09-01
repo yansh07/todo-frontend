@@ -67,17 +67,17 @@ function Register() {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen bg-[#060010] dark scroll-smooth
+      className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 dark scroll-smooth
  px-4 md:px-0 pt-20 md:pt-30 lg:pt-32 xl:pt-38"
     >
       <form
         onSubmit={handleSubmit}
-        className="bg-transparent backdrop-brightness-150 mb-4 backdrop-blur-md p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-white/20"
+        className="bg-yellow-50/10 backdrop-brightness-150 mb-4 backdrop-blur-xl p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-yellow-300/50"
       >
-        <h2 className="text-3xl font-[satoshi] font-bold text-center text-white mb-6">
+        <h2 className="text-3xl font-[satoshi] font-bold text-center text-yellow-300 mb-6">
           Sign up 🪪
         </h2>
-        <p className="text-blue-400 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
+        <p className="text-yellow-300 font-[satoshi] mb-4 xl:text-xl font-medium text-center">
           Start your journey with PlanIt today 🚀
         </p>
 
@@ -90,7 +90,7 @@ function Register() {
             placeholder="e.g. Priyanshu Singh"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {errors.name && (
             <p className="text-red-400 text-sm mt-1">{errors.name}</p>
@@ -106,7 +106,7 @@ function Register() {
             placeholder="e.g. priyanshu@example.com"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {errors.email && (
             <p className="text-red-400 text-sm mt-1">{errors.email}</p>
@@ -122,7 +122,7 @@ function Register() {
             placeholder="••••••••"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {/* Eye button */}
           <button
@@ -146,7 +146,7 @@ function Register() {
             placeholder="••••••••"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
           {errors.confirmPassword && (
             <p className="text-red-400 text-sm mt-1">
@@ -158,13 +158,13 @@ function Register() {
         {/* Submit */}
         <button
           type="submit"
-          className="focus:ring-2 focus:ring-violet-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="focus:ring-2 focus:ring-yellow-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
           Sign up
         </button>
         <div>
-          <p className="font-[satoshi] text-gray-50 mt-4">Already have an account? 
-          <a href="/login" className="p-2 text-blue-500 underline hover:font-bold">Login</a>
+          <p className="font-[satoshi] text-yellow-300 mt-4">Already have an account? 
+          <a href="/login" className="p-2 text-yellow-300 underline hover:font-bold">Login</a>
         </p>
         </div>
       </form>
