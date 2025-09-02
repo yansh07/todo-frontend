@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { User, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddNote from "./AddNote";
 import AboutMeInput from "./Aboutme";
 
 function Profile() {
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/notes")
+      .then((res) => res.json())
+      .then((data) => setNotes(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   const navigate = useNavigate();
   const userName = "Priyanshu";
   const date = "2-9-2025";
-  const email = "pksingh@gmal.com";
+  const email = "pksingh@gmail.com";
   const totalNotes = "4";
+  
   return (
     // profile card
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
@@ -25,12 +35,12 @@ function Profile() {
           </h1>
           <span className="text-md font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-medium">
             {email}
-          </span><br></br>
+          </span>
+          <br></br>
           <span className="text-sm font-[satoshi] text-gray-300">
             Joined on: {date}
           </span>
         </div>
-        
       </div>
       <div className="px-8 mb-6">
         <AboutMeInput />
@@ -65,7 +75,42 @@ function Profile() {
             </button>
           </div>
         </div>
-        <h2 className="text-xl text-gray-200 mt-6">Total notes: {totalNotes}</h2>
+        <div className="flex flex-row gap-12">
+          <h2 className="px-3 py-2 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-xl mt-6">
+          Total notes: {totalNotes}
+        </h2>
+        <h2 className="px-6 py-2 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-xl mt-6">
+          Logout
+        </h2>
+        </div>
+      </div>
+      {/*Notes Preview Section */}
+      <div className="flex-1 px-8 py-6 md:px-24">
+        <h2 className="text-xl font-medium  text-gray-100 mb-4">
+          Latest Notes
+        </h2>
+
+        {notes.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {notes.slice(0, 3).map((note) => (
+              <div
+                key={note.id}
+                className="p-4 rounded-xl bg-gray-800/60 backdrop-blur-sm border border-gray-700 hover:border-purple-400 transition"
+              >
+                <h3 className="text-lg font-semibold text-purple-200">
+                  {note.title}
+                </h3>
+                <p className="text-gray-300 text-sm line-clamp-3">
+                  {note.content}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400 italic">
+            🎨 Your canvas is empty — start by adding a new note!
+          </p>
+        )}
       </div>
     </div>
   );

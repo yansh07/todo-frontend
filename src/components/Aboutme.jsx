@@ -17,7 +17,7 @@ function AboutMeInput() {
           bg-gray-800/60 
           rounded-xl border border-gray-700 
           focus:border-purple-400 focus:ring-2 focus:ring-purple-400/60 
-          transition-all duration-300 
+          transition-all backdrop:blur-3xl duration-300 
           resize-none overflow-hidden
         "
       />
