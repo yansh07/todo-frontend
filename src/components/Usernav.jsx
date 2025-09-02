@@ -1,8 +1,11 @@
 import React from "react";
 import { FilePlus, User, Bell, Search } from "lucide-react";
 import "/src/index.css";
+import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
 
 function Usernav() {
+  const navigate = useNavigate();
   return (
     <div className="bg-gradient-to-r from-purple-900 via-violet-800 to-indigo-800 backdrop-blur-xl border-b border-purple-500/20 p-3 shadow-2xl">
       <div className="flex items-center justify-between px-4 md:px-8 lg:px-12 xl:px-16 max-w-7xl mx-auto">
@@ -51,7 +54,7 @@ function Usernav() {
           </div>
 
           {/* Profile Section */}
-          <div className="relative group">
+          <div className="relative group" onClick={() => navigate("/profile")}>
             <div className="relative">
               <div className="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
                 <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-2xl flex items-center justify-center">
