@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-[#100227] flex flex-col relative z-50 px-0 md:px-8 pt-0 md:py-2 lg:px-14 lg:py-6 xl:px-32 xl:py-4">
+    <div className="bg-[#100227] flex flex-col relative z-50 px-4 md:px-8 pt-2 md:py-2 lg:px-14 lg:py-6 xl:px-32 xl:py-4">
       <a
         href="https://github.com/yansh07/todo-frontend"
         className="text-gray-50  hover:text-blue-400 transition-all duration-300 ml-3 mt-3 font-semibold text-2xl"

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-// import { Link } from "lucide-react";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -54,7 +53,7 @@ function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900
+    <div className="flex justify-center  items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900
 
  dark scroll-smooth px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
       <form
