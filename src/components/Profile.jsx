@@ -2,11 +2,13 @@ import React from "react";
 import { User, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddNote from "./AddNote";
+import AboutMeInput from "./Aboutme";
 
 function Profile() {
   const navigate = useNavigate();
   const userName = "Priyanshu";
   const date = "2-9-2025";
+  const email = "pksingh@gmal.com";
   const totalNotes = "4";
   return (
     // profile card
@@ -21,16 +23,22 @@ function Profile() {
           <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-4xl mt-2 md:text-4xl lg:text-5xl xl:text-6xl">
             {userName}
           </h1>
-          <span className="text-sm font-[satoshi] text-gray-400">
+          <span className="text-md font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-medium">
+            {email}
+          </span><br></br>
+          <span className="text-sm font-[satoshi] text-gray-300">
             Joined on: {date}
           </span>
         </div>
+        
       </div>
-      <div className="font-[satoshi] font-medium text-gray-200 px-8">
-        <h2 className="text-xl">Total notes: {totalNotes}</h2>
-        <div className="flex flex-row gap-8 mt-6">
+      <div className="px-8 mb-6">
+        <AboutMeInput />
+      </div>
+      <div className="font-[satoshi] font-medium  px-8">
+        <div className="flex flex-row gap-8">
           {/* Add Note Button */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center">
             <button
               onClick={() => navigate("/add-note")}
               className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-3 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
@@ -43,7 +51,7 @@ function Profile() {
               <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
             </button>
           </div>
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center">
             <button
               onClick={() => navigate("/add-note")}
               className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-3 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
@@ -57,6 +65,7 @@ function Profile() {
             </button>
           </div>
         </div>
+        <h2 className="text-xl text-gray-200 mt-6">Total notes: {totalNotes}</h2>
       </div>
     </div>
   );
