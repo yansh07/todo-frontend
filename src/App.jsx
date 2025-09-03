@@ -7,6 +7,8 @@ import Usernav from "./components/Usernav";
 import Profile from "./components/Profile";
 import AddNote from "./components/AddNote";
 // import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+
 
 function App() {
   const location = useLocation();
@@ -23,6 +25,17 @@ function App() {
       {showNavbar && <Navbar />}
       {/* {showUsernav && <Usernav />} */}
       {/* {showFooter && <Footer />}   */}
+      {/* baki routes/components */}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="dark"
+      />
 
       <Routes>
         <Route path="/" element={<Register />} />
@@ -35,12 +48,6 @@ function App() {
     </div>
   );
 }
-function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" />;
-}
-
-<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
 
 export default App;

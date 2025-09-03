@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 // import { Link } from "lucide-react";
+import { toast } from "react-toastify";
 
 function Register() {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const notify = toast("Signed up, now redirecting to dashboard.")
 
   // Validation function
   const validate = () => {
@@ -176,6 +178,7 @@ function Register() {
 
         {/* Submit */}
         <button
+          onClick={notify}
           type="submit"
           className="focus:ring-2 focus:ring-yellow-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >

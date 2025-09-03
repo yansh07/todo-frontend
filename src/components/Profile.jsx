@@ -4,23 +4,41 @@ import { useNavigate } from "react-router-dom";
 import AddNote from "./AddNote";
 import AboutMeInput from "./Aboutme";
 import Footer from "./Footer";
+import { toast } from 'react-toastify';
 
 
 function Profile() {
   const [notes, setNotes] = useState([]);
-
+  const [user, setUser] = useState([]);
+  const notify = () => toast("Logged out!");
+  const navigate = useNavigate()
   useEffect(() => {
-    fetch("/api/notes")
-      .then((res) => res.json())
-      .then((data) => setNotes(data))
-      .catch((err) => console.error(err));
+    const fetchProfile = async() => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/user/profile", {
+          headers: {Authorization: `Bearer ${token}`},
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data);
+        } else {
+          console.error("Profile fetch error:", data.error);
+        }
+      } catch (err) {
+        console.error("Error fetching error:", err);
+      }
+    };
+    fetchProfile();
   }, []);
 
-  const navigate = useNavigate();
-  const userName = "Priyanshu";
-  const date = "2-9-2025";
-  const email = "pksingh@gmail.com";
-  const totalNotes = "4";
+  if (!user) return <p className="text-white">Loading...</p>;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // JWT delete
+    navigate("/login");               // redirect to login
+  };
+
   
   return (
     // profile card
@@ -33,14 +51,14 @@ function Profile() {
         </div>
         <div>
           <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-4xl mt-2 md:text-4xl lg:text-5xl xl:text-6xl">
-            {userName}
+            {user.fullName}
           </h1>
           <span className="text-md font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-medium">
-            {email}
+            {user.email}
           </span>
           <br></br>
           <span className="text-sm font-[satoshi] text-gray-300">
-            Joined on: {date}
+            Joined on: {new Date(user.createdAt).toLocaleDateString()}
           </span>
         </div>
       </div>
@@ -79,11 +97,11 @@ function Profile() {
         </div>
         <div className="flex flex-row gap-12 md:gap-40 xl:gap-54">
           <h2 className="px-3 py-3 xl:py-2 xl:px-4  md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
-          Total notes: {totalNotes}
+          Total notes: {4}
         </h2>
-        <h2 className="px-8 py-3 xl:py-2 xl:px-4   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+        <button onClick={() => { handleLogout(); notify();}} className="px-8 py-3 xl:py-2 xl:px-4   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Logout
-        </h2>
+        </button>
         </div>
       </div>
       {/*Notes Preview Section */}
