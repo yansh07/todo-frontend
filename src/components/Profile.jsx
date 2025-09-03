@@ -48,12 +48,12 @@ function Profile() {
         <AboutMeInput />
       </div>
       <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-145">
-        <div className="flex flex-row gap-8 md:gap-48">
+        <div className="flex flex-row gap-8 md:gap-36 xl:gap-46">
           {/* Add Note Button */}
           <div className="flex justify-center">
             <button
               onClick={() => navigate("/add-note")}
-              className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-3 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
+              className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-3 md:px-7 md:py-2 xl:px-4 xl:py-2 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
               <div className="flex items-center gap-2">
                 {/* <Plus className="w-6 h-6" /> */}
@@ -66,7 +66,7 @@ function Profile() {
           <div className="flex justify-center ml-6">
             <button
               onClick={() => navigate("/add-note")}
-              className="xl:py-4 group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-6 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
+              className=" group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-6 md:px-7 md:py-2 xl:px-4 xl:py-2 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
               <div className="flex items-center gap-2">
                 {/* <Plus className="w-6 h-6" /> */}
@@ -77,11 +77,11 @@ function Profile() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row gap-12 md:gap-52">
-          <h2 className="px-3 py-3 xl:py-4 xl:px-5 md:px-3 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+        <div className="flex flex-row gap-12 md:gap-40 xl:gap-54">
+          <h2 className="px-3 py-3 xl:py-2 xl:px-4  md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Total notes: {totalNotes}
         </h2>
-        <h2 className="px-8 py-3 xl:py-8 xl:px-7 md:pt-5 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+        <h2 className="px-8 py-3 xl:py-2 xl:px-4   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Logout
         </h2>
         </div>
