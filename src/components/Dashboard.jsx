@@ -25,14 +25,32 @@ const LABEL_BADGE_COLORS = {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const userName = "Priyanshu";
+  const [user, setUser] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch notes from MongoDB on component mount
   useEffect(() => {
-    fetchNotes();
-  }, []);
+      const fetchProfile = async() => {
+        try {
+          const token = localStorage.getItem("token");
+          const res = await fetch("http://localhost:5000/api/user/profile", {
+            headers: {Authorization: `Bearer ${token}`},
+          });
+          const data = await res.json();
+          if (res.ok) {
+            setUser(data);
+          } else {
+            console.error("Profile fetch error:", data.error);
+          }
+        } catch (err) {
+          console.error("Error fetching error:", err);
+        }
+      };
+      fetchProfile();
+    }, []);
+    if (!user) return <p className="text-white">Loading...</p>;
+  
 
   const fetchNotes = async () => {
     try {
@@ -40,6 +58,7 @@ function Dashboard() {
       const response = await fetch('/api/notes', {
         headers: {
           // Add your auth headers here
+          
         }
       });
       
@@ -103,7 +122,7 @@ function Dashboard() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
             <div className="mb-6 lg:mb-0">
               <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4">
-                Welcome back, {userName} 👋
+                Welcome back, {user.fullName} 👋
               </h1>
               <p className="text-gray-300 text-lg font-[satoshi]">
                 Ready to capture your thoughts and ideas?
@@ -129,12 +148,12 @@ function Dashboard() {
         </div>
 
         {/* Notes Section */}
-        <div className="px-6 md:px-12 lg:px-20 xl:px-32 pb-12">
+        <div className="px-6 md:px-12 lg:px-20 xl:px-32 xl:ml-20 pb-12">
           {loading ? (
-            <div className="flex justify-center items-center py-20">
+            <div className="flex justify-center items-center py-20 xl:py-0 ml-12 xl:-ml-8">
               <div className="relative">
                 <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center">Loading your notes...</p>
+                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">Loading your notes...</p>
               </div>
             </div>
           ) : notes.length === 0 ? (
