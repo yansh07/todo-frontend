@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 // import { Link } from "lucide-react";
 
+
 function Register() {
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
@@ -12,38 +14,33 @@ function Register() {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   // Validation function
   const validate = () => {
     const newErrors = {};
 
-    // Name validation
-    if (!formData.name.trim()) {
+    if (!form.name.trim()) {
       newErrors.name = "Name is required";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+    } else if (!/^[a-zA-Z\s]+$/.test(form.name)) {
       newErrors.name = "Enter a valid name";
     }
 
-    // Email validation
-    if (!formData.email.trim()) {
+    if (!form.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-    ) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
       newErrors.email = "Invalid email address";
     }
 
-    // Password validation
-    if (!formData.password) {
+    if (!form.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
+    } else if (form.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    // Confirm Password
-    if (!formData.confirmPassword) {
+    if (!form.confirmPassword) {
       newErrors.confirmPassword = "Confirm your password";
-    } else if (formData.confirmPassword !== formData.password) {
+    } else if (form.confirmPassword !== form.password) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
@@ -51,20 +48,40 @@ function Register() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      console.log("Registration successful ✅", formData);
-      // Yaha backend API call laga sakta hai
+      try {
+        const res = await fetch("http://localhost:5000/api/user/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fullName: form.name,
+            email: form.email,
+            password: form.password,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("token", data.token);
+          navigate("/dashboard");
+        } else {
+          setErrors({ general: data.error || "Signup failed" });
+        }
+      } catch (err) {
+        setErrors({ general: "Something went wrong. Try again later." });
+        console.error("Signup error:", err);
+      }
     }
   };
-
   return (
     <div
       className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 dark scroll-smooth
@@ -88,7 +105,7 @@ function Register() {
             type="text"
             name="name"
             placeholder="e.g. Priyanshu Singh"
-            value={formData.name}
+            value={form.name}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
@@ -104,7 +121,7 @@ function Register() {
             type="email"
             name="email"
             placeholder="e.g. priyanshu@example.com"
-            value={formData.email}
+            value={form.email}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
@@ -120,7 +137,7 @@ function Register() {
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="••••••••"
-            value={formData.password}
+            value={form.password}
             onChange={handleChange}
             className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
@@ -131,6 +148,7 @@ function Register() {
             className="absolute inset-y-0 mt-7 right-3 flex items-center text-gray-300 hover:text-white"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            {showPassword ? "Hide" : "Show"} Password
           </button>
           {errors.password && (
             <p className="text-red-400 text-sm mt-1">{errors.password}</p>
@@ -144,7 +162,7 @@ function Register() {
             type="password"
             name="confirmPassword"
             placeholder="••••••••"
-            value={formData.confirmPassword}
+            value={form.confirmPassword}
             onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />

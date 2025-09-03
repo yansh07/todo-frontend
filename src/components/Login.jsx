@@ -46,7 +46,7 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const res = await fetch("http://localhost:5000/user/login", {
+        const res = await fetch("http://localhost:5000/api/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
