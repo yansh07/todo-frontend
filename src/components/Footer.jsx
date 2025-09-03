@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-[#100227] flex flex-col relative z-50 px-4 md:px-8 pt-6 md:py-6 lg:px-70 lg:py-6 xl:px-140 xl:py-8 lg:flex-row">
+    <div className="bg-[#100227] flex flex-col relative z-50 px-4 md:px-36 pt-6 md:py-6 lg:px-70 lg:py-6 xl:px-140 xl:py-8 lg:flex-row md:flex-row">
       <div>
         <a
           href="https://github.com/yansh07/todo-frontend"
@@ -12,12 +12,12 @@ function Footer() {
         >
           PlanIt
         </a>
-        <p className="font-[satoshi] text-gray-400 font-medium text-lg ml-3 hover:text-white mr-10 lg:max-w-3xs">
+        <p className="font-[satoshi] text-gray-400 font-medium text-lg ml-3 hover:text-white mr-10 lg:max-w-3xs md:max-w-3xs">
           A minimalist canvas to save your plans, and moments.
         </p>
       </div>
-      <div className="xl:mb-20 lg:mb-28 lg:ml-6">
-        <h1 className="font-[satoshi] text-gray-100 text-xl font-bold ml-3 mt-6 lg:mt-0">
+      <div className="xl:mb-20 lg:mb-28 lg:ml-6 md:mb-20 md:ml-8">
+        <h1 className="font-[satoshi] text-gray-100 text-xl font-bold ml-3 mt-6 lg:mt-0 md:mt-0">
           Connect
         </h1>
         <ul className="font-[satoshi] text-gray-400 ml-3 mt-2 text-lg">
@@ -43,9 +43,9 @@ function Footer() {
       </div>
       <div>
         <div>
-          <div className="border-t border-gray-500 ml-3 mr-3 mt-4 lg:absolute lg:bottom-20 lg:left-68 lg:px-58 xl:px-58 xl:ml-72"></div>
+          <div className="border-t border-gray-500 ml-3 mr-3 mt-4 lg:absolute lg:bottom-20 lg:left-68 lg:px-58 xl:px-58 xl:ml-72 md:absolute md:bottom-20 md:px-56 md:left-36"></div>
         </div>
-        <div className="font-[satoshi] text-gray-400 mt-3 mb-6 lg:absolute lg:bottom-0 lg:left-96 lg:px-10 xl:px-78">
+        <div className="font-[satoshi] text-gray-400 mt-3 mb-6 lg:absolute lg:bottom-0 lg:left-96 lg:px-10 xl:px-78 md:bottom-0 md:absolute md:left-72">
           <p className="text-sm ml-3">© 2025 PlanIt: NotesApp.</p>
           <p className="font-medium text-sm ml-3 hover:text-white">
             <a
