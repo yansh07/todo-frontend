@@ -42,7 +42,7 @@ function Usernav() {
           </div>
 
           {/* Add Note Button */}
-          <div className="relative group">
+          <div className="relative group" onClick={() => navigate("/add-note")}>
             <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-3 rounded-2xl hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 cursor-pointer">
               <FilePlus className="text-white w-5 h-5 md:w-6 md:h-6" />
             </div>
