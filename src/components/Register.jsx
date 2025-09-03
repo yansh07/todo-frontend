@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 // import { Link } from "lucide-react";
 
-
 function Register() {
   const [form, setForm] = useState({
     name: "",
@@ -53,6 +52,7 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submitted ✅", form);
     const validationErrors = validate();
     setErrors(validationErrors);
 
@@ -72,6 +72,7 @@ function Register() {
 
         if (res.ok) {
           localStorage.setItem("token", data.token);
+          alert("Signup successful 🎉")
           navigate("/dashboard");
         } else {
           setErrors({ general: data.error || "Signup failed" });
@@ -180,13 +181,26 @@ function Register() {
         >
           Sign up
         </button>
+        {/* <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="text-sm text-blue-500 underline mt-2"
+        >
+          {showPassword ? "Hide Password" : "Show Password"}
+        </button> */}
+
         <div>
-          <p className="font-[satoshi] text-yellow-300 mt-4">Already have an account? 
-          <a href="/login" className="p-2 text-yellow-300 underline hover:font-bold">Login</a>
-        </p>
+          <p className="font-[satoshi] text-yellow-300 mt-4">
+            Already have an account?
+            <a
+              href="/login"
+              className="p-2 text-yellow-300 underline hover:font-bold"
+            >
+              Login
+            </a>
+          </p>
         </div>
       </form>
-      
     </div>
   );
 }
