@@ -98,7 +98,7 @@ function Dashboard() {
       <div className="relative z-10">
         <Usernav />
         
-        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-32">
+        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-56">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
             <div className="mb-6 lg:mb-0">
