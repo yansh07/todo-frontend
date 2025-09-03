@@ -25,7 +25,7 @@ function Profile() {
   return (
     // profile card
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
-      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-120 xl:mt-4">
+      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-145 xl:mt-4">
         <div className="w-20 h-20 md:w-20 md:h-20 rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
           <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center">
             <User className="w-10 h-10 text-white" />
@@ -47,7 +47,7 @@ function Profile() {
       <div className="px-8 mb-6">
         <AboutMeInput />
       </div>
-      <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-120">
+      <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-145">
         <div className="flex flex-row gap-8 md:gap-48">
           {/* Add Note Button */}
           <div className="flex justify-center">
@@ -78,16 +78,16 @@ function Profile() {
           </div>
         </div>
         <div className="flex flex-row gap-12 md:gap-52">
-          <h2 className="px-3 py-3 xl:py-4 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+          <h2 className="px-3 py-3 xl:py-4 xl:px-5 md:px-3 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Total notes: {totalNotes}
         </h2>
-        <h2 className="px-8 py-3 xl:py-4 md:pt-5 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+        <h2 className="px-8 py-3 xl:py-8 xl:px-7 md:pt-5 rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Logout
         </h2>
         </div>
       </div>
       {/*Notes Preview Section */}
-      <div className="flex-1 px-8 py-6 md:px-40 md:mt-4 lg:px-72 xl:px-120">
+      <div className="flex-1 px-8 py-6 md:px-40 md:mt-4 lg:px-72 xl:px-145">
         <h2 className="text-xl font-medium  text-gray-100 mb-4 lg:text-3xl lg:font-semibold">
           Latest Notes
         </h2>
