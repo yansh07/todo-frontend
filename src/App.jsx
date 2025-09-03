@@ -11,7 +11,7 @@ import AddNote from "./components/AddNote";
 function App() {
   const location = useLocation();
 
-  const showNavbar = ["/", "/login", "/register"].includes(
+  const showNavbar = ["/", "/register", "/login"].includes(
     location.pathname.toLowerCase()
   );
   // const showFooter = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
@@ -25,7 +25,7 @@ function App() {
       {/* {showFooter && <Footer />}   */}
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
