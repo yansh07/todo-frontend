@@ -55,8 +55,10 @@ function Login() {
   return (
     <div className="flex justify-center  items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900
 
- dark scroll-smooth px-4 md:px-0 pt-16 lg:pt-24 xl:pt-12">
+ dark scroll-smooth px-4 md:px-0 pt-8 lg:pt-24 xl:pt-0">
       <form
+      action={"/user"}
+      method="POST"
         onSubmit={handleSubmit}
         className="bg-yellow-50/10 backdrop-brightness-150 backdrop-blur-xl  p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-yellow-300/50"
       >
@@ -68,7 +70,7 @@ function Login() {
         </p>
 
         {/* Name */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-200 mb-1">Full Name</label>
           <input
             type="text"
@@ -81,7 +83,7 @@ function Login() {
           {errors.name && (
             <p className="text-red-400 text-sm mt-1">{errors.name}</p>
           )}
-        </div>
+        </div> */}
 
         {/* Email */}
         <div className="mb-4">
