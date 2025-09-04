@@ -7,69 +7,78 @@ import Footer from "./Footer";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
-  personal: "bg-gradient-to-br from-emerald-500/20 to-green-500/20 border-l-4 border-emerald-400 shadow-emerald-500/20",
-  urgent: "bg-gradient-to-br from-red-500/20 to-pink-500/20 border-l-4 border-pink-400 shadow-pink-500/20",
-  ideas: "bg-gradient-to-br from-purple-500/20 to-violet-500/20 border-l-4 border-violet-400 shadow-violet-500/20",
+  personal:
+    "bg-gradient-to-br from-emerald-500/20 to-green-500/20 border-l-4 border-emerald-400 shadow-emerald-500/20",
+  urgent:
+    "bg-gradient-to-br from-red-500/20 to-pink-500/20 border-l-4 border-pink-400 shadow-pink-500/20",
+  ideas:
+    "bg-gradient-to-br from-purple-500/20 to-violet-500/20 border-l-4 border-violet-400 shadow-violet-500/20",
   todo: "bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-l-4 border-orange-400 shadow-orange-500/20",
-  general: "bg-gradient-to-br from-gray-500/20 to-slate-500/20 border-l-4 border-slate-400 shadow-slate-500/20"
+  general:
+    "bg-gradient-to-br from-gray-500/20 to-slate-500/20 border-l-4 border-slate-400 shadow-slate-500/20",
 };
 
 const LABEL_BADGE_COLORS = {
   work: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30",
-  personal: "bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/30",
-  urgent: "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/30",
-  ideas: "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/30",
+  personal:
+    "bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/30",
+  urgent:
+    "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/30",
+  ideas:
+    "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/30",
   todo: "bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 shadow-lg shadow-yellow-500/30",
-  general: "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/30"
+  general:
+    "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/30",
 };
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch notes from MongoDB on component mount
+  // Fetch user profile
   useEffect(() => {
-      const fetchProfile = async() => {
-        try {
-          const token = localStorage.getItem("token");
-          const res = await fetch("http://localhost:5000/api/user/profile", {
-            headers: {Authorization: `Bearer ${token}`},
-          });
-          const data = await res.json();
-          if (res.ok) {
-            setUser(data);
-          } else {
-            console.error("Profile fetch error:", data.error);
-          }
-        } catch (err) {
-          console.error("Error fetching error:", err);
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/user/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data);
+        } else {
+          console.error("Profile fetch error:", data.error);
         }
-      };
-      fetchProfile();
-    }, []);
-    if (!user) return <p className="text-white">Loading...</p>;
-  
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchProfile();
+    fetchNotes(); // 👈 automatically load notes
+  }, []);
 
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/notes', {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/note", {
         headers: {
-          // Add your auth headers here
-          
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (response.ok) {
         const fetchedNotes = await response.json();
         setNotes(fetchedNotes);
       } else {
-        throw new Error('Failed to fetch notes');
+        throw new Error("Failed to fetch notes");
       }
     } catch (error) {
-      console.error('Error fetching notes:', error);
+      console.error("Error fetching notes:", error);
     } finally {
       setLoading(false);
     }
@@ -77,33 +86,40 @@ function Dashboard() {
 
   const deleteNote = async (noteId) => {
     try {
-      const response = await fetch(`/api/notes/${noteId}`, {
-        method: 'DELETE',
-        headers: {
-          // Add your auth headers here
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/api/note/${noteId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       if (response.ok) {
-        setNotes(notes.filter(note => note._id !== noteId));
+        setNotes(notes.filter((note) => note._id !== noteId));
       } else {
-        throw new Error('Failed to delete note');
+        throw new Error("Failed to delete note");
       }
     } catch (error) {
-      console.error('Error deleting note:', error);
-      alert('Failed to delete note. Please try again.');
+      console.error("Error deleting note:", error);
+      alert("Failed to delete note. Please try again.");
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
+
+  if (!user) return <p className="text-white">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 ">
@@ -116,7 +132,7 @@ function Dashboard() {
 
       <div className="relative z-10">
         <Usernav />
-        
+
         <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-56">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
@@ -134,7 +150,7 @@ function Dashboard() {
           {/* Add Note Button */}
           <div className="flex justify-center mb-12">
             <button
-              onClick={() => navigate('/add-note')}
+              onClick={() => navigate("/add-note")}
               className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
               <div className="flex items-center gap-3">
@@ -153,7 +169,9 @@ function Dashboard() {
             <div className="flex justify-center items-center py-20 xl:py-0 ml-12 xl:-ml-8">
               <div className="relative">
                 <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">Loading your notes...</p>
+                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">
+                  Loading your notes...
+                </p>
               </div>
             </div>
           ) : notes.length === 0 ? (
@@ -162,13 +180,16 @@ function Dashboard() {
                 <div className="w-24 h-24 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mb-6">
                   <Plus className="w-12 h-12 text-purple-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 font-[satoshi]">Your canvas is empty</h3>
+                <h3 className="text-2xl font-bold text-white mb-4 font-[satoshi]">
+                  Your canvas is empty
+                </h3>
                 <p className="text-gray-400 text-lg mb-8 font-[satoshi] max-w-md mx-auto">
-                  Start your journey by creating your first note. Every great idea begins with a single thought.
+                  Start your journey by creating your first note. Every great
+                  idea begins with a single thought.
                 </p>
               </div>
               <button
-                onClick={() => navigate('/add-note')}
+                onClick={() => navigate("/add-note")}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi]"
               >
                 Create Your First Note
@@ -179,16 +200,20 @@ function Dashboard() {
               {notes.map((note) => (
                 <div
                   key={note._id || note.id}
-                  className={`group relative backdrop-blur-sm rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${LABEL_COLORS[note.label]}`}
+                  className={`group relative backdrop-blur-sm rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                    LABEL_COLORS[note.category]
+                  }`}
                 >
                   {/* Note Header */}
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-white font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
-                      {note.heading}
+                      {note.title}
                     </h3>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
-                        onClick={() => {/* will add edit functionality */}}
+                        onClick={() => {
+                          /* will add edit functionality */
+                        }}
                         className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
                         title="Edit note"
                       >
@@ -206,7 +231,11 @@ function Dashboard() {
 
                   {/* Label Badge */}
                   <div className="flex justify-between items-center mb-4">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${LABEL_BADGE_COLORS[note.label]}`}>
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                        LABEL_BADGE_COLORS[note.label]
+                      }`}
+                    >
                       {note.label}
                     </span>
                     <span className="text-gray-400 text-xs font-[satoshi]">
@@ -216,7 +245,7 @@ function Dashboard() {
 
                   {/* Description */}
                   <p className="text-gray-200 font-[satoshi] leading-relaxed line-clamp-4">
-                    {note.description}
+                    {note.content}
                   </p>
 
                   {/* Hover glow effect */}

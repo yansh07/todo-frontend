@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 function Profile() {
   const [notes, setNotes] = useState([]);
   const [user, setUser] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const notify = () => toast("Logged out!");
   const navigate = useNavigate()
   useEffect(() => {
@@ -30,7 +31,32 @@ function Profile() {
       }
     };
     fetchProfile();
+    fetchNotes();
   }, []);
+  const fetchNotes = async () => {
+    try {
+      // setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/note", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const fetchedNotes = await response.json();
+        setNotes(fetchedNotes);
+      } else {
+        throw new Error("Failed to fetch notes");
+      }
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
+  };
 
   if (!user) return <p className="text-white">Loading...</p>;
 
