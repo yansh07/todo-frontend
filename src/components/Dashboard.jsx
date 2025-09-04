@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Trash2, Edit3 } from "lucide-react";
+import { Plus, Trash2, Edit3, Check, X } from "lucide-react";
 import Usernav from "./Usernav";
 // import SearchBox from "./Search";
 import Footer from "./Footer";
@@ -36,6 +36,8 @@ function Dashboard() {
   const [user, setUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingNote, setEditingNote] = useState(null); // jis note ko edit karna hai
+  const [editContent, setEditContent] = useState("");
 
   // Fetch user profile
   useEffect(() => {
@@ -87,16 +89,13 @@ function Dashboard() {
   const deleteNote = async (noteId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://localhost:5000/api/note/${noteId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:5000/api/note/${noteId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.ok) {
         setNotes(notes.filter((note) => note._id !== noteId));
@@ -106,6 +105,42 @@ function Dashboard() {
     } catch (error) {
       console.error("Error deleting note:", error);
       alert("Failed to delete note. Please try again.");
+    }
+  };
+  // Edit start
+  const startEdit = (note) => {
+    setEditingNote(note._id);
+    setEditContent(note.content);
+  };
+
+  // Cancel edit
+  const cancelEdit = () => {
+    setEditingNote(null);
+    setEditContent("");
+  };
+
+  // Save edit
+  const saveEdit = async (noteId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:5000/api/note/${noteId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ content: editContent }),
+      });
+
+      if (response.ok) {
+        const updatedNote = await response.json();
+        setNotes(notes.map((n) => (n._id.toString() === noteId.toString() ? updatedNote : n)));
+        cancelEdit();
+      } else {
+        throw new Error("Failed to update note");
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
     }
   };
 
@@ -210,22 +245,41 @@ function Dashboard() {
                       {note.title}
                     </h3>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button
-                        onClick={() => {
-                          /* will add edit functionality */
-                        }}
-                        className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
-                        title="Edit note"
-                      >
-                        <Edit3 className="w-4 h-4 text-gray-300 hover:text-white" />
-                      </button>
-                      <button
-                        onClick={() => deleteNote(note._id || note.id)}
-                        className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors"
-                        title="Delete note"
-                      >
-                        <Trash2 className="w-4 h-4 text-red-300 hover:text-red-200" />
-                      </button>
+                      {editingNote === note._id ? (
+                        <>
+                          <button
+                            onClick={() => saveEdit(note._id)}
+                            className="p-2 bg-green-500/20 hover:bg-green-500/30 rounded-lg transition-colors"
+                            title="Save changes"
+                          >
+                            <Check className="w-4 h-4 text-green-300 hover:text-green-200" />
+                          </button>
+                          <button
+                            onClick={cancelEdit}
+                            className="p-2 bg-gray-500/20 hover:bg-gray-500/30 rounded-lg transition-colors"
+                            title="Cancel edit"
+                          >
+                            <X className="w-4 h-4 text-gray-300 hover:text-gray-200" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => startEdit(note)}
+                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                            title="Edit note"
+                          >
+                            <Edit3 className="w-4 h-4 text-gray-300 hover:text-white" />
+                          </button>
+                          <button
+                            onClick={() => deleteNote(note._id || note.id)}
+                            className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors"
+                            title="Delete note"
+                          >
+                            <Trash2 className="w-4 h-4 text-red-300 hover:text-red-200" />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -233,20 +287,35 @@ function Dashboard() {
                   <div className="flex justify-between items-center mb-4">
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                        LABEL_BADGE_COLORS[note.label]
+                        LABEL_BADGE_COLORS[note.category] ||
+                        LABEL_BADGE_COLORS.general
                       }`}
                     >
-                      {note.label}
+                      {note.category || note.label || "general"}
                     </span>
                     <span className="text-gray-400 text-xs font-[satoshi]">
-                      {formatDate(note.createdAt)}
+                      {note.updatedAt
+                        ? formatDate(note.updatedAt)
+                        : note.createdAt
+                        ? formatDate(note.createdAt)
+                        : "No date"}
                     </span>
                   </div>
 
                   {/* Description */}
-                  <p className="text-gray-200 font-[satoshi] leading-relaxed line-clamp-4">
-                    {note.content}
-                  </p>
+                  {editingNote === note._id ? (
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      className="w-full bg-white/10 text-gray-200 font-[satoshi] leading-relaxed p-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      rows={4}
+                      autoFocus
+                    />
+                  ) : (
+                    <p className="text-gray-200 font-[satoshi] leading-relaxed line-clamp-4">
+                      {note.content}
+                    </p>
+                  )}
 
                   {/* Hover glow effect */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/0 via-pink-500/0 to-cyan-500/0 group-hover:from-purple-500/5 group-hover:via-pink-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
@@ -260,5 +329,4 @@ function Dashboard() {
     </div>
   );
 }
-
 export default Dashboard;
