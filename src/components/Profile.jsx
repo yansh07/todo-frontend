@@ -6,6 +6,7 @@ import AboutMeInput from "./Aboutme";
 import Footer from "./Footer";
 import { toast } from 'react-toastify';
 import { useUser } from "../context/UserContext";
+// import dotenv from "dotenv";
 
 function Profile() {
   const [notes, setNotes] = useState([]);
@@ -33,7 +34,7 @@ function Profile() {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/user/profile", {
+        const res = await fetch(import.meta.env.BACKEND_URL + "/api/user/profile", {
           headers: {Authorization: `Bearer ${token}`},
         });
         
@@ -77,7 +78,7 @@ function Profile() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/note", {
+      const response = await fetch(import.meta.env.BACKEND_URL + "/api/note", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

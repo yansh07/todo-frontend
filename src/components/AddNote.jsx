@@ -62,7 +62,7 @@ function AddNote() {
         content: formData.content,
       };
 
-      const response = await fetch("http://localhost:5000/api/note", {
+      const response = await fetch(import.meta.env.BACKEND_URL + "/api/note", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
