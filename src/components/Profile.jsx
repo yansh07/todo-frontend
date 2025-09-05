@@ -6,13 +6,13 @@ import AboutMeInput from "./Aboutme";
 import Footer from "./Footer";
 import { toast } from 'react-toastify';
 
-
 function Profile() {
   const [notes, setNotes] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
   // const [loading, setLoading] = useState(true);
   const notify = () => toast("Logged out!");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProfile = async() => {
       try {
@@ -33,6 +33,7 @@ function Profile() {
     fetchProfile();
     fetchNotes();
   }, []);
+
   const fetchNotes = async () => {
     try {
       // setLoading(true);
@@ -65,14 +66,21 @@ function Profile() {
     navigate("/login");               // redirect to login
   };
 
-  
   return (
     // profile card
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
       <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-145 xl:mt-4">
         <div className="w-20 h-20 md:w-20 md:h-20 rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
-          <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center">
-            <User className="w-10 h-10 text-white" />
+          <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden">
+            {user.profilePic ? (
+              <img 
+                src={user.profilePic} 
+                alt="Profile" 
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <User className="w-10 h-10 text-white" />
+            )}
           </div>
         </div>
         <div>
@@ -93,28 +101,26 @@ function Profile() {
       </div>
       <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-145">
         <div className="flex flex-row gap-8 md:gap-36 xl:gap-46">
-          {/* Add Note Button */}
+          {/* Add Picture Button - Fixed navigation */}
           <div className="flex justify-center">
             <button
-              onClick={() => navigate("/add-note")}
+              onClick={() => navigate("/profile-upload")}
               className="group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-3 md:px-7 md:py-2 xl:px-3 xl:py-3 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
               <div className="flex items-center gap-2">
-                {/* <Plus className="w-6 h-6" /> */}
                 <span className="text-md">Add Picture</span>
               </div>
               {/* Shine effect */}
               <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
             </button>
           </div>
-          <div className="flex justify-center ml-6">
+          <div className="flex justify-center ml-12">
             <button
-              onClick={() => navigate("/add-note")}
+              onClick={() => navigate("/dashboard")}
               className=" group relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-6 md:px-7 md:py-2 xl:px-3 xl:py-3 rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
             >
               <div className="flex items-center gap-2">
-                {/* <Plus className="w-6 h-6" /> */}
-                <span className="text-md">New Note</span>
+                <span className="text-md">Home</span>
               </div>
               {/* Shine effect */}
               <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
@@ -123,7 +129,7 @@ function Profile() {
         </div>
         <div className="flex flex-row gap-12 md:gap-40 xl:gap-54">
           <h2 className="px-3 py-3 xl:py-3 xl:px-3  md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
-          Total notes: {4}
+          Total notes: {notes.length}
         </h2>
         <button onClick={() => { handleLogout(); notify();}} className="px-8 py-3 xl:py-3 xl:px-3   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Logout

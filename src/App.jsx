@@ -3,12 +3,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
-import Usernav from "./components/Usernav";
+// import Usernav from "./components/Usernav";
 import Profile from "./components/Profile";
 import AddNote from "./components/AddNote";
 // import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
-
+// import ProfileUpload from "./components/ProfileUpload";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const location = useLocation();
@@ -44,6 +45,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-note" element={<AddNote />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile-upload" element={<ProfilePage />} />
       </Routes>
     </div>
   );
