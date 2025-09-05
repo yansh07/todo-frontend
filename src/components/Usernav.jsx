@@ -26,7 +26,7 @@ function Usernav() {
       }
 
       try {
-        const res = await fetch(import.meta.env.BACKEND_URL + "/api/user/profile", {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

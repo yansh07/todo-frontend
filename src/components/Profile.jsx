@@ -34,7 +34,7 @@ function Profile() {
           return;
         }
 
-        const res = await fetch(import.meta.env.BACKEND_URL + "/api/user/profile", {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile", {
           headers: {Authorization: `Bearer ${token}`},
         });
         
@@ -78,7 +78,7 @@ function Profile() {
         return;
       }
 
-      const response = await fetch(import.meta.env.BACKEND_URL + "/api/note", {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/note", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

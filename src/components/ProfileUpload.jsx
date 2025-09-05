@@ -42,7 +42,7 @@ function ProfileUpload({ onUpload }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(import.meta.env.BACKEND_URL + "/api/user/profile-pic", {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile-pic", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

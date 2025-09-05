@@ -44,7 +44,7 @@ function Dashboard() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(import.meta.env.BACKEND_URL + "/api/user/profile", {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -66,7 +66,7 @@ function Dashboard() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.BACKEND_URL + "/api/note", {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/note", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -89,7 +89,7 @@ function Dashboard() {
   const deleteNote = async (noteId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.BACKEND_URL + `/api/note/${noteId}`, {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ function Dashboard() {
   const saveEdit = async (noteId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.BACKEND_URL + `/api/note/${noteId}`, {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
