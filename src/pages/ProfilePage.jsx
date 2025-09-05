@@ -1,39 +1,51 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileUpload from "../components/ProfileUpload";
+import { useUser } from "../context/UserContext";
 
 function ProfilePage() {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUser(); // Context se user aur setUser
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(!user);
 
   useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/user/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setUser(data);
+    const fetchUserProfile = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/user/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data); // Context me set karo
+        }
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error fetching profile:", err);
+    };
+
+    // Agar user context me nahi hai to fetch karo
+    if (!user) {
+      fetchUserProfile();
+    } else {
+      setLoading(false);
     }
-  };
+  }, [user, setUser]);
 
   const handleProfilePicUpdate = (newProfilePic) => {
+    // Context me user update karo
     setUser(prev => ({ ...prev, profilePic: newProfilePic }));
-    // Optional: Navigate back to profile after successful upload
+    
+    // Navigate back to profile after successful upload
     setTimeout(() => {
       navigate("/profile");
     }, 1500);
   };
 
-  if (!user) return <div className="text-white">Loading...</div>;
+  if (loading || !user) return <div className="text-white">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 p-8 flex flex-col items-center">

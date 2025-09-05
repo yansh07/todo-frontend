@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {useUser} from "../context/UserContext.jsx"
 
 function Login() {
+  const { setUser } = useUser();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
@@ -56,6 +58,7 @@ function Login() {
 
         if (res.ok) {
           localStorage.setItem("token", data.token); // save JWT
+          setUser(data.user);
           navigate("/dashboard"); // redirect to dashboard
         } else {
           setErrors({ general: data.error || "Login failed" });

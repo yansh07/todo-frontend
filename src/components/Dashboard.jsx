@@ -170,8 +170,8 @@ function Dashboard() {
 
         <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-56">
           {/* Header Section */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
-            <div className="mb-6 lg:mb-0">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            <div className="mb-2 lg:mb-0">
               <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4">
                 Welcome back, {user.fullName} 👋
               </h1>
@@ -201,7 +201,7 @@ function Dashboard() {
         </div>
 
         {/* Notes Section */}
-        <div className="px-6 md:px-12 lg:px-20 xl:px-32 xl:ml-20 pb-12">
+        <div className="px-6 md:px-12 lg:px-20 xl:px-32 xl:ml-20 pb-12 mb-4">
           {loading ? (
             <div className="flex justify-center items-center py-20 xl:py-0 ml-12 xl:-ml-8">
               <div className="relative">

@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 // import { Link } from "lucide-react";
 import { toast } from "react-toastify";
+import { useUser } from "../context/UserContext.jsx";
 
 function Register() {
+  const { setUser } = useUser();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -73,6 +75,7 @@ function Register() {
 
         if (res.ok) {
           localStorage.setItem("token", data.token);
+          setUser(data.user);
           const notify = toast("Signed up, now redirecting to dashboard.")
           notify();
           navigate("/dashboard");

@@ -5,38 +5,48 @@ import AddNote from "./AddNote";
 import AboutMeInput from "./Aboutme";
 import Footer from "./Footer";
 import { toast } from 'react-toastify';
+import { useUser } from "../context/UserContext";
 
 function Profile() {
   const [notes, setNotes] = useState([]);
-  const [user, setUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const { user, setUser } = useUser(); // Context use karo
+  const [loading, setLoading] = useState(!user); // Agar user context me hai to loading false
   const notify = () => toast("Logged out!");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async() => {
       try {
+        setLoading(true);
         const token = localStorage.getItem("token");
         const res = await fetch("http://localhost:5000/api/user/profile", {
           headers: {Authorization: `Bearer ${token}`},
         });
         const data = await res.json();
         if (res.ok) {
-          setUser(data);
+          setUser(data); // Context me set karo
         } else {
           console.error("Profile fetch error:", data.error);
         }
       } catch (err) {
         console.error("Error fetching error:", err);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchProfile();
+
+    // Agar user context me nahi hai to fetch karo
+    if (!user) {
+      fetchProfile();
+    } else {
+      setLoading(false);
+    }
+    
     fetchNotes();
-  }, []);
+  }, [user, setUser]);
 
   const fetchNotes = async () => {
     try {
-      // setLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:5000/api/note", {
         headers: {
@@ -53,16 +63,14 @@ function Profile() {
       }
     } catch (error) {
       console.error("Error fetching notes:", error);
-    } 
-    // finally {
-    //   setLoading(false);
-    // }
+    }
   };
 
-  if (!user) return <p className="text-white">Loading...</p>;
+  if (loading || !user) return <p className="text-white">Loading...</p>;
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // JWT delete
+    setUser(null); // Context se user remove karo
     navigate("/login");               // redirect to login
   };
 
