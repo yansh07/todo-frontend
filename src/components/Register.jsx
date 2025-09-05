@@ -55,34 +55,39 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted ✅", form);
     const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fullName: form.name,
-            email: form.email,
-            password: form.password,
-          }),
-        });
+        const res = await fetch(
+          import.meta.env.VITE_BACKEND_URL + "/api/auth/signup",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fullName: form.name,
+              email: form.email,
+              password: form.password,
+            }),
+          }
+        );
 
         const data = await res.json();
 
         if (res.ok) {
-          localStorage.setItem("token", data.token);
-          setUser(data.user);
-          const notify = toast("Signed up, now redirecting to dashboard.")
-          notify();
-          navigate("/dashboard");
+          // Show success toast
+          toast.success("Account created! Please log in."); // You can use toast.success or toast.info
+          // Now redirect to the login page
+          navigate("/login");
         } else {
+          // If there's an error from the server (e.g., user exists)
+          toast.error(data.error || "Signup failed");
           setErrors({ general: data.error || "Signup failed" });
         }
       } catch (err) {
+        // For network errors
+        toast.error("Something went wrong. Try again later.");
         setErrors({ general: "Something went wrong. Try again later." });
         console.error("Signup error:", err);
       }

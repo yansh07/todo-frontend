@@ -10,6 +10,7 @@ import AddNote from "./components/AddNote";
 import { ToastContainer } from "react-toastify";
 // import ProfileUpload from "./components/ProfileUpload";
 import ProfilePage from "./pages/ProfilePage";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const location = useLocation();
