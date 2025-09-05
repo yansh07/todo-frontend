@@ -5,43 +5,70 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 function Usernav() {
-  const { user, setUser } = useUser(); // Context se user aayega aur setUser bhi
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
+
+  // ✅ Token error handler
+  const handleAuthError = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
+
+      // Agar token hi nahi hai → logout
       if (!token) {
         setUser(null);
         return;
       }
 
       try {
-        // Same endpoint use karo jo Profile.jsx me use kar rahe ho
         const res = await fetch("http://localhost:5000/api/user/profile", {
+          method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
 
+        if (res.status === 401) {
+          // Unauthorized → token invalid
+          handleAuthError();
+          return;
+        }
+
         if (res.ok) {
           const data = await res.json();
-          setUser(data); // Context me set karo
+          setUser(data);
         } else {
+          // Other server errors
           console.error("Error fetching user data:", res.statusText);
-          setUser(null);
+
+          try {
+            const errorData = await res.json();
+            if (errorData.error?.toLowerCase().includes("token")) {
+              handleAuthError();
+            } else {
+              setUser(null);
+            }
+          } catch {
+            setUser(null);
+          }
         }
       } catch (err) {
-        console.error("Error fetching user:", err);
+        console.error("Network or parsing error:", err.message);
         setUser(null);
       }
     };
 
-    // Agar user context me nahi hai to fetch karo
+    // ✅ Sirf jab user null ho tabhi API call
     if (!user) {
       fetchUser();
     }
-  }, [user, setUser]);
+  }, [user, setUser, navigate]);
 
   return (
     <div className="bg-gradient-to-r from-purple-900 via-violet-800 to-indigo-800 backdrop-blur-xl border-b border-purple-500/20 p-3 shadow-2xl">

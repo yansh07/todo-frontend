@@ -9,33 +9,56 @@ import { useUser } from "../context/UserContext";
 
 function Profile() {
   const [notes, setNotes] = useState([]);
-  const { user, setUser } = useUser(); // Context use karo
-  const [loading, setLoading] = useState(!user); // Agar user context me hai to loading false
+  const { user, setUser } = useUser();
+  const [loading, setLoading] = useState(!user);
   const notify = () => toast("Logged out!");
   const navigate = useNavigate();
+
+  // Token validation helper
+  const handleAuthError = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    toast.error("Session expired. Please login again.");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchProfile = async() => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
+        
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
         const res = await fetch("http://localhost:5000/api/user/profile", {
           headers: {Authorization: `Bearer ${token}`},
         });
+        
+        if (res.status === 401) {
+          handleAuthError();
+          return;
+        }
+        
         const data = await res.json();
         if (res.ok) {
-          setUser(data); // Context me set karo
+          setUser(data);
         } else {
           console.error("Profile fetch error:", data.error);
+          if (data.error?.includes("token")) {
+            handleAuthError();
+          }
         }
       } catch (err) {
-        console.error("Error fetching error:", err);
+        console.error("Error fetching profile:", err);
+        handleAuthError();
       } finally {
         setLoading(false);
       }
     };
 
-    // Agar user context me nahi hai to fetch karo
     if (!user) {
       fetchProfile();
     } else {
@@ -43,11 +66,17 @@ function Profile() {
     }
     
     fetchNotes();
-  }, [user, setUser]);
+  }, [user, setUser, navigate]);
 
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("token");
+      
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
       const response = await fetch("http://localhost:5000/api/note", {
         headers: {
           "Content-Type": "application/json",
@@ -55,27 +84,37 @@ function Profile() {
         },
       });
 
+      if (response.status === 401) {
+        handleAuthError();
+        return;
+      }
+
       if (response.ok) {
         const fetchedNotes = await response.json();
         setNotes(fetchedNotes);
       } else {
-        throw new Error("Failed to fetch notes");
+        const errorData = await response.json();
+        if (errorData.error?.includes("token")) {
+          handleAuthError();
+        } else {
+          throw new Error("Failed to fetch notes");
+        }
       }
     } catch (error) {
       console.error("Error fetching notes:", error);
+      // Don't redirect on network errors, only on auth errors
     }
   };
 
   if (loading || !user) return <p className="text-white">Loading...</p>;
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // JWT delete
-    setUser(null); // Context se user remove karo
-    navigate("/login");               // redirect to login
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
   };
 
   return (
-    // profile card
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
       <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-145 xl:mt-4">
         <div className="w-20 h-20 md:w-20 md:h-20 rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
@@ -109,7 +148,6 @@ function Profile() {
       </div>
       <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-145">
         <div className="flex flex-row gap-8 md:gap-36 xl:gap-46">
-          {/* Add Picture Button - Fixed navigation */}
           <div className="flex justify-center">
             <button
               onClick={() => navigate("/profile-upload")}
@@ -118,7 +156,6 @@ function Profile() {
               <div className="flex items-center gap-2">
                 <span className="text-md">Add Picture</span>
               </div>
-              {/* Shine effect */}
               <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
             </button>
           </div>
@@ -130,7 +167,6 @@ function Profile() {
               <div className="flex items-center gap-2">
                 <span className="text-md">Home</span>
               </div>
-              {/* Shine effect */}
               <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
             </button>
           </div>
@@ -139,12 +175,11 @@ function Profile() {
           <h2 className="px-3 py-3 xl:py-3 xl:px-3  md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Total notes: {notes.length}
         </h2>
-        <button onClick={() => { handleLogout(); notify();}} className="px-8 py-3 xl:py-3 xl:px-3   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
+        <button onClick={() => { handleLogout(); notify();}} className="px-8 py-3 xl:py-3 xl:px-3   md:px-8 md:py-2  rounded-2xl border-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white text-md font-semibold mt-6 shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50">
           Logout
         </button>
         </div>
       </div>
-      {/*Notes Preview Section */}
       <div className="flex-1 px-8 py-6 md:px-40 md:mt-4 lg:px-72 xl:px-145">
         <h2 className="text-xl font-medium  text-gray-100 mb-4 lg:text-3xl lg:font-semibold">
           Latest Notes
