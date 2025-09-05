@@ -48,7 +48,7 @@ function Login() {
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/auth/login", {
+        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
