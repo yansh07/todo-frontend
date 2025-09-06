@@ -246,7 +246,8 @@ function Dashboard() {
                     <h3 className="text-white font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
-                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {/* Responsive button visibility - visible on smaller screens, hover on xl */}
+                    <div className="flex gap-2 opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-300">
                       {editingNote === note._id ? (
                         <>
                           <button
