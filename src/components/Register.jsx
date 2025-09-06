@@ -61,7 +61,7 @@ function Register() {
     if (Object.keys(validationErrors).length === 0) {
       try {
         const res = await fetch(
-          import.meta.env.VITE_BACKEND_URL + "/api/auth/signup",
+          import.meta.env.VITE_BACKEND_URL + "/api/user/signup",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
