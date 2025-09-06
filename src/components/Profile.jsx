@@ -117,7 +117,7 @@ function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
-      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-130 xl:mt-4">
+      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-125 xl:mt-4">
         <div className="w-20 h-20 md:w-20 md:h-20 rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
           <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden">
             {user.profilePic ? (
@@ -147,7 +147,7 @@ function Profile() {
       <div className="px-8 mb-6">
         <AboutMeInput />
       </div>
-      <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-130">
+      <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-125">
         <div className="flex flex-row gap-8 md:gap-36 xl:gap-46">
           <div className="flex justify-center">
             <button
@@ -181,7 +181,7 @@ function Profile() {
         </button>
         </div>
       </div>
-      <div className="flex-1 px-8 py-6 md:px-40 md:mt-4 lg:px-72 xl:px-145">
+      <div className="flex-1 px-8 py-6 md:px-40 md:mt-4 lg:px-72 xl:px-125">
         <h2 className="text-xl font-medium  text-gray-100 mb-4 lg:text-3xl lg:font-semibold">
           Latest Notes
         </h2>
