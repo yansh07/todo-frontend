@@ -117,7 +117,7 @@ function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900  flex flex-col">
-      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-145 xl:mt-4">
+      <div className="flex flex-row gap-10 px-8 py-8 md:px-38 lg:px-72 xl:px-135 xl:mt-4">
         <div className="w-20 h-20 md:w-20 md:h-20 rounded-full bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
           <div className="w-full h-full bg-gray-800/50 backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden">
             {user.profilePic ? (
