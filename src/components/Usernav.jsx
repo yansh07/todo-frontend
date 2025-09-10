@@ -76,10 +76,10 @@ function Usernav() {
         {/* Logo */}
         <div className="flex items-center space-x-3 group">
           <div className="relative">
-            <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-4xl text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text drop-shadow-lg"></i>
+            <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-4xl text-transparent bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text drop-shadow-lg"></i>
             <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 blur-lg opacity-30 animate-pulse"></div>
           </div>
-          <span className="text-2xl md:text-3xl xl:text-4xl font-[satoshi] font-black text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
+          <span className="text-2xl md:text-3xl xl:text-4xl font-[satoshi] font-black text-transparent bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
             PlanIt
           </span>
         </div>

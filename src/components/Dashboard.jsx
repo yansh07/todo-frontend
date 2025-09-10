@@ -168,11 +168,11 @@ function Dashboard() {
       <div className="relative z-10">
         <Usernav />
 
-        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-20 xl:px-40">
+        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-16 xl:px-36">
           {/* Header Section */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
-              <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4">
+              <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
                 Welcome back, {user.fullName} 👋
               </h1>
               <p className="text-gray-300 text-lg font-[satoshi]">

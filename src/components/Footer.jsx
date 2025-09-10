@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-[#100227] flex flex-col relative px-4 md:px-36 pt-6 md:py-6 lg:px-16 lg:py-8 xl:px-50 xl:py-8 lg:flex-col lg:gap-6 md:flex-row">
+    <div className="bg-[#100227] flex flex-col relative px-4 md:px-36 pt-6 md:py-6 lg:px-16 lg:py-8 xl:px-32 xl:py-8 lg:flex-col lg:gap-6 md:flex-row">
       <div>
         <a
           href="https://github.com/yansh07/todo-frontend"
@@ -43,9 +43,9 @@ function Footer() {
       </div>
       <div>
         <div>
-          <div className="border-t border-gray-500 ml-3 mr-3 mt-4 lg:absolute lg:bottom-24 lg:left-16 lg:px-58 xl:px-62 xl:ml-36 md:absolute md:bottom-20 md:px-56 md:left-36"></div>
+          <div className="border-t border-gray-500 ml-3 mr-3 mt-4 lg:absolute lg:bottom-24 lg:left-16 lg:px-58 xl:px-62 xl:ml-20 md:absolute md:bottom-20 md:px-56 md:left-36"></div>
         </div>
-        <div className="md:flex md:flex-row lg:flex-row font-[satoshi] text-gray-400 mt-3 mb-6 lg:absolute lg:bottom-8 lg:left-6 lg:px-10 xl:px-44 md:bottom-4 md:absolute md:left-46">
+        <div className="md:flex md:flex-row lg:flex-row font-[satoshi] text-gray-400 mt-3 mb-6 lg:absolute lg:bottom-8 lg:left-6 lg:px-10 xl:px-26 md:bottom-4 md:absolute md:left-46">
           <p className="text-sm ml-3 xl:text-xl">© 2025 PlanIt: NotesApp.</p>
           <p className="font-medium text-sm ml-3 xl:text-xl  hover:text-yellow-400">
             <a
