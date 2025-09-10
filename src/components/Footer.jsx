@@ -4,14 +4,7 @@ function Footer() {
   return (
     <div className="bg-[#100227] flex flex-col relative px-4 md:px-36 pt-6 md:py-6 lg:px-16 lg:py-8 xl:px-32 xl:py-8 lg:flex-col lg:gap-6 md:flex-row">
       <div>
-        <a
-          href="https://github.com/yansh07/todo-frontend"
-          className="text-gray-50  hover:text-yellow-400 transition-all duration-300 ml-3 mt-3 font-semibold text-2xl xl:text-3xl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          PlanIt
-        </a>
+        <p className="text-gray-50  hover:text-yellow-400 transition-all duration-300 ml-3 mt-3 font-semibold text-2xl xl:text-3xl hover:font-extrabold">PlanIt</p>
         <p className="font-[satoshi] text-gray-400 font-medium text-lg xl:text-xl ml-3 hover:text-white mr-10 lg:max-w-5xl md:max-w-3xs">
           A minimalist canvas to save your plans, and moments.
         </p>

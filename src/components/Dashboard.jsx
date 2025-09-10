@@ -44,9 +44,12 @@ function Dashboard() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          import.meta.env.VITE_BACKEND_URL + "/api/user/profile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -66,12 +69,15 @@ function Dashboard() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/note", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/api/note",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const fetchedNotes = await response.json();
@@ -89,13 +95,16 @@ function Dashboard() {
   const deleteNote = async (noteId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         setNotes(notes.filter((note) => note._id !== noteId));
@@ -123,18 +132,25 @@ function Dashboard() {
   const saveEdit = async (noteId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ content: editContent }),
-      });
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ content: editContent }),
+        }
+      );
 
       if (response.ok) {
         const updatedNote = await response.json();
-        setNotes(notes.map((n) => (n._id.toString() === noteId.toString() ? updatedNote : n)));
+        setNotes(
+          notes.map((n) =>
+            n._id.toString() === noteId.toString() ? updatedNote : n
+          )
+        );
         cancelEdit();
       } else {
         throw new Error("Failed to update note");
@@ -153,10 +169,24 @@ function Dashboard() {
       minute: "2-digit",
     });
   };
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+      return `Morning, ${user.fullName}`;
+    }
+    else if (hour >= 12 && hour < 18) {
+      return `What's good this after noon, ${user.fullName} ?`;
+    }else if (hour >= 18 && hour < 22) {
+      return `How was your day, ${user.fullName} ?`;
+    } else {
+      return `Catch some rest, ${user.fullName}`
+    }
+    
+  };
 
   if (!user) return <p className="text-white">Loading...</p>;
 
- return (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 ">
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -173,13 +203,12 @@ function Dashboard() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
               <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
-                Welcome back, {user.fullName} 👋
+                {getGreeting()} 👋
               </h1>
               <p className="text-gray-300 text-lg font-[satoshi]">
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
-            {/* <SearchBox /> */}
           </div>
 
           {/* Add Note Button */}
