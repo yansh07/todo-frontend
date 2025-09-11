@@ -119,7 +119,7 @@ function Login() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 mt-2 right-3 flex items-center text-gray-300 hover:text-white"
+            className="absolute inset-y-0 mt-7 right-3 flex items-center text-gray-300 hover:text-white"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             {showPassword ? "Hide" : "Show"} Password

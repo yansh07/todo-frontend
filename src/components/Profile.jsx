@@ -23,6 +23,12 @@ function Profile() {
     navigate("/login");
   };
 
+  // 📌 Handle user update from AboutMe component
+  const handleUserUpdate = (updatedUser) => {
+    console.log("🔄 Updating user in Profile:", updatedUser); // Debug log
+    setUser(updatedUser);
+  };
+
   useEffect(() => {
     const fetchProfile = async() => {
       try {
@@ -34,6 +40,7 @@ function Profile() {
           return;
         }
 
+        console.log("🔍 Fetching profile from Profile.jsx"); // Debug log
         const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile", {
           headers: {Authorization: `Bearer ${token}`},
         });
@@ -44,6 +51,7 @@ function Profile() {
         }
         
         const data = await res.json();
+        console.log("👤 Fetched user data in Profile:", data); // Debug log
         if (res.ok) {
           setUser(data);
         } else {
@@ -145,7 +153,8 @@ function Profile() {
         </div>
       </div>
       <div className="px-8 mb-6">
-        <AboutMeInput />
+        {/* 📌 Pass user and onUpdate props to AboutMeInput */}
+        <AboutMeInput user={user} onUpdate={handleUserUpdate} />
       </div>
       <div className="font-[satoshi] font-medium  px-8 md:px-40 lg:px-72 xl:px-125">
         <div className="flex flex-row gap-8 md:gap-36 xl:gap-46">

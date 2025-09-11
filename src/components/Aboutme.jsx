@@ -12,11 +12,19 @@ function AboutMeInput({ user, onUpdate }) {
   }, [user]);
 
   const saveAbout = async (aboutText) => {
-    if (aboutText === user?.about) return; // No change, don't save
+    if (aboutText === user?.bio) return; // 🔥 FIX: Compare with bio field
+
+    console.log("💾 Saving about text:", aboutText); // Debug log
+    console.log("🔍 Current user bio:", user?.bio); // Debug log
 
     try {
       setIsSaving(true);
       const token = localStorage.getItem("token");
+      console.log("🔑 Token exists:", !!token); // Debug log
+      
+      const requestBody = { about: aboutText };
+      console.log("📤 Sending request body:", requestBody); // Debug log
+      
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/api/user/profile",
         {
@@ -25,20 +33,25 @@ function AboutMeInput({ user, onUpdate }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ about: aboutText }),
+          body: JSON.stringify(requestBody),
         }
       );
 
+      console.log("📡 Response status:", response.status); // Debug log
+
       if (response.ok) {
         const updatedUser = await response.json();
+        console.log("✅ Updated user received:", updatedUser); // Debug log
         if (onUpdate) {
           onUpdate(updatedUser); // Update parent component's user state
         }
       } else {
+        const errorData = await response.json();
+        console.error("❌ Response error:", errorData); // Debug log
         throw new Error("Failed to save bio");
       }
     } catch (error) {
-      console.error("Error saving bio:", error);
+      console.error("❌ Error saving bio:", error);
       // Could add toast notification here
     } finally {
       setIsSaving(false);
