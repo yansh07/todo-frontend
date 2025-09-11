@@ -96,7 +96,7 @@ function Register() {
   return (
     <div
       className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 dark scroll-smooth
- px-4 md:px-0 pt-20 md:pt-30 lg:pt-32 xl:pt-38"
+ px-4 md:px-0 pt-26 md:pt-30 lg:pt-38 xl:pt-32"
     >
       <form
         onSubmit={handleSubmit}

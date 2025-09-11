@@ -3,7 +3,7 @@ import GreetingComponent from './Greeting';
 
 function Navbar() {
   return (
-    <div className="bg-transparent flex flex-row top-6 left-1 xl:left-0 fixed p-1 items-center ml-2 md:ml-24 md:mt-4 lg:ml-52 lg:mt-8 xl:ml-90 xl:px-4">
+    <div className="bg-transparent flex flex-row top-10 xl:top-0 left-1 xl:left-0 fixed p-1 items-center ml-2 md:ml-24 md:mt-4 lg:ml-52 lg:mt-8 xl:ml-90 xl:px-4">
       {/* Brand & Greeting Section */}
       <div className="flex items-center space-x-44 md:space-x-92 lg:space-x-60 xl:space-x-72">
         <div className="flex items-center space-x-2">

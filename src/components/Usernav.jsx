@@ -87,12 +87,12 @@ function Usernav() {
         {/* Right Section */}
         <div className="flex items-center space-x-6">
           {/* Search */}
-          <div className="relative group hidden md:block">
+          {/* <div className="relative group  md:block">
             <Search className="w-6 h-6 text-gray-300 hover:text-white cursor-pointer transition-all duration-300 group-hover:scale-110" />
             <span className="absolute top-8 left-1/2 -translate-x-1/2 w-max px-2 py-1 text-xs text-white bg-gray-900/80 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
               Search notes
             </span>
-          </div>
+          </div> */}
 
           {/* Add Note */}
           <div className="relative group" onClick={() => navigate("/add-note")}>

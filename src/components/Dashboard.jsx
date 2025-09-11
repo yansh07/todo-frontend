@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Trash2, Edit3, Check, X } from "lucide-react";
+import { Plus, Trash2, Edit3, Check, X, Search } from "lucide-react";
 import Usernav from "./Usernav";
 // import SearchBox from "./Search";
 import Footer from "./Footer";
@@ -35,9 +35,14 @@ function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingNote, setEditingNote] = useState(null); // jis note ko edit karna hai
+  const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
+  
+  // Search states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   // Fetch user profile
   useEffect(() => {
@@ -62,8 +67,21 @@ function Dashboard() {
     };
 
     fetchProfile();
-    fetchNotes(); // 👈 automatically load notes
+    fetchNotes();
   }, []);
+
+  // Filter notes when search term or notes change
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredNotes(notes);
+    } else {
+      const filtered = notes.filter((note) =>
+        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredNotes(filtered);
+    }
+  }, [searchTerm, notes]);
 
   const fetchNotes = async () => {
     try {
@@ -82,6 +100,7 @@ function Dashboard() {
       if (response.ok) {
         const fetchedNotes = await response.json();
         setNotes(fetchedNotes);
+        setFilteredNotes(fetchedNotes);
       } else {
         throw new Error("Failed to fetch notes");
       }
@@ -116,6 +135,7 @@ function Dashboard() {
       alert("Failed to delete note. Please try again.");
     }
   };
+
   // Edit start
   const startEdit = (note) => {
     setEditingNote(note._id);
@@ -160,6 +180,20 @@ function Dashboard() {
     }
   };
 
+  // Search handlers
+  const handleSearchClick = () => {
+    setIsSearchExpanded(true);
+  };
+
+  const handleSearchClose = () => {
+    setIsSearchExpanded(false);
+    setSearchTerm("");
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -169,6 +203,7 @@ function Dashboard() {
       minute: "2-digit",
     });
   };
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
@@ -181,7 +216,6 @@ function Dashboard() {
     } else {
       return `Catch some rest, ${user.fullName}`
     }
-    
   };
 
   if (!user) return <p className="text-white">Loading...</p>;
@@ -195,11 +229,43 @@ function Dashboard() {
         <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
+      {/* Search Overlay for Mobile */}
+      {isSearchExpanded && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden">
+          <div className="flex items-start justify-center pt-20 px-4">
+            <div className="w-full max-w-md bg-gray-800/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-3 mb-4">
+                <Search className="w-5 h-5 text-purple-400" />
+                <input
+                  type="text"
+                  placeholder="Search by title or category..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none text-lg font-[satoshi]"
+                  autoFocus
+                />
+                <button
+                  onClick={handleSearchClose}
+                  className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+              {searchTerm && (
+                <div className="text-sm text-gray-400 font-[satoshi]">
+                  {filteredNotes.length} result{filteredNotes.length !== 1 ? 's' : ''} found
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="relative z-10">
         <Usernav />
 
         <div className="px-6 py-8 md:px-12 md:py-12 lg:px-16 xl:px-36">
-          {/* Header Section */}
+          {/* Header Section with Search */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
               <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
@@ -209,7 +275,52 @@ function Dashboard() {
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
+
+            {/* Desktop Search */}
+            {notes.length > 0 && (
+              <div className="hidden md:block mt-4 lg:mt-0">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search notes..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="w-64 lg:w-72 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 font-[satoshi]"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                    >
+                      <X className="w-4 h-4 text-gray-400" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Mobile Search Icon */}
+            {notes.length > 0 && (
+              <div className="md:hidden fixed bottom-6 right-6 z-40">
+                <button
+                  onClick={handleSearchClick}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-full shadow-2xl shadow-purple-500/30 hover:scale-110 transition-all duration-300"
+                >
+                  <Search className="w-6 h-6 text-white" />
+                </button>
+              </div>
+            )}
           </div>
+
+          {/* Search Results Info */}
+          {searchTerm && (
+            <div className="mt-6 mb-4">
+              <p className="text-gray-300 font-[satoshi]">
+                Found {filteredNotes.length} result{filteredNotes.length !== 1 ? 's' : ''} for "{searchTerm}"
+              </p>
+            </div>
+          )}
 
           {/* Add Note Button */}
           {notes.length === 0 && (
@@ -261,9 +372,27 @@ function Dashboard() {
                 Create Your First Note
               </button>
             </div>
+          ) : filteredNotes.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mb-6">
+                <Search className="w-8 h-8 text-purple-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4 font-[satoshi]">
+                No notes found
+              </h3>
+              <p className="text-gray-400 font-[satoshi] max-w-md mx-auto">
+                Try searching with different keywords or create a new note.
+              </p>
+              <button
+                onClick={() => setSearchTerm("")}
+                className="mt-4 text-purple-400 hover:text-purple-300 font-[satoshi] underline"
+              >
+                Clear search
+              </button>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {notes.map((note) => (
+              {filteredNotes.map((note) => (
                 <div
                   key={note._id || note.id}
                   className={`group relative backdrop-blur-sm rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
