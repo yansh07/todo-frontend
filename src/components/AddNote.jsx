@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, Save, Eye } from "lucide-react";
+import {toast} from "react-hot-toast";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-lg shadow-cyan-500/20",
@@ -45,6 +46,19 @@ function AddNote() {
       [name]: value,
     }));
   };
+
+  const handleSaveNote = async () => {
+      toast.success('Notes added', {
+        position: 'top-center', 
+        icon: '✅',  
+        duration: 3000, 
+        style: {
+            borderRadius: '10px',
+            background: '#333',
+            color: '#fff',            
+        },
+    });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -213,6 +227,7 @@ function AddNote() {
                   Cancel
                 </button>
                 <button
+                onClick={handleSaveNote}
                   type="submit"
                   className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 disabled:opacity-50 font-[satoshi] text-lg flex items-center justify-center gap-2"
                   disabled={

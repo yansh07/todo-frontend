@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 // import ProfileUpload from "./components/ProfileUpload";
 import ProfilePage from "./pages/ProfilePage";
 import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,7 @@ function App() {
       {/* {showUsernav && <Usernav />} */}
       {/* {showFooter && <Footer />}   */}
       {/* baki routes/components */}
+      <Toaster />
       <ToastContainer
         position="top-center"
         autoClose={2000}
