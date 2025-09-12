@@ -199,7 +199,7 @@ function Profile() {
           <div className="grid gap-4 md:grid-cols-2">
             {notes.slice(0, 3).map((note) => (
               <div
-                key={note.id}
+                key={note._id}
                 className="p-4 rounded-xl bg-gray-800/60 backdrop-blur-sm border border-gray-700 hover:border-purple-400 transition"
               >
                 <h3 className="text-lg font-semibold text-purple-200">

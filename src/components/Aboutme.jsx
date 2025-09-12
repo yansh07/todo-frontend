@@ -12,10 +12,10 @@ function AboutMeInput({ user, onUpdate }) {
   }, [user]);
 
   const saveAbout = async (aboutText) => {
-    if (aboutText === user?.bio) return; // 🔥 FIX: Compare with bio field
+    if (aboutText === user?.about) return; 
 
     console.log("💾 Saving about text:", aboutText); // Debug log
-    console.log("🔍 Current user bio:", user?.bio); // Debug log
+    console.log("🔍 Current user bio:", user?.about); // Debug log
 
     try {
       setIsSaving(true);
