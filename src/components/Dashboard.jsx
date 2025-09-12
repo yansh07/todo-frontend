@@ -4,6 +4,7 @@ import { Plus, Trash2, Edit3, Check, X, Search } from "lucide-react";
 import Usernav from "./Usernav";
 // import SearchBox from "./Search";
 import Footer from "./Footer";
+import ThemeToggle from "./Themetoggle";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
@@ -39,7 +40,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
-  
+
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
@@ -75,9 +76,10 @@ function Dashboard() {
     if (!searchTerm.trim()) {
       setFilteredNotes(notes);
     } else {
-      const filtered = notes.filter((note) =>
-        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.category.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = notes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          note.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredNotes(filtered);
     }
@@ -208,52 +210,52 @@ function Dashboard() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
       return `Morning, ${user.fullName}`;
-    }
-    else if (hour >= 12 && hour < 18) {
+    } else if (hour >= 12 && hour < 18) {
       return `What's good this after noon, ${user.fullName} ?`;
-    }else if (hour >= 18 && hour < 22) {
+    } else if (hour >= 18 && hour < 22) {
       return `How was your day, ${user.fullName} ?`;
     } else {
-      return `Catch some rest, ${user.fullName}`
+      return `Catch some rest, ${user.fullName}`;
     }
   };
 
   if (!user) return <p className="text-white">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 ">
+    <div className="min-h-screen bg-primary bg-theme-primary ">
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-700"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/4 left-1/4 w-72 h-72  rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-96 h-96  rounded-full blur-3xl animate-pulse delay-700"></div>
+        <div className="absolute top-1/2 left-1/2 w-80 h-80  rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       {/* Search Overlay for Mobile */}
       {isSearchExpanded && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden">
+        <div className="fixed inset-0  backdrop-blur-sm z-50 md:hidden">
           <div className="flex items-start justify-center pt-20 px-4">
-            <div className="w-full max-w-md bg-gray-800/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
+            <div className="w-full max-w-md  backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
               <div className="flex items-center gap-3 mb-4">
-                <Search className="w-5 h-5 text-purple-400" />
+                <Search className="w-5 h-5" />
                 <input
                   type="text"
                   placeholder="Search by title or category..."
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none text-lg font-[satoshi]"
+                  className="flex-1  text-lg font-[satoshi]"
                   autoFocus
                 />
                 <button
                   onClick={handleSearchClose}
                   className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5 " />
                 </button>
               </div>
               {searchTerm && (
-                <div className="text-sm text-gray-400 font-[satoshi]">
-                  {filteredNotes.length} result{filteredNotes.length !== 1 ? 's' : ''} found
+                <div className="text-sm  font-[satoshi]">
+                  {filteredNotes.length} result
+                  {filteredNotes.length !== 1 ? "s" : ""} found
                 </div>
               )}
             </div>
@@ -264,14 +266,15 @@ function Dashboard() {
       <div className="relative z-10">
         <Usernav />
 
-        <div className="px-6 py-8 md:px-12 md:py-12 lg:px-16 xl:px-36">
+        <div className="px-6 py-4 md:px-12 md:py-12 lg:px-16 xl:px-36">
           {/* Header Section with Search */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
-              <h1 className="font-[satoshi] text-transparent bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text font-black text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
+      
+              <h1 className="font-[satoshi] bg-clip-text text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
                 {getGreeting()} 👋
               </h1>
-              <p className="text-gray-300 text-lg font-[satoshi]">
+              <p className=" text-lg font-[satoshi]">
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
@@ -280,20 +283,20 @@ function Dashboard() {
             {notes.length > 0 && (
               <div className="hidden md:block mt-4 lg:mt-0">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 " />
                   <input
                     type="text"
                     placeholder="Search notes..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-64 lg:w-72 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 font-[satoshi]"
+                    className="w-64 lg:w-72  backdrop-blur-sm border border-theme border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi]"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full btn-theme input-theme shadow-theme"
                     >
-                      <X className="w-4 h-4 text-gray-400" />
+                      <X className="w-4 h-4" />
                     </button>
                   )}
                 </div>
@@ -305,7 +308,7 @@ function Dashboard() {
               <div className="md:hidden fixed bottom-6 right-6 z-40">
                 <button
                   onClick={handleSearchClick}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 rounded-full shadow-2xl shadow-purple-500/30 hover:scale-110 transition-all duration-300"
+                  className=" p-4 rounded-full shadow-2xl btn-theme input-theme shadow-theme transition-all duration-300"
                 >
                   <Search className="w-6 h-6 text-white" />
                 </button>
@@ -316,8 +319,9 @@ function Dashboard() {
           {/* Search Results Info */}
           {searchTerm && (
             <div className="mt-6 mb-4">
-              <p className="text-gray-300 font-[satoshi]">
-                Found {filteredNotes.length} result{filteredNotes.length !== 1 ? 's' : ''} for "{searchTerm}"
+              <p className=" font-[satoshi]">
+                Found {filteredNotes.length} result
+                {filteredNotes.length !== 1 ? "s" : ""} for "{searchTerm}"
               </p>
             </div>
           )}
@@ -327,14 +331,14 @@ function Dashboard() {
             <div className="flex justify-center mb-12 xl:mb-2 ml-0 xl:ml-18">
               <button
                 onClick={() => navigate("/add-note")}
-                className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white font-bold py-4 px-8  rounded-2xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 font-[satoshi]"
+                className="group relative overflow-hidden font-bold py-4 px-8  rounded-2xl shadow-2xl btn-theme transition-all duration-300  font-[satoshi]"
               >
                 <div className="flex items-center gap-3">
                   <Plus className="w-6 h-6" />
                   <span className="text-lg">Create New Note</span>
                 </div>
                 {/* Shine effect */}
-                <div className="absolute inset-0 -top-full bg-gradient-to-b from-transparent via-white/20 to-transparent group-hover:top-full transition-all duration-1000"></div>
+                <div className="absolute inset-0 -top-full glow transition-all duration-1000"></div>
               </button>
             </div>
           )}
@@ -345,8 +349,8 @@ function Dashboard() {
           {loading ? (
             <div className="flex justify-center items-center py-20 xl:py-0 ml-12 xl:-ml-8">
               <div className="relative">
-                <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-                <p className="text-gray-300 text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">
+                <div className="w-16 h-16 border-4  rounded-full animate-spin"></div>
+                <p className="text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">
                   Loading your notes...
                 </p>
               </div>
@@ -354,38 +358,38 @@ function Dashboard() {
           ) : notes.length === 0 ? (
             <div className="text-center py-2">
               <div className="mb-8">
-                <div className="w-24 h-24 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mb-6">
-                  <Plus className="w-12 h-12 text-purple-400" />
+                <div className="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6">
+                  <Plus className="w-12 h-12 " />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 font-[satoshi]">
+                <h3 className="text-2xl font-bold  mb-4 font-[satoshi]">
                   Your canvas is empty
                 </h3>
-                <p className="text-gray-400 text-lg mb-8 font-[satoshi] max-w-md mx-auto">
+                <p className=" text-lg mb-8 font-[satoshi] max-w-md mx-auto">
                   Start your journey by creating your first note. Every great
                   idea begins with a single thought.
                 </p>
               </div>
               <button
                 onClick={() => navigate("/add-note")}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi]"
+                className="font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 font-[satoshi]"
               >
                 Create Your First Note
               </button>
             </div>
           ) : filteredNotes.length === 0 ? (
             <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mb-6">
-                <Search className="w-8 h-8 text-purple-400" />
+              <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6">
+                <Search className="w-8 h-8 " />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4 font-[satoshi]">
+              <h3 className="text-xl font-bold  mb-4 font-[satoshi]">
                 No notes found
               </h3>
-              <p className="text-gray-400 font-[satoshi] max-w-md mx-auto">
+              <p className=" font-[satoshi] max-w-md mx-auto">
                 Try searching with different keywords or create a new note.
               </p>
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4 text-purple-400 hover:text-purple-300 font-[satoshi] underline"
+                className="mt-4  font-[satoshi] underline"
               >
                 Clear search
               </button>
@@ -401,7 +405,7 @@ function Dashboard() {
                 >
                   {/* Note Header */}
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-white font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
+                    <h3 className=" font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
                     {/* Responsive button visibility - visible on smaller screens, hover on xl */}
@@ -410,34 +414,34 @@ function Dashboard() {
                         <>
                           <button
                             onClick={() => saveEdit(note._id)}
-                            className="p-2 bg-green-500/20 hover:bg-green-500/30 rounded-lg transition-colors"
+                            className="p-2  rounded-lg transition-colors"
                             title="Save changes"
                           >
-                            <Check className="w-4 h-4 text-green-300 hover:text-green-200" />
+                            <Check className="w-4 h-4 " />
                           </button>
                           <button
                             onClick={cancelEdit}
-                            className="p-2 bg-gray-500/20 hover:bg-gray-500/30 rounded-lg transition-colors"
+                            className="p-2 rounded-lg transition-colors"
                             title="Cancel edit"
                           >
-                            <X className="w-4 h-4 text-gray-300 hover:text-gray-200" />
+                            <X className="w-4 h-4 " />
                           </button>
                         </>
                       ) : (
                         <>
                           <button
                             onClick={() => startEdit(note)}
-                            className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                            className="p-2  rounded-lg transition-colors"
                             title="Edit note"
                           >
-                            <Edit3 className="w-4 h-4 text-gray-300 hover:text-white" />
+                            <Edit3 className="w-4 h-4 " />
                           </button>
                           <button
                             onClick={() => deleteNote(note._id || note.id)}
-                            className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg transition-colors"
+                            className="p-2 rounded-lg transition-colors"
                             title="Delete note"
                           >
-                            <Trash2 className="w-4 h-4 text-red-300 hover:text-red-200" />
+                            <Trash2 className="w-4 h-4 " />
                           </button>
                         </>
                       )}
@@ -454,7 +458,7 @@ function Dashboard() {
                     >
                       {note.category || note.label || "general"}
                     </span>
-                    <span className="text-gray-400 text-xs font-[satoshi]">
+                    <span className=" text-xs font-[satoshi]">
                       {note.updatedAt
                         ? formatDate(note.updatedAt)
                         : note.createdAt
@@ -468,18 +472,18 @@ function Dashboard() {
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-white/10 text-gray-200 font-[satoshi] leading-relaxed p-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full  font-[satoshi] leading-relaxed p-2 rounded-lg resize-none "
                       rows={4}
                       autoFocus
                     />
                   ) : (
-                    <p className="text-gray-200 font-[satoshi] leading-relaxed line-clamp-4">
+                    <p className=" font-[satoshi] leading-relaxed line-clamp-4">
                       {note.content}
                     </p>
                   )}
 
                   {/* Hover glow effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/0 via-pink-500/0 to-cyan-500/0 group-hover:from-purple-500/5 group-hover:via-pink-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                  <div className="absolute inset-0 rounded-2xl transition-all duration-300 pointer-events-none"></div>
                 </div>
               ))}
             </div>

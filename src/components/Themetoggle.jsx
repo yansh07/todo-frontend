@@ -1,25 +1,13 @@
+// src/components/ThemeToggle.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Palette } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState("cyber");
+  const { theme, changeTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("planit-theme") || "cyber";
-    setTheme(savedTheme);
-    document.body.setAttribute("data-theme", savedTheme);
-  }, []);
-
-  const handleThemeChange = (newTheme) => {
-    setTheme(newTheme);
-    document.body.setAttribute("data-theme", newTheme);
-    localStorage.setItem("planit-theme", newTheme);
-    setIsOpen(false); // auto-close after selecting
-  };
-
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -33,6 +21,11 @@ const ThemeToggle = () => {
     };
   }, []);
 
+  const handleThemeChange = (newTheme) => {
+    changeTheme(newTheme);
+    setIsOpen(false);
+  };
+
   const themes = [
     { id: "cyber", name: "Cyber", emoji: "🤖" },
     { id: "electric", name: "Electric", emoji: "⚡" },
@@ -43,10 +36,10 @@ const ThemeToggle = () => {
   ];
 
   return (
-    <div className="relative px-3" ref={dropdownRef}>
+    <div className="relative px-3 z-50" ref={dropdownRef}>
       {/* Accordion Header */}
       <button
-        className="flex w-full items-center justify-between rounded-lg border px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition border-yellow-400"
+        className="flex w-full items-center z-100 justify-between rounded-lg border px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition border-yellow-400"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="flex items-center gap-2">
@@ -64,8 +57,8 @@ const ThemeToggle = () => {
 
       {/* Dropdown Content */}
       <div
-        className={`absolute left-0 right-0 mt-2 rounded-lg border border-yellow-400  dark:bg-gray-900 shadow-lg overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        className={`absolute left-0 right-0 mt-2 rounded-lg border border-yellow-400 dark:bg-gray-900 shadow-lg overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen ? "h-auto opacity-100 visible" : "h-0 opacity-0 invisible"
         }`}
       >
         <div className="flex flex-col gap-3 p-3">

@@ -1,11 +1,14 @@
 import React from "react";
+import ThemeToggle from "./Themetoggle";
 
 function Footer() {
   return (
-    <div className="bg-[#100227] flex flex-col relative px-4 md:px-36 pt-6 md:py-6 lg:px-16 lg:py-4 xl:px-32 xl:py-4 lg:flex-col lg:gap-6 md:flex-row">
+    <div className="bg-primary bg-theme-primary flex flex-col relative px-4 md:px-36 pt-6 md:py-6 lg:px-16 lg:py-4 xl:px-32 xl:py-4 lg:flex-col lg:gap-6 md:flex-row">
       <div>
-        <p className="text-gray-50  hover:text-yellow-400 transition-all duration-300 ml-3 mt-3 font-semibold text-2xl xl:text-3xl hover:font-extrabold">PlanIt</p>
-        <p className="font-[satoshi] text-gray-400 font-medium text-lg xl:text-xl ml-3 hover:text-white mr-10 lg:max-w-5xl md:max-w-3xs">
+        <p className="text-gray-50  hover:text-yellow-400 transition-all duration-300 ml-3 mt-3 font-semibold text-2xl xl:text-3xl hover:font-extrabold">
+          PlanIt
+        </p>
+        <p className="font-[satoshi] text-gray-400 font-medium text-lg xl:text-xl ml-3 hover:text-white mr-18 lg:max-w-5xl md:max-w-3xs">
           A minimalist canvas to save your plans, and moments.
         </p>
       </div>
@@ -28,8 +31,8 @@ function Footer() {
           </li>
           <li className="font-medium  hover:text-yellow-400">
             <a href="mailto:pksingh69313@gmail.com">
-              <i class="fa-solid fa-inbox text-white/80 hover:text-yellow-400"></i> -
-              Email
+              <i class="fa-solid fa-inbox text-white/80 hover:text-yellow-400"></i>{" "}
+              - Email
             </a>
           </li>
         </ul>

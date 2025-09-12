@@ -121,7 +121,7 @@ function Login() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-10 flex items-center text-theme-secondary hover:text-theme-accent transition-all duration-200 text-sm font-medium"
+            className="absolute right-3 mt-1 top-10 flex items-center text-theme-secondary hover:text-theme-accent transition-all duration-200 text-sm font-medium"
           >
             {showPassword ? <EyeOff size={16} className="mr-1" /> : <Eye size={16} className="mr-1" />}
             {showPassword ? "Hide" : "Show"}
