@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext.jsx";
+import ThemeToggle from "./Themetoggle.jsx";
 
 function Login() {
   const { setUser } = useUser();
@@ -13,7 +14,6 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
-  // Validation function
   const validate = () => {
     const newErrors = {};
 
@@ -32,12 +32,10 @@ function Login() {
     return newErrors;
   };
 
-  // Handle input change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle submit (with validation + API call)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,9 +56,9 @@ function Login() {
         const data = await res.json();
 
         if (res.ok) {
-          localStorage.setItem("token", data.token); // save JWT
+          localStorage.setItem("token", data.token);
           setUser(data.user);
-          navigate("/dashboard"); // redirect to dashboard
+          navigate("/dashboard");
         } else {
           setErrors({ general: data.error || "Login failed" });
         }
@@ -72,76 +70,81 @@ function Login() {
   };
 
   return (
-    <div
-      className="flex justify-center  items-center min-h-screen bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900
- dark scroll-smooth px-4 md:px-0 -pt-2 md:pt-16 lg:pt-24 xl:pt-0"
-    >
+    <div className="flex justify-center items-center min-h-screen bg-theme-primary px-4 md:px-0 pt-0 md:pt-24 lg:pt-32 xl:pt-0">
+      
+      <div className="fixed top-10 right-2 z-50 md:right-26 md:pt-4 lg:pt-8 lg:right-54 xl:right-94 xl:top-3">
+        <ThemeToggle />
+      </div>
+
       <form
         onSubmit={handleSubmit}
-        className="bg-yellow-50/10 backdrop-brightness-150 backdrop-blur-xl  p-8 rounded-2xl shadow-xl w-96 md:w-[550px] lg:w-[580px] xl:w-[680px] border border-yellow-300/50"
+        className="card-theme p-8 rounded-2xl shadow-theme w-96 md:w-[550px] lg:w-[580px] xl:w-[680px]"
       >
-        {errors.general && <p className="text-red-500">{errors.general}</p>}
-        <h2 className="text-3xl font-[satoshi] font-bold text-center text-yellow-300 mb-6">
+        {errors.general && <p className="error-theme text-sm mb-4">{errors.general}</p>}
+        
+        <h2 className="text-3xl font-[satoshi] font-bold text-center text-theme-gradient glow-effect mb-6">
           Login 🔑
         </h2>
-        <p className="text-yellow-300 font-[satoshi] mb-6 xl:text-xl font-medium text-center">
+        <p className="text-theme-secondary font-[satoshi] mb-6 xl:text-xl font-medium text-center">
           Welcome back, manage your tasks easily 📜
         </p>
 
         {/* Email */}
-        <div className="mb-4">
-          <label className="block text-gray-200 mb-1">Email</label>
+        <div className="form-group-theme">
+          <label className="form-label-theme">Email</label>
           <input
             type="email"
             name="email"
             placeholder="e.g. priyanshu@example.com"
             value={form.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className={`input-theme w-full px-4 py-3 rounded-lg ${errors.email ? 'input-error' : ''}`}
           />
           {errors.email && (
-            <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+            <p className="error-theme text-sm mt-1">{errors.email}</p>
           )}
         </div>
 
         {/* Password */}
-        <div className="mb-6 relative">
-          <label className="block text-gray-200 mb-1">Password</label>
+        <div className="form-group-theme relative">
+          <label className="form-label-theme">Password</label>
           <input
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="••••••••"
             value={form.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 pr-10 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className={`input-theme w-full px-4 py-3 pr-32 rounded-lg ${errors.password ? 'input-error' : ''}`}
           />
-          {/* Eye button */}
+          
+          {/* Eye button - Updated styling */}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 mt-7 right-3 flex items-center text-gray-300 hover:text-white"
+            className="absolute right-3 top-10 flex items-center text-theme-secondary hover:text-theme-accent transition-all duration-200 text-sm font-medium"
           >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            {showPassword ? "Hide" : "Show"} Password
+            {showPassword ? <EyeOff size={16} className="mr-1" /> : <Eye size={16} className="mr-1" />}
+            {showPassword ? "Hide" : "Show"}
           </button>
+          
           {errors.password && (
-            <p className="text-red-400 text-sm mt-1">{errors.password}</p>
+            <p className="error-theme text-sm mt-1">{errors.password}</p>
           )}
         </div>
 
-        {/* Submit */}
-
+        {/* Submit Button */}
         <button
           type="submit"
-          className="focus:ring-2 focus:ring-yellow-500 w-full py-2 bg-gradient-to-r from-zinc-700  to-zinc-700 text-white font-semibold rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          className="btn-theme w-full py-3 rounded-lg font-semibold text-lg"
         >
           Login
         </button>
-        <p className="mt-4 font-[satoshi] text-yellow-300">
+        
+        <p className="mt-6 font-[satoshi] text-theme-secondary text-center">
           Don't have an account?
           <a
             href="/register"
-            className="p-2 text-yellow-300 underline hover:font-bold"
+            className="ml-2 text-theme-accent underline hover:text-theme-gradient transition-all duration-200 font-semibold"
           >
             Sign up
           </a>
