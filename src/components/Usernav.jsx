@@ -70,14 +70,14 @@ function Usernav() {
   }, [user, setUser, navigate]);
 
   return (
-    <div className="relative z-50 bg-primary backdrop-blur-xl border-b p-3 shadow-2xl">
-      <div className="flex items-center justify-between px-6 md:px-8 lg:px-12 xl:px-16 max-w-7xl mx-auto">
+    <div className="relative z-50  backdrop-blur-xl border-b border-theme border-theme-accent p-3 shadow-2xl">
+      <div className="flex items-center justify-between mr-10 md:mr-14 lg:mr-12 xl:px-16 max-w-7xl mx-auto">
         {/* Logo Section */}
-        <div className="flex items-center space-x-3 group">
-          <div className="relative">
+        <div className=" space-x-4 md:ml-8 lg:ml-14 xl:-ml-1">
+          {/* <div className="relative"> */}
             {/* <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-4xl text-transparent bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text drop-shadow-lg"></i> */}
             {/* <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 blur-lg opacity-30 animate-pulse"></div> */}
-          </div>
+          {/* </div> */}
           <span className="hidden md:block text-2xl md:text-3xl xl:text-4xl font-[satoshi] font-medium   bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
             PlanIt
           </span>

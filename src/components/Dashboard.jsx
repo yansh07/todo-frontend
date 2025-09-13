@@ -271,10 +271,10 @@ function Dashboard() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
       
-              <h1 className="font-[satoshi] bg-clip-text text-3xl md:text-4xl lg:text-5xl xl:text-5xl mb-4">
+              <h1 className="font-[satoshi] text-theme-primary text-theme-accent bg-clip-text text-3xl md:text-4xl lg:text-4xl xl:text-4xl mb-4">
                 {getGreeting()} 👋
               </h1>
-              <p className=" text-lg font-[satoshi]">
+              <p className=" text-lg font-[satoshi] text-theme-primary text-theme-accent">
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
