@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, Save, Eye } from "lucide-react";
 import {toast} from "react-hot-toast";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-lg shadow-cyan-500/20",
@@ -31,6 +32,7 @@ const LABEL_BADGE_COLORS = {
 
 function AddNote() {
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
   const [formData, setFormData] = useState({
     title: "",
     category: "general",
@@ -63,36 +65,34 @@ function AddNote() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) {
-      alert("Please fill in both heading and description");
+      alert("Please fill in both title and content");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const noteData = {
-        title: formData.title,
-        category: formData.category,
-        content: formData.content,
-      };
+      // 3. Get the token securely from Auth0
+      const token = await getAccessTokenSilently();
 
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/note", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/note`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // login ke baad token store kar raha hoon
+          Authorization: `Bearer ${token}`, // 4. Use the secure token
         },
-        body: JSON.stringify(noteData),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        navigate("/dashboard");
+        navigate("/dashboard"); // Success!
       } else {
-        throw new Error("Failed to save note");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save note");
       }
     } catch (error) {
       console.error("Error saving note:", error);
-      alert("Failed to save note. Please try again.");
+      alert(`Failed to save note: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }

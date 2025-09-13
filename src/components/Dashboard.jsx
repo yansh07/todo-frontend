@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Trash2, Edit3, Check, X, Search } from "lucide-react";
 import Usernav from "./Usernav";
-// import SearchBox from "./Search";
 import Footer from "./Footer";
 import ThemeToggle from "./Themetoggle";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
@@ -34,42 +34,102 @@ const LABEL_BADGE_COLORS = {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [dbuser, setDbUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
+  const [error, setError] = useState(null);
+  const { user: auth0User, getAccessTokenSilently, isLoading, isAuthenticated } = useAuth0();
 
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
-  // Fetch user profile
+  // Single useEffect to handle all data loading
   useEffect(() => {
-    const fetchProfile = async () => {
+    const setupDashboard = async () => {
+      if (!isAuthenticated || !auth0User) {
+        return;
+      }
+
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(
-          import.meta.env.VITE_BACKEND_URL + "/api/user/profile",
+        setLoading(true);
+        setError(null);
+        
+        console.log("Getting access token...");
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+          },
+        });
+        
+        console.log("Token received, length:", token.length);
+
+        // Step 1: Verify user with backend
+        console.log("Verifying user...");
+        const userResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              email: auth0User.email,
+              name: auth0User.name,
+              picture: auth0User.picture,
+            }),
           }
         );
-        const data = await res.json();
-        if (res.ok) {
-          setUser(data);
-        } else {
-          console.error("Profile fetch error:", data.error);
+
+        if (!userResponse.ok) {
+          const errorText = await userResponse.text();
+          console.error("User verification failed:", errorText);
+          throw new Error(`User verification failed: ${userResponse.status}`);
         }
-      } catch (err) {
-        console.error("Error fetching profile:", err);
+        
+        const userData = await userResponse.json();
+        console.log("User verified:", userData);
+        setDbUser(userData);
+
+        // Step 2: Fetch notes
+        console.log("Fetching notes...");
+        const notesResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/note`,
+          {
+            headers: { 
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` 
+            },
+          }
+        );
+
+        if (!notesResponse.ok) {
+          const errorText = await notesResponse.text();
+          console.error("Notes fetch failed:", errorText);
+          throw new Error(`Failed to fetch notes: ${notesResponse.status}`);
+        }
+
+        const notesData = await notesResponse.json();
+        console.log("Notes fetched:", notesData);
+        setNotes(notesData);
+        setFilteredNotes(notesData);
+
+      } catch (error) {
+        console.error("Error setting up dashboard:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProfile();
-    fetchNotes();
-  }, []);
+    if (!isLoading && isAuthenticated) {
+      setupDashboard();
+    }
+  }, [auth0User, getAccessTokenSilently, isLoading, isAuthenticated]);
 
   // Filter notes when search term or notes change
   useEffect(() => {
@@ -85,50 +145,22 @@ function Dashboard() {
     }
   }, [searchTerm, notes]);
 
-  const fetchNotes = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/api/note",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const fetchedNotes = await response.json();
-        setNotes(fetchedNotes);
-        setFilteredNotes(fetchedNotes);
-      } else {
-        throw new Error("Failed to fetch notes");
-      }
-    } catch (error) {
-      console.error("Error fetching notes:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const deleteNote = async (noteId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = await getAccessTokenSilently();
       const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/note/${noteId}`,
         {
           method: "DELETE",
-          headers: {
+          headers: { 
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}` 
           },
         }
       );
 
       if (response.ok) {
-        setNotes(notes.filter((note) => note._id !== noteId));
+        setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
       } else {
         throw new Error("Failed to delete note");
       }
@@ -153,9 +185,9 @@ function Dashboard() {
   // Save edit
   const saveEdit = async (noteId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = await getAccessTokenSilently();
       const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + `/api/note/${noteId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/note/${noteId}`,
         {
           method: "PUT",
           headers: {
@@ -168,10 +200,8 @@ function Dashboard() {
 
       if (response.ok) {
         const updatedNote = await response.json();
-        setNotes(
-          notes.map((n) =>
-            n._id.toString() === noteId.toString() ? updatedNote : n
-          )
+        setNotes((prevNotes) =>
+          prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
         );
         cancelEdit();
       } else {
@@ -207,19 +237,50 @@ function Dashboard() {
   };
 
   const getGreeting = () => {
+    if (!dbuser?.fullName) return "Welcome!";
+    
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
-      return `Morning, ${user.fullName}`;
+      return `Morning, ${dbuser.fullName}`;
     } else if (hour >= 12 && hour < 18) {
-      return `What's good this Afternoon, ${user.fullName} ?`;
+      return `What's good this Afternoon, ${dbuser.fullName}?`;
     } else if (hour >= 18 && hour < 22) {
-      return `How was your day, ${user.fullName} ?`;
+      return `How was your day, ${dbuser.fullName}?`;
     } else {
-      return `Catch some rest, ${user.fullName}`;
+      return `Catch some rest, ${dbuser.fullName}`;
     }
   };
 
-  if (!user) return <p className="text-white">Loading...</p>;
+  // Loading states
+  if (isLoading) {
+    return <div className="text-white text-center p-10">Authenticating...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div className="text-white text-center p-10">Please log in to continue.</div>;
+  }
+
+  if (loading) {
+    return <div className="text-white text-center p-10">Loading your data...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-white text-center p-10">
+        <p>Error loading data: {error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!dbuser) {
+    return <div className="text-white text-center p-10">Error loading profile. Please try logging in again.</div>;
+  }
 
   return (
     <div className="min-h-screen bg-primary bg-theme-primary ">
@@ -270,7 +331,6 @@ function Dashboard() {
           {/* Header Section with Search */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
-      
               <h1 className="font-[satoshi] font-medium text-theme-primary text-theme-accent bg-clip-text text-3xl md:text-4xl lg:text-4xl xl:text-4xl mb-4">
                 {getGreeting()} 👋
               </h1>
@@ -346,16 +406,7 @@ function Dashboard() {
 
         {/* Notes Section */}
         <div className="px-6 md:px-12 lg:px-20 xl:px-32 xl:ml-20 pb-12 mb-4">
-          {loading ? (
-            <div className="flex justify-center items-center py-20 xl:py-0 ml-12 xl:-ml-8">
-              <div className="relative">
-                <div className="w-16 h-16 border-4  rounded-full animate-spin"></div>
-                <p className="text-lg font-[satoshi] mt-4 text-center lg:-ml-8 md:-ml-10 -ml-10 xl:-ml-10 ">
-                  Loading your notes...
-                </p>
-              </div>
-            </div>
-          ) : notes.length === 0 ? (
+          {notes.length === 0 ? (
             <div className="text-center py-2">
               <div className="mb-8">
                 <div className="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6">

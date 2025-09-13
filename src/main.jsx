@@ -5,15 +5,25 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/UserContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </UserProvider>
-    </BrowserRouter>
+    <Auth0Provider
+      domain={import.meta.env.VITE_DOMAIN}
+      clientId={import.meta.env.VITE_CLIENT_ID}
+      authorizationParams={{
+        redirect_uri: window.location.origin + "/dashboard",
+        audience: "https://api.planit.com",
+      }}
+    >
+      <BrowserRouter>
+        <UserProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </UserProvider>
+      </BrowserRouter>
+    </Auth0Provider>
   </React.StrictMode>
 );
