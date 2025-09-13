@@ -39,10 +39,10 @@ const ThemeToggle = () => {
     <div className="relative px-3 z-50" ref={dropdownRef}>
       {/* Accordion Header */}
       <button
-        className="flex w-full items-center z-100 justify-between rounded-lg border px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition border-yellow-400"
+        className="flex w-full items-center z-100 justify-between rounded-lg  px-4 py-2 text-sm font-medium shadow-sm btn-theme card-theme shadow-theme border-theme"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="flex items-center gap-2">
+        <span className="flex items-center gap-2 text-theme-primary text-primary-accent">
           <Palette className="h-4 w-4" />
           Modes
         </span>

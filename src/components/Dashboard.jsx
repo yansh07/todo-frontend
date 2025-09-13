@@ -211,7 +211,7 @@ function Dashboard() {
     if (hour >= 5 && hour < 12) {
       return `Morning, ${user.fullName}`;
     } else if (hour >= 12 && hour < 18) {
-      return `What's good this after noon, ${user.fullName} ?`;
+      return `What's good this Afternoon, ${user.fullName} ?`;
     } else if (hour >= 18 && hour < 22) {
       return `How was your day, ${user.fullName} ?`;
     } else {
@@ -271,7 +271,7 @@ function Dashboard() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-2 lg:mb-0">
       
-              <h1 className="font-[satoshi] text-theme-primary text-theme-accent bg-clip-text text-3xl md:text-4xl lg:text-4xl xl:text-4xl mb-4">
+              <h1 className="font-[satoshi] font-medium text-theme-primary text-theme-accent bg-clip-text text-3xl md:text-4xl lg:text-4xl xl:text-4xl mb-4">
                 {getGreeting()} 👋
               </h1>
               <p className=" text-lg font-[satoshi] text-theme-primary text-theme-accent">

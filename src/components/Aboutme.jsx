@@ -94,30 +94,27 @@ function AboutMeInput({ user, onUpdate }) {
           placeholder="✨ Write something about yourself..."
           className="
             w-full px-4 py-2 
-            text-sm text-gray-200 
-            placeholder-gray-500 italic 
-            bg-gray-800/60 
-            rounded-xl border border-gray-700 
-            focus:border-purple-400 focus:ring-2 focus:ring-purple-400/60 
+            text-sm italic 
+            rounded-xl border-theme shadow-theme input-theme
             transition-all backdrop:blur-3xl duration-300 
             resize-none overflow-hidden
           "
         />
         {isSaving && (
           <div className="absolute top-2 right-2">
-            <div className="w-4 h-4 border-2 border-purple-400/30 border-t-purple-400 rounded-full animate-spin"></div>
+            <div className="w-4 h-4 border-2 rounded-full animate-spin"></div>
           </div>
         )}
       </div>
       <div className="flex justify-between items-center mt-1">
-        <div className="text-xs text-gray-500">
+        <div className="text-xs ">
           {isSaving ? (
-            <span className="text-purple-400">Saving...</span>
+            <span className="">Saving...</span>
           ) : (
             <span>Auto-saved</span>
           )}
         </div>
-        <div className="text-xs text-gray-400">
+        <div className="text-xs ">
           {about.length}/150
         </div>
       </div>
