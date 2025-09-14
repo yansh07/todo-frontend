@@ -109,10 +109,12 @@ function Dashboard() {
         const notesResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/note`,
           {
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            credentials: "include",
           }
         );
 
