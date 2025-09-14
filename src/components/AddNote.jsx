@@ -64,15 +64,16 @@ function AddNote() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title.trim() || !formData.content.trim()) {
-      alert("Please fill in both title and content");
-      return;
-    }
+    if (!formData.title.trim() || !formData.content.trim())
+      return alert("Fill title & content");
 
     setIsSubmitting(true);
 
     try {
-      const token = await getAccessTokenSilently();
+      const token = await getAccessTokenSilently({
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        scope: "openid profile email",
+      });
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/note`,
@@ -96,9 +97,7 @@ function AddNote() {
       }
     } catch (error) {
       console.error("Error saving note:", error);
-      toast.error(`Failed to save note: ${error.message}`, {
-        position: "top-center",
-      });
+      toast.error(`Failed: ${error.message}`, { position: "top-center" });
     } finally {
       setIsSubmitting(false);
     }
