@@ -220,9 +220,6 @@ function Profile() {
         </div>
       </div>
 
-      {/* --- The rest of your Notes Section JSX --- */}
-      {/* --- It should be fine as it is --- */}
-
       <Footer />
     </div>
   );

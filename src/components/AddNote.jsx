@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles, Save, Eye } from "lucide-react";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LABEL_COLORS = {
@@ -49,18 +49,18 @@ function AddNote() {
     }));
   };
 
-  const handleSaveNote = async () => {
-      toast.success('Notes added', {
-        position: 'top-center', 
-        icon: '✅',  
-        duration: 3000, 
-        style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',            
-        },
-    });
-  }
+  // const handleSaveNote = async () => {
+  //     toast.success('Notes added', {
+  //       position: 'top-center',
+  //       icon: '✅',
+  //       duration: 3000,
+  //       style: {
+  //           borderRadius: '10px',
+  //           background: '#333',
+  //           color: '#fff',
+  //       },
+  //   });
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,27 +72,33 @@ function AddNote() {
     setIsSubmitting(true);
 
     try {
-      // 3. Get the token securely from Auth0
       const token = await getAccessTokenSilently();
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/note`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // 4. Use the secure token
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/note`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
 
       if (response.ok) {
-        navigate("/dashboard"); // Success!
+        toast.success("Note added!", { position: "top-center" });
+        navigate("/dashboard");
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to save note");
+        throw new Error(data.error || "Failed to save note");
       }
     } catch (error) {
       console.error("Error saving note:", error);
-      alert(`Failed to save note: ${error.message}`);
+      toast.error(`Failed to save note: ${error.message}`, {
+        position: "top-center",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -227,7 +233,7 @@ function AddNote() {
                   Cancel
                 </button>
                 <button
-                onClick={handleSaveNote}
+                  // onClick={handleSubmit}
                   type="submit"
                   className="flex-1 px-6 py-4 bg-gradient-to-r btn-theme font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 font-[satoshi] text-lg flex items-center justify-center gap-2"
                   disabled={
@@ -260,8 +266,7 @@ function AddNote() {
               >
                 <div className="flex justify-between items-start mb-4">
                   <h3 className=" font-bold text-lg font-[satoshi] flex-1 mr-2">
-                    {formData.title ||
-                      "Your amazing title will appear here..."}
+                    {formData.title || "Your amazing title will appear here..."}
                   </h3>
                   <span className="text-theme-secondary text-xs font-[satoshi]">
                     {formatDate(new Date())}
