@@ -73,6 +73,7 @@ function Dashboard() {
           `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
           {
             method: "POST",
+            credentials: 'include',
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
