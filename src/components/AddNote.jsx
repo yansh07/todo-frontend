@@ -74,6 +74,7 @@ function AddNote() {
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         scope: "openid profile email",
       });
+      console.log("TOKEN:", token);
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/note`,
