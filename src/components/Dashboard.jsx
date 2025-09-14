@@ -41,7 +41,12 @@ function Dashboard() {
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
   const [error, setError] = useState(null);
-  const { user: auth0User, getAccessTokenSilently, isLoading, isAuthenticated } = useAuth0();
+  const {
+    user: auth0User,
+    getAccessTokenSilently,
+    isLoading,
+    isAuthenticated,
+  } = useAuth0();
 
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,14 +62,16 @@ function Dashboard() {
       try {
         setLoading(true);
         setError(null);
-        
+
         console.log("Getting access token...");
         const token = await getAccessTokenSilently({
           authorizationParams: {
-            audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+            audience:
+              import.meta.env.VITE_AUTH0_AUDIENCE ||
+              `${import.meta.env.VITE_BACKEND_URL}`,
           },
         });
-        
+
         console.log("Token received, length:", token.length);
 
         // Step 1: Verify user with backend
@@ -73,12 +80,13 @@ function Dashboard() {
           `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
           {
             method: "POST",
-            credentials: 'include',
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
+              auth0Id: auth0User.sub,
               email: auth0User.email,
               name: auth0User.name,
               picture: auth0User.picture,
@@ -91,7 +99,7 @@ function Dashboard() {
           console.error("User verification failed:", errorText);
           throw new Error(`User verification failed: ${userResponse.status}`);
         }
-        
+
         const userData = await userResponse.json();
         console.log("User verified:", userData);
         setDbUser(userData);
@@ -101,9 +109,9 @@ function Dashboard() {
         const notesResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/note`,
           {
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}` 
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -118,7 +126,6 @@ function Dashboard() {
         console.log("Notes fetched:", notesData);
         setNotes(notesData);
         setFilteredNotes(notesData);
-
       } catch (error) {
         console.error("Error setting up dashboard:", error);
         setError(error.message);
@@ -153,15 +160,17 @@ function Dashboard() {
         `${import.meta.env.VITE_BACKEND_URL}/api/note/${noteId}`,
         {
           method: "DELETE",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (response.ok) {
-        setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
+        setNotes((prevNotes) =>
+          prevNotes.filter((note) => note._id !== noteId)
+        );
       } else {
         throw new Error("Failed to delete note");
       }
@@ -239,7 +248,7 @@ function Dashboard() {
 
   const getGreeting = () => {
     if (!dbuser?.fullName) return "Welcome!";
-    
+
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
       return `Morning, ${dbuser.fullName}`;
@@ -258,19 +267,25 @@ function Dashboard() {
   }
 
   if (!isAuthenticated) {
-    return <div className="text-white text-center p-10">Please log in to continue.</div>;
+    return (
+      <div className="text-white text-center p-10">
+        Please log in to continue.
+      </div>
+    );
   }
 
   if (loading) {
-    return <div className="text-white text-center p-10">Loading your data...</div>;
+    return (
+      <div className="text-white text-center p-10">Loading your data...</div>
+    );
   }
 
   if (error) {
     return (
       <div className="text-white text-center p-10">
         <p>Error loading data: {error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
           Retry
@@ -280,7 +295,11 @@ function Dashboard() {
   }
 
   if (!dbuser) {
-    return <div className="text-white text-center p-10">Error loading profile. Please try logging in again.</div>;
+    return (
+      <div className="text-white text-center p-10">
+        Error loading profile. Please try logging in again.
+      </div>
+    );
   }
 
   return (
