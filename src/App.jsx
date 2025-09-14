@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
 import 'react-toastify/dist/ReactToastify.css';
 import { Toaster } from "react-hot-toast";
+import ProfileUpload from "./components/ProfileUpload";
 
 function App() {
   const location = useLocation();
@@ -48,7 +49,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-note" element={<AddNote />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/profile-upload" element={<ProfilePage />} />
+        <Route path="/profile-upload" element={<ProfileUpload />} />
       </Routes>
     </div>
   );
