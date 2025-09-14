@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function AboutMeInput({ user, onUpdate }) {
   const [about, setAbout] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveTimeout, setSaveTimeout] = useState(null);
+  
+  const { getAccessTokenSilently, user: auth0User } = useAuth0();
 
   useEffect(() => {
     if (user?.about) {
@@ -14,19 +17,31 @@ function AboutMeInput({ user, onUpdate }) {
   const saveAbout = async (aboutText) => {
     if (aboutText === user?.about) return; 
 
-    console.log("💾 Saving about text:", aboutText); // Debug log
-    console.log("🔍 Current user bio:", user?.about); // Debug log
+    console.log("💾 Saving about text:", aboutText);
+    console.log("🔍 Current user bio:", user?.about);
 
     try {
       setIsSaving(true);
-      const token = localStorage.getItem("token");
-      console.log("🔑 Token exists:", !!token); // Debug log
       
-      const requestBody = { about: aboutText };
-      console.log("📤 Sending request body:", requestBody); // Debug log
+      // Get Auth0 token
+      const token = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+        },
+      });
+
+      console.log("🔑 Token received, length:", token.length);
       
+      const requestBody = { 
+        about: aboutText,
+        auth0Id: auth0User.sub,
+        email: auth0User.email,
+      };
+      console.log("📤 Sending request body:", requestBody);
+      
+      // Use verify-user endpoint with about field update
       const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/api/user/profile",
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/update-profile`,
         {
           method: "PUT",
           headers: {
@@ -37,22 +52,23 @@ function AboutMeInput({ user, onUpdate }) {
         }
       );
 
-      console.log("📡 Response status:", response.status); // Debug log
+      console.log("📡 Response status:", response.status);
 
       if (response.ok) {
         const updatedUser = await response.json();
-        console.log("✅ Updated user received:", updatedUser); // Debug log
+        console.log("✅ Updated user received:", updatedUser);
         if (onUpdate) {
-          onUpdate(updatedUser); // Update parent component's user state
+          onUpdate(updatedUser);
         }
       } else {
         const errorData = await response.json();
-        console.error("❌ Response error:", errorData); // Debug log
+        console.error("❌ Response error:", errorData);
         throw new Error("Failed to save bio");
       }
     } catch (error) {
       console.error("❌ Error saving bio:", error);
-      // Could add toast notification here
+      // Reset to original value on error
+      setAbout(user?.about || "");
     } finally {
       setIsSaving(false);
     }
@@ -90,7 +106,7 @@ function AboutMeInput({ user, onUpdate }) {
         <textarea
           value={about}
           onChange={handleAboutChange}
-          rows={about ? 3 : 1} //unfold when user types/clicks
+          rows={about ? 3 : 1}
           placeholder="✨ Write something about yourself..."
           className="
             w-full px-4 py-2 

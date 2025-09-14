@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ProfileUpload({ onUpload }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
+  
+  const { getAccessTokenSilently, user: auth0User } = useAuth0();
 
   const handleFileChange = (e) => {
     const f = e.target.files[0];
@@ -37,19 +40,28 @@ function ProfileUpload({ onUpload }) {
     }
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("profilePic", file);
-
+    
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/user/profile-pic", {
+      // Get Auth0 token
+      const token = await getAccessTokenSilently({
+        authorizationParams: {
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+        },
+      });
+
+      const formData = new FormData();
+      formData.append("profilePic", file);
+      formData.append("auth0Id", auth0User.sub);
+      formData.append("email", auth0User.email);
+
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile-pic`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         toast.success("Profile picture updated successfully!");
         onUpload(data.user.profilePic);
         setFile(null);
