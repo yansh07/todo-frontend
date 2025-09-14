@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { User, Calendar, Mail, Home, LogOut, Camera, FileText, Plus } from "lucide-react";
+import {
+  User,
+  Calendar,
+  Mail,
+  Home,
+  LogOut,
+  Camera,
+  FileText,
+  Plus,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AboutMeInput from "./Aboutme";
@@ -8,11 +17,11 @@ import { toast } from "react-toastify";
 
 function Profile() {
   const navigate = useNavigate();
-  const { 
-    user: auth0User, 
-    getAccessTokenSilently, 
+  const {
+    user: auth0User,
+    getAccessTokenSilently,
     logout,
-    isLoading: isAuthLoading
+    isLoading: isAuthLoading,
   } = useAuth0();
 
   // State
@@ -23,7 +32,10 @@ function Profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = await getAccessTokenSilently();
+        const token = await getAccessTokenSilently({
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+          scope: "openid profile email",
+        });
 
         // 1. Fetch the user profile from our backend
         const profileResponse = await fetch(
@@ -42,11 +54,12 @@ function Profile() {
         if (!notesResponse.ok) throw new Error("Failed to fetch notes.");
         const notesData = await notesResponse.json();
         setNotes(notesData);
-
       } catch (error) {
         console.error("Error fetching profile data:", error);
         // If anything fails, maybe the token is bad, send them to login.
-        logout({ logoutParams: { returnTo: window.location.origin + "/login" } });
+        logout({
+          logoutParams: { returnTo: window.location.origin + "/login" },
+        });
       } finally {
         setIsDataLoading(false);
       }
@@ -57,7 +70,7 @@ function Profile() {
       fetchData();
     }
   }, [auth0User, getAccessTokenSilently, logout]);
-  
+
   // Clean logout function
   const handleLogout = () => {
     logout({
@@ -70,20 +83,32 @@ function Profile() {
   const handleUserUpdate = (updatedUser) => {
     setDbUser(updatedUser);
   };
-  
+
   // 1. Wait for Auth0 to finish its initial loading
   if (isAuthLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Authenticating...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Authenticating...
+      </div>
+    );
   }
-  
+
   // 2. Wait for our own backend data to load
   if (isDataLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading Profile...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading Profile...
+      </div>
+    );
   }
 
   // 3. If after all that, we still don't have a user, something is wrong.
   if (!dbUser) {
-    return <div className="min-h-screen flex items-center justify-center">Could not load user data. Please try again.</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Could not load user data. Please try again.
+      </div>
+    );
   }
 
   return (
