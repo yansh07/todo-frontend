@@ -2,32 +2,33 @@ import React, { useState, useEffect } from "react";
 import { FilePlus, User, Bell } from "lucide-react";
 import "/src/index.css";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
-import ThemeToggle from "./Themetoggle"; // Make sure to import ThemeToggle
+import { useAuth0 } from "@auth0/auth0-react";
+import ThemeToggle from "./Themetoggle";
 
 function Usernav() {
-  const { user, setUser } = useUser();
   const navigate = useNavigate();
-
-  // ✅ Token error handler
-  const handleAuthError = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/login");
-  };
+  const {
+    user: auth0User,
+    getAccessTokenSilently,
+    isAuthenticated,
+    isLoading,
+  } = useAuth0();
+  
+  const [dbUser, setDbUser] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setUser(null);
-        return;
-      }
+      if (!isAuthenticated || !auth0User) return;
 
       try {
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+          },
+        });
+
         const res = await fetch(
-          import.meta.env.VITE_BACKEND_URL + "/api/user/profile",
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile`,
           {
             method: "GET",
             headers: {
@@ -37,47 +38,28 @@ function Usernav() {
           }
         );
 
-        if (res.status === 401) {
-          handleAuthError();
-          return;
-        }
-
         if (res.ok) {
           const data = await res.json();
-          setUser(data);
+          setDbUser(data);
         } else {
           console.error("Error fetching user data:", res.statusText);
-          try {
-            const errorData = await res.json();
-            if (errorData.error?.toLowerCase().includes("token")) {
-              handleAuthError();
-            } else {
-              setUser(null);
-            }
-          } catch {
-            setUser(null);
-          }
         }
       } catch (err) {
-        console.error("Network or parsing error:", err.message);
-        setUser(null);
+        console.error("Error fetching user:", err.message);
       }
     };
 
-    if (!user) {
-      fetchUser();
-    }
-  }, [user, setUser, navigate]);
+    fetchUser();
+  }, [auth0User, isAuthenticated, getAccessTokenSilently]);
+
+  // Don't render if Auth0 is still loading
+  if (isLoading) return null;
 
   return (
     <div className="relative z-50  backdrop-blur-xl border-b border-theme border-theme-accent p-3 shadow-2xl">
       <div className="flex items-center justify-between mr-10 md:mr-14 lg:mr-12 xl:px-16 max-w-7xl mx-auto">
         {/* Logo Section */}
         <div className=" space-x-4 md:ml-8 lg:ml-14 xl:-ml-1">
-          {/* <div className="relative"> */}
-            {/* <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-4xl text-transparent bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text drop-shadow-lg"></i> */}
-            {/* <div className="absolute inset-0 bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 blur-lg opacity-30 animate-pulse"></div> */}
-          {/* </div> */}
           <span className="hidden md:block text-2xl md:text-3xl xl:text-4xl font-[satoshi] font-medium   bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
             PlanIt
           </span>
@@ -96,7 +78,6 @@ function Usernav() {
           </div>
 
           {/* Theme Toggle */}
-        
           <ThemeToggle />
 
           {/* Profile Button */}
@@ -104,9 +85,9 @@ function Usernav() {
             <div className="relative">
               <div className="w-10 h-10 md:w-11 md:h-11 rounded-2xl p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
                 <div className="w-full h-full btn-theme backdrop-blur-sm rounded-2xl flex items-center justify-center overflow-hidden">
-                  {user?.profilePic ? (
+                  {(dbUser?.profilePic || auth0User?.picture) ? (
                     <img
-                      src={user.profilePic}
+                      src={dbUser?.profilePic || auth0User?.picture}
                       alt="profile"
                       className="w-full h-full object-cover rounded-2xl"
                     />
