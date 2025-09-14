@@ -33,30 +33,48 @@ function Profile() {
     const fetchData = async () => {
       try {
         const token = await getAccessTokenSilently({
-          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-          scope: "openid profile email",
+          authorizationParams: {
+            audience:
+              import.meta.env.VITE_AUTH0_AUDIENCE ||
+              `${import.meta.env.VITE_BACKEND_URL}`,
+          },
         });
 
-        // 1. Fetch the user profile from our backend
+        console.log("Profile: Token length:", token.length); // Debug log
+
+        // Use verify-user instead of profile endpoint
         const profileResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              auth0Id: auth0User.sub,
+              email: auth0User.email,
+              name: auth0User.name,
+              picture: auth0User.picture,
+            }),
+          }
         );
+
         if (!profileResponse.ok) throw new Error("Failed to fetch profile.");
         const profileData = await profileResponse.json();
         setDbUser(profileData);
 
-        // 2. Fetch the notes
+        // Fetch notes with same token
         const notesResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/note`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+
         if (!notesResponse.ok) throw new Error("Failed to fetch notes.");
         const notesData = await notesResponse.json();
         setNotes(notesData);
       } catch (error) {
         console.error("Error fetching profile data:", error);
-        // If anything fails, maybe the token is bad, send them to login.
         logout({
           logoutParams: { returnTo: window.location.origin + "/login" },
         });
@@ -65,7 +83,6 @@ function Profile() {
       }
     };
 
-    // Only run this logic if Auth0 has finished loading and we have a user.
     if (auth0User) {
       fetchData();
     }
