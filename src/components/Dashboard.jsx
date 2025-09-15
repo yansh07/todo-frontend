@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Trash2, Edit3, Check, X, Search } from "lucide-react";
 import Usernav from "./Usernav";
@@ -50,12 +50,16 @@ function Dashboard() {
 
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false); // New state for mobile search overlay
+
+  // Reference for the desktop search input for autoFocus
+  const desktopSearchInputRef = useRef(null);
 
   // Single useEffect to handle all data loading
   useEffect(() => {
     const setupDashboard = async () => {
       if (!isAuthenticated || !auth0User) {
+        setLoading(false); // Important: stop loading if not authenticated
         return;
       }
 
@@ -63,7 +67,6 @@ function Dashboard() {
         setLoading(true);
         setError(null);
 
-        console.log("Getting access token...");
         const token = await getAccessTokenSilently({
           authorizationParams: {
             audience:
@@ -72,10 +75,7 @@ function Dashboard() {
           },
         });
 
-        console.log("Token received, length:", token.length);
-
         // Step 1: Verify user with backend
-        console.log("Verifying user...");
         const userResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
           {
@@ -96,16 +96,13 @@ function Dashboard() {
 
         if (!userResponse.ok) {
           const errorText = await userResponse.text();
-          console.error("User verification failed:", errorText);
           throw new Error(`User verification failed: ${userResponse.status}`);
         }
 
         const userData = await userResponse.json();
-        console.log("User verified:", userData);
         setDbUser(userData);
 
         // Step 2: Fetch notes
-        console.log("Fetching notes...");
         const notesResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/note`,
           {
@@ -120,12 +117,10 @@ function Dashboard() {
 
         if (!notesResponse.ok) {
           const errorText = await notesResponse.text();
-          console.error("Notes fetch failed:", errorText);
           throw new Error(`Failed to fetch notes: ${notesResponse.status}`);
         }
 
         const notesData = await notesResponse.json();
-        console.log("Notes fetched:", notesData);
         setNotes(notesData);
         setFilteredNotes(notesData);
       } catch (error) {
@@ -149,6 +144,7 @@ function Dashboard() {
       const filtered = notes.filter(
         (note) =>
           note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchTerm.toLowerCase()) || // Search content too
           note.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredNotes(filtered);
@@ -156,6 +152,7 @@ function Dashboard() {
   }, [searchTerm, notes]);
 
   const deleteNote = async (noteId) => {
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(
@@ -211,7 +208,7 @@ function Dashboard() {
       );
 
       if (response.ok) {
-        const {note: updatedNote} = await response.json();
+        const { note: updatedNote } = await response.json();
         setNotes((prevNotes) =>
           prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
         );
@@ -221,17 +218,15 @@ function Dashboard() {
       }
     } catch (error) {
       console.error("Error updating note:", error);
+      alert("Failed to save changes. Please try again.");
     }
   };
 
-  // Search handlers
-  const handleSearchClick = () => {
-    setIsSearchExpanded(true);
-  };
-
-  const handleSearchClose = () => {
-    setIsSearchExpanded(false);
-    setSearchTerm("");
+  const handleMobileSearchToggle = () => {
+    setIsMobileSearchOpen(!isMobileSearchOpen);
+    if (isMobileSearchOpen) {
+      setSearchTerm(""); // Clear search when closing
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -252,18 +247,19 @@ function Dashboard() {
     if (!dbuser?.fullName) return "Welcome!";
 
     const hour = new Date().getHours();
+    const firstName = dbuser.fullName.split(" ")[0]; // Get first name
     if (hour >= 5 && hour < 12) {
-      return `Morning, ${dbuser.fullName}`;
+      return `Morning, ${firstName}`;
     } else if (hour >= 12 && hour < 18) {
-      return `What's good this Afternoon, ${dbuser.fullName}?`;
+      return `What's good this Afternoon, ${firstName}?`;
     } else if (hour >= 18 && hour < 22) {
-      return `How was your day, ${dbuser.fullName}?`;
+      return `How was your day, ${firstName}?`;
     } else {
-      return `Catch some rest, ${dbuser.fullName}`;
+      return `Catch some rest, ${firstName}`;
     }
   };
 
-  // Loading states
+  // Loading and Error States
   if (isLoading) {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
@@ -300,7 +296,9 @@ function Dashboard() {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
-          <p className="text-lg font-[satoshi] mb-4">Error loading data: {error}</p>
+          <p className="text-lg font-[satoshi] mb-4">
+            Error loading data: {error}
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-3 bg-blue-500 text-white rounded-lg font-[satoshi] hover:bg-blue-600 transition-colors"
@@ -316,50 +314,50 @@ function Dashboard() {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
-          <p className="text-lg font-[satoshi]">Error loading profile. Please try logging in again.</p>
+          <p className="text-lg font-[satoshi]">
+            Error loading profile. Please try logging in again.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-theme-primary">
+    <div className="min-h-screen bg-theme-primary relative">
       {/* Animated background particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl animate-pulse opacity-20"></div>
-        <div className="absolute top-3/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl animate-pulse delay-700 opacity-20"></div>
-        <div className="absolute top-1/2 left-1/2 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-20"></div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl animate-pulse opacity-20 bg-cyan-400"></div>
+        <div className="absolute top-3/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl animate-pulse delay-700 opacity-20 bg-pink-400"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-20 bg-violet-400"></div>
       </div>
 
-      {/* Search Overlay for Mobile */}
-      {isSearchExpanded && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden">
-          <div className="flex items-start justify-center pt-16 sm:pt-20 px-4">
-            <div className="w-full max-w-md card-theme backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <Search className="w-5 h-5 text-theme-primary" />
-                <input
-                  type="text"
-                  placeholder="Search by title or category..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
-                  autoFocus
-                />
-                <button
-                  onClick={handleSearchClose}
-                  className="p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-theme-primary" />
-                </button>
-              </div>
-              {searchTerm && (
-                <div className="text-sm text-theme-secondary font-[satoshi]">
-                  {filteredNotes.length} result
-                  {filteredNotes.length !== 1 ? "s" : ""} found
-                </div>
-              )}
+      {/* Mobile Search Overlay */}
+      {isMobileSearchOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden flex justify-center items-start pt-16 px-4">
+          <div className="w-full max-w-md card-theme rounded-2xl p-4 sm:p-6 shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <Search className="w-5 h-5 text-theme-primary" />
+              <input
+                type="text"
+                placeholder="Search by title, category, or content..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
+                autoFocus
+              />
+              <button
+                onClick={handleMobileSearchToggle}
+                className="p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-theme-primary" />
+              </button>
             </div>
+            {searchTerm && (
+              <div className="text-sm text-theme-secondary font-[satoshi]">
+                {filteredNotes.length} result
+                {filteredNotes.length !== 1 ? "s" : ""} found
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -368,7 +366,7 @@ function Dashboard() {
         <Usernav />
 
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-          {/* Header Section with Search */}
+          {/* Header Section */}
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
               <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4">
@@ -379,48 +377,50 @@ function Dashboard() {
               </p>
             </div>
 
-            {/* Desktop Search */}
-            {notes.length > 0 && (
-              <div className="hidden md:block mt-4 lg:mt-0">
+            {/* Desktop Action Bar: Search & Add Note */}
+            <div className="hidden md:flex items-center gap-4">
+              {notes.length > 0 && (
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-theme-secondary" />
                   <input
+                    ref={desktopSearchInputRef}
                     type="text"
                     placeholder="Search notes..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-64 lg:w-72 card-theme backdrop-blur-sm border border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi] text-theme-primary placeholder-theme-secondary"
+                    className="w-64 lg:w-72 card-theme backdrop-blur-sm border border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi] text-theme-primary placeholder-theme-secondary focus:ring-2 focus:ring-theme-accent focus:border-transparent"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full btn-theme shadow-theme"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full text-theme-secondary hover:bg-theme-secondary/10 transition-colors"
+                      title="Clear search"
                     >
-                      <X className="w-4 h-4 text-theme-primary" />
+                      <X className="w-4 h-4" />
                     </button>
                   )}
                 </div>
-              </div>
-            )}
+              )}
+              <button
+                onClick={() => navigate("/add-note")}
+                className="group relative overflow-hidden font-bold py-3 px-5 btn-theme rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] text-sm flex items-center gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                <span>Add Note</span>
+              </button>
+            </div>
           </header>
 
-          {/* Mobile Search FAB */}
-          {notes.length > 0 && (
-            <button
-              onClick={handleSearchClick}
-              className="md:hidden fixed bottom-6 right-6 z-40 p-3 sm:p-4 rounded-full shadow-2xl btn-theme transition-all duration-300 hover:scale-110"
-              aria-label="Search notes"
-            >
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </button>
-          )}
-
-          {/* Search Results Info */}
-          {searchTerm && (
-            <div className="mb-6">
+          {/* Search Results Info (visible for both mobile and desktop) */}
+          {searchTerm && (notes.length > 0 || isMobileSearchOpen) && (
+            <div className="mb-6 px-2">
               <p className="text-theme-secondary font-[satoshi] text-sm sm:text-base">
                 Found {filteredNotes.length} result
-                {filteredNotes.length !== 1 ? "s" : ""} for "{searchTerm}"
+                {filteredNotes.length !== 1 ? "s" : ""} for "
+                <span className="font-medium text-theme-primary">
+                  {searchTerm}
+                </span>
+                "
               </p>
             </div>
           )}
@@ -451,7 +451,7 @@ function Dashboard() {
                 </div>
               </button>
             </div>
-          ) : filteredNotes.length === 0 ? (
+          ) : filteredNotes.length === 0 && searchTerm ? (
             /* No Search Results */
             <div className="text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
@@ -461,7 +461,7 @@ function Dashboard() {
                 No notes found
               </h3>
               <p className="text-theme-secondary font-[satoshi] max-w-md mx-auto mb-4">
-                Try searching with different keywords or create a new note.
+                Try searching with different keywords or clear the search.
               </p>
               <button
                 onClick={() => setSearchTerm("")}
@@ -549,7 +549,7 @@ function Dashboard() {
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] leading-relaxed p-2 sm:p-3 rounded-lg resize-none border border-theme-accent/30 text-sm sm:text-base"
+                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] leading-relaxed p-2 sm:p-3 rounded-lg resize-none border border-theme-accent/30 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-theme-accent/50"
                       rows={4}
                       autoFocus
                     />
@@ -563,16 +563,33 @@ function Dashboard() {
             </div>
           )}
 
-          {/* Add Note FAB for when there are notes */}
-          {notes.length > 0 && (
-            <button
-              onClick={() => navigate("/add-note")}
-              className="fixed bottom-6 left-6 z-40 p-3 sm:p-4 rounded-full shadow-2xl btn-theme transition-all duration-300 hover:scale-110 md:hidden"
-              aria-label="Add new note"
-            >
-              <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-primary-theme text-theme-accent" />
-            </button>
-          )}
+          {/* Mobile Floating Action Button (FAB) */}
+          {/* This FAB handles both Add Note and toggling Search */}
+          <button
+            onClick={
+              isMobileSearchOpen
+                ? handleMobileSearchToggle // If search is open, close it
+                : notes.length > 0 // If notes exist, toggle search. Else, add note
+                ? handleMobileSearchToggle
+                : () => navigate("/add-note")
+            }
+            className="md:hidden fixed bottom-6 right-6 z-40 p-3 sm:p-4 rounded-full btn-theme shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
+            aria-label={
+              isMobileSearchOpen
+                ? "Close search"
+                : notes.length > 0
+                ? "Search notes"
+                : "Add new note"
+            }
+          >
+            {isMobileSearchOpen ? (
+              <X className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            ) : notes.length > 0 ? (
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            ) : (
+              <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            )}
+          </button>
         </main>
       </div>
       <Footer />
