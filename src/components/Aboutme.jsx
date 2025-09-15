@@ -111,7 +111,7 @@ function AboutMeInput({ user, onUpdate }) {
           className="
             w-full px-4 py-2 
             text-sm italic 
-            rounded-xl border-theme shadow-theme input-theme
+            rounded-xl border-theme shadow-theme input-theme text-primary-theme text-theme-accent
             transition-all text-primary-theme text-primary-accent backdrop:blur-3xl duration-300 
             resize-none overflow-hidden
           "
