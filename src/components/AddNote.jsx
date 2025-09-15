@@ -49,19 +49,6 @@ function AddNote() {
     }));
   };
 
-  // const handleSaveNote = async () => {
-  //     toast.success('Notes added', {
-  //       position: 'top-center',
-  //       icon: '✅',
-  //       duration: 3000,
-  //       style: {
-  //           borderRadius: '10px',
-  //           background: '#333',
-  //           color: '#fff',
-  //       },
-  //   });
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim())
@@ -72,7 +59,7 @@ function AddNote() {
     try {
       const token = await getAccessTokenSilently({
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-        scope: "openid profile email",
+        scope: "read:notes write:notes",
       });
       console.log("TOKEN:", token);
 
