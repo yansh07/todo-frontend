@@ -265,78 +265,96 @@ function Dashboard() {
 
   // Loading states
   if (isLoading) {
-    return <div className="text-white text-center p-10">Authenticating...</div>;
+    return (
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
+        <div className="text-theme-primary text-center p-8">
+          <div className="animate-spin w-8 h-8 border-2 border-theme-accent border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-lg font-[satoshi]">Authenticating...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="text-white text-center p-10">
-        Please log in to continue.
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
+        <div className="text-theme-primary text-center p-8">
+          <p className="text-lg font-[satoshi]">Please log in to continue.</p>
+        </div>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="text-white text-center p-10">Loading your data...</div>
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
+        <div className="text-theme-primary text-center p-8">
+          <div className="animate-spin w-8 h-8 border-2 border-theme-accent border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-lg font-[satoshi]">Loading your data...</p>
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-white text-center p-10">
-        <p>Error loading data: {error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Retry
-        </button>
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
+        <div className="text-theme-primary text-center p-8">
+          <p className="text-lg font-[satoshi] mb-4">Error loading data: {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg font-[satoshi] hover:bg-blue-600 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   if (!dbuser) {
     return (
-      <div className="text-white text-center p-10">
-        Error loading profile. Please try logging in again.
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
+        <div className="text-theme-primary text-center p-8">
+          <p className="text-lg font-[satoshi]">Error loading profile. Please try logging in again.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-primary bg-theme-primary ">
+    <div className="min-h-screen bg-theme-primary">
       {/* Animated background particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72  rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-96 h-96  rounded-full blur-3xl animate-pulse delay-700"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80  rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl animate-pulse opacity-20"></div>
+        <div className="absolute top-3/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl animate-pulse delay-700 opacity-20"></div>
+        <div className="absolute top-1/2 left-1/2 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-20"></div>
       </div>
 
       {/* Search Overlay for Mobile */}
       {isSearchExpanded && (
-        <div className="fixed inset-0  backdrop-blur-sm z-50 md:hidden">
-          <div className="flex items-start justify-center pt-20 px-4">
-            <div className="w-full max-w-md  backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden">
+          <div className="flex items-start justify-center pt-16 sm:pt-20 px-4">
+            <div className="w-full max-w-md card-theme backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex items-center gap-3 mb-4">
-                <Search className="w-5 h-5" />
+                <Search className="w-5 h-5 text-theme-primary" />
                 <input
                   type="text"
                   placeholder="Search by title or category..."
                   value={searchTerm}
                   onChange={handleSearchChange}
-                  className="flex-1  text-lg font-[satoshi]"
+                  className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
                   autoFocus
                 />
                 <button
                   onClick={handleSearchClose}
-                  className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                  className="p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 " />
+                  <X className="w-5 h-5 text-theme-primary" />
                 </button>
               </div>
               {searchTerm && (
-                <div className="text-sm  font-[satoshi]">
+                <div className="text-sm text-theme-secondary font-[satoshi]">
                   {filteredNotes.length} result
                   {filteredNotes.length !== 1 ? "s" : ""} found
                 </div>
@@ -349,14 +367,14 @@ function Dashboard() {
       <div className="relative z-10">
         <Usernav />
 
-        <div className="px-6 py-4 md:px-12 md:py-12 lg:px-16 xl:px-36">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
           {/* Header Section with Search */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div className="mb-2 lg:mb-0">
-              <h1 className="font-[satoshi] font-medium text-theme-primary text-theme-accent bg-clip-text text-3xl md:text-4xl lg:text-4xl xl:text-4xl mb-4">
+          <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
+            <div className="mb-4 lg:mb-0">
+              <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4">
                 {getGreeting()} 👋
               </h1>
-              <p className=" text-lg font-[satoshi] text-theme-primary text-theme-accent">
+              <p className="text-theme-secondary text-base sm:text-lg font-[satoshi]">
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
@@ -365,173 +383,159 @@ function Dashboard() {
             {notes.length > 0 && (
               <div className="hidden md:block mt-4 lg:mt-0">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 " />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-theme-secondary" />
                   <input
                     type="text"
                     placeholder="Search notes..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-64 lg:w-72  backdrop-blur-sm border border-theme border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi]"
+                    className="w-64 lg:w-72 card-theme backdrop-blur-sm border border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi] text-theme-primary placeholder-theme-secondary"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full btn-theme input-theme shadow-theme"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full btn-theme shadow-theme"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-4 h-4 text-theme-primary" />
                     </button>
                   )}
                 </div>
               </div>
             )}
+          </header>
 
-            {/* Mobile Search Icon */}
-            {notes.length > 0 && (
-              <div className="md:hidden fixed bottom-6 right-6 z-40">
-                <button
-                  onClick={handleSearchClick}
-                  className=" p-4 rounded-full shadow-2xl btn-theme input-theme shadow-theme transition-all duration-300"
-                >
-                  <Search className="w-6 h-6 text-white" />
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Mobile Search FAB */}
+          {notes.length > 0 && (
+            <button
+              onClick={handleSearchClick}
+              className="md:hidden fixed bottom-6 right-6 z-40 p-3 sm:p-4 rounded-full shadow-2xl btn-theme transition-all duration-300 hover:scale-110"
+              aria-label="Search notes"
+            >
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </button>
+          )}
 
           {/* Search Results Info */}
           {searchTerm && (
-            <div className="mt-6 mb-4">
-              <p className=" font-[satoshi]">
+            <div className="mb-6">
+              <p className="text-theme-secondary font-[satoshi] text-sm sm:text-base">
                 Found {filteredNotes.length} result
                 {filteredNotes.length !== 1 ? "s" : ""} for "{searchTerm}"
               </p>
             </div>
           )}
 
-          {/* Add Note Button */}
-          {notes.length === 0 && (
-            <div className="flex justify-center mb-12 xl:mb-2 ml-0 xl:ml-18">
-              <button
-                onClick={() => navigate("/add-note")}
-                className="group relative overflow-hidden font-bold py-4 px-8  rounded-2xl shadow-2xl btn-theme transition-all duration-300  font-[satoshi]"
-              >
-                <div className="flex items-center gap-3">
-                  <Plus className="w-6 h-6" />
-                  <span className="text-lg">Create New Note</span>
-                </div>
-                {/* Shine effect */}
-                <div className="absolute inset-0 -top-full glow transition-all duration-1000"></div>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Notes Section */}
-        <div className="px-6 md:px-12 lg:px-20 xl:px-32 xl:ml-20 pb-12 mb-4">
+          {/* Notes Content */}
           {notes.length === 0 ? (
-            <div className="text-center py-2">
-              <div className="mb-8">
-                <div className="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6">
-                  <Plus className="w-12 h-12 " />
+            /* Empty State */
+            <div className="text-center py-8 sm:py-12">
+              <div className="mb-6 sm:mb-8">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                  <Plus className="w-8 h-8 sm:w-12 sm:h-12 text-theme-primary" />
                 </div>
-                <h3 className="text-2xl font-bold  mb-4 font-[satoshi]">
+                <h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-3 sm:mb-4 font-[satoshi]">
                   Your canvas is empty
                 </h3>
-                <p className=" text-lg mb-8 font-[satoshi] max-w-md mx-auto">
+                <p className="text-theme-secondary text-base sm:text-lg mb-6 sm:mb-8 font-[satoshi] max-w-md mx-auto">
                   Start your journey by creating your first note. Every great
                   idea begins with a single thought.
                 </p>
               </div>
               <button
                 onClick={() => navigate("/add-note")}
-                className="font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 font-[satoshi]"
+                className="group relative overflow-hidden font-bold py-3 sm:py-4 px-6 sm:px-8 btn-theme rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-sm sm:text-base"
               >
-                Create Your First Note
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span>Create Your First Note</span>
+                </div>
               </button>
             </div>
           ) : filteredNotes.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6">
-                <Search className="w-8 h-8 " />
+            /* No Search Results */
+            <div className="text-center py-8 sm:py-12">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-theme-primary" />
               </div>
-              <h3 className="text-xl font-bold  mb-4 font-[satoshi]">
+              <h3 className="text-lg sm:text-xl font-bold text-theme-primary mb-3 sm:mb-4 font-[satoshi]">
                 No notes found
               </h3>
-              <p className=" font-[satoshi] max-w-md mx-auto">
+              <p className="text-theme-secondary font-[satoshi] max-w-md mx-auto mb-4">
                 Try searching with different keywords or create a new note.
               </p>
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4  font-[satoshi] underline"
+                className="text-theme-accent font-[satoshi] underline hover:text-theme-primary transition-colors"
               >
                 Clear search
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            /* Notes Grid */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {filteredNotes.map((note) => (
-                <div
+                <article
                   key={note._id || note.id}
-                  className={`group relative backdrop-blur-sm rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                  className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
                     LABEL_COLORS[note.category]
                   }`}
                 >
                   {/* Note Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className=" font-bold text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
+                  <div className="flex justify-between items-start mb-3 sm:mb-4">
+                    <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
-                    {/* Responsive button visibility - visible on smaller screens, hover on xl */}
-                    <div className="flex gap-2 opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-300">
+                    {/* Action Buttons */}
+                    <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
                       {editingNote === note._id ? (
                         <>
                           <button
                             onClick={() => saveEdit(note._id)}
-                            className="p-2  rounded-lg transition-colors"
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
                             title="Save changes"
                           >
-                            <Check className="w-4 h-4 " />
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
                           </button>
                           <button
                             onClick={cancelEdit}
-                            className="p-2 rounded-lg transition-colors"
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
                             title="Cancel edit"
                           >
-                            <X className="w-4 h-4 " />
+                            <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" />
                           </button>
                         </>
                       ) : (
                         <>
                           <button
                             onClick={() => startEdit(note)}
-                            className="p-2  rounded-lg transition-colors"
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
                             title="Edit note"
                           >
-                            <Edit3 className="w-4 h-4 " />
+                            <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-theme-primary" />
                           </button>
                           <button
                             onClick={() => deleteNote(note._id || note.id)}
-                            className="p-2 rounded-lg transition-colors"
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
                             title="Delete note"
                           >
-                            <Trash2 className="w-4 h-4 " />
+                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" />
                           </button>
                         </>
                       )}
                     </div>
                   </div>
 
-                  {/* Label Badge */}
-                  <div className="flex justify-between items-center mb-4">
+                  {/* Label and Date */}
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3 sm:mb-4">
                     <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                      className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit ${
                         LABEL_BADGE_COLORS[note.category] ||
                         LABEL_BADGE_COLORS.general
                       }`}
                     >
                       {note.category || note.label || "general"}
                     </span>
-                    <span className=" text-xs font-[satoshi]">
+                    <span className="text-theme-secondary text-xs font-[satoshi]">
                       {note.updatedAt
                         ? formatDate(note.updatedAt)
                         : note.createdAt
@@ -540,28 +544,36 @@ function Dashboard() {
                     </span>
                   </div>
 
-                  {/* Description */}
+                  {/* Content */}
                   {editingNote === note._id ? (
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full  font-[satoshi] leading-relaxed p-2 rounded-lg resize-none "
+                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] leading-relaxed p-2 sm:p-3 rounded-lg resize-none border border-theme-accent/30 text-sm sm:text-base"
                       rows={4}
                       autoFocus
                     />
                   ) : (
-                    <p className=" font-[satoshi] leading-relaxed line-clamp-4">
+                    <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
                       {note.content}
                     </p>
                   )}
-
-                  {/* Hover glow effect */}
-                  <div className="absolute inset-0 rounded-2xl transition-all duration-300 pointer-events-none"></div>
-                </div>
+                </article>
               ))}
             </div>
           )}
-        </div>
+
+          {/* Add Note FAB for when there are notes */}
+          {notes.length > 0 && (
+            <button
+              onClick={() => navigate("/add-note")}
+              className="fixed bottom-6 left-6 z-40 p-3 sm:p-4 rounded-full shadow-2xl btn-theme transition-all duration-300 hover:scale-110 md:hidden"
+              aria-label="Add new note"
+            >
+              <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-primary-theme text-theme-accent" />
+            </button>
+          )}
+        </main>
       </div>
       <Footer />
     </div>

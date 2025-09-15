@@ -56,55 +56,75 @@ function Usernav() {
   if (isLoading) return null;
 
   return (
-    <div className="relative z-50  backdrop-blur-xl border-b border-theme border-theme-accent p-3 shadow-2xl">
-      <div className="flex items-center justify-between mr-10 md:mr-14 lg:mr-12 xl:px-16 max-w-7xl mx-auto">
-        {/* Logo Section */}
-        <div className=" space-x-4 md:ml-8 lg:ml-14 xl:-ml-1">
-          <span className="hidden md:block text-2xl md:text-3xl xl:text-4xl font-[satoshi] font-medium   bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
-            PlanIt
-          </span>
-        </div>
-
-        {/* Right Section - Consolidated */}
-        <div className="flex items-center space-x-6 relative z-50">
-          {/* Add Note Button */}
-          <div className="relative group theme-btn shadow-card shadow-glow" onClick={() => navigate("/add-note")}>
-            <div className=" p-3 rounded-2xl hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 cursor-pointer">
-              <FilePlus className=" w-5 h-5 md:w-6 md:h-6" />
-            </div>
-            <span className="absolute top-12 left-1/2 -translate-x-1/2 w-max px-3 py-1 text-xs backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none  font-medium">
-              Add new note
+    <nav className="sticky top-0 z-50 backdrop-blur-xl border-b border-theme border-theme-accent shadow-2xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
+          
+          {/* Logo Section */}
+          <div className="flex-shrink-0">
+            <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-[satoshi] font-medium bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
+              PlanIt
             </span>
           </div>
 
-          {/* Theme Toggle */}
-          <ThemeToggle />
-
-          {/* Profile Button */}
-          <div className="relative group" onClick={() => navigate("/profile")}>
-            <div className="relative">
-              <div className="w-10 h-10 md:w-11 md:h-11 rounded-2xl p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
-                <div className="w-full h-full btn-theme backdrop-blur-sm rounded-2xl flex items-center justify-center overflow-hidden">
-                  {(dbUser?.profilePic || auth0User?.picture) ? (
-                    <img
-                      src={dbUser?.profilePic || auth0User?.picture}
-                      alt="profile"
-                      className="w-full h-full object-cover rounded-2xl"
-                    />
-                  ) : (
-                    <User className="w-5 h-5 " />
-                  )}
-                </div>
+          {/* Right Section - Navigation Items */}
+          <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+            
+            {/* Add Note Button */}
+            <div className="relative group">
+              <button
+                onClick={() => navigate("/add-note")}
+                className="theme-btn shadow-card shadow-glow p-2 sm:p-3 rounded-xl sm:rounded-2xl hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 focus:outline-none focus:ring-2 focus:ring-theme-accent/50"
+                aria-label="Add new note"
+              >
+                <FilePlus className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+              </button>
+              
+              {/* Tooltip */}
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-xs font-medium backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-60">
+                Add new note
               </div>
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2"></div>
             </div>
-            <span className="absolute top-12 right-0 w-max px-3 py-1 text-xs backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none font-medium">
-              Profile & Settings
-            </span>
+
+            {/* Theme Toggle */}
+            <div className="flex-shrink-0">
+              <ThemeToggle />
+            </div>
+
+            {/* Profile Button */}
+            <div className="relative group flex-shrink-0">
+              <button
+                onClick={() => navigate("/profile")}
+                className="relative focus:outline-none focus:ring-2 focus:ring-theme-accent/50 rounded-xl"
+                aria-label="Profile & Settings"
+              >
+                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-xl sm:rounded-2xl p-[2px] cursor-pointer group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-full h-full btn-theme backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden">
+                    {(dbUser?.profilePic || auth0User?.picture) ? (
+                      <img
+                        src={dbUser?.profilePic || auth0User?.picture}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-xl sm:rounded-2xl"
+                      />
+                    ) : (
+                      <User className="w-4 h-4 sm:w-5 sm:h-5" />
+                    )}
+                  </div>
+                </div>
+                
+                {/* Online Indicator */}
+                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 border-theme-primary bg-green-500"></div>
+              </button>
+              
+              {/* Tooltip */}
+              <div className="absolute top-full right-0 mt-2 px-2 py-1 text-xs font-medium backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-60">
+                Profile & Settings
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

@@ -1,29 +1,52 @@
-import React from 'react';
-import GreetingComponent from './Greeting';
+import React from "react";
 
 function Navbar() {
   return (
-    <div className="bg-transparent flex flex-row top-8 xl:top-0 left-1 xl:left-12 fixed p-1 items-center ml-2 md:ml-28 md:mt-4 lg:ml-52 lg:mt-4 xl:ml-90 xl:px-4 xl:mt-8">
-      {/* Brand & Greeting Section */}
-      <div className="flex items-center space-x-44 md:space-x-92 lg:space-x-60 xl:space-x-72">
-        <div className="flex items-center space-x-2">
-          <i className="fa-solid fa-file-word text-3xl md:text-4xl xl:text-5xl text-yellow-500"></i>
-          <span className="text-3xl font-[satoshi] font-extrabold text-yellow-500 md:text-4xl xl:text-5xl ">
-            PlanIt
-          </span>
+    <nav className="sticky top-0 z-40 bg-transparent backdrop-blur-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
+          
+          {/* Brand & Logo Section */}
+          <div className="flex items-center flex-shrink-0">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <i className="fa-solid fa-file-word text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-theme-primary text-theme-accent"></i>
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[satoshi] font-extrabold text-theme-primary text-theme-accent">
+                PlanIt
+              </span>
+            </div>
+          </div>
+          
+          {/* Right Section - Navigation Items */}
+          <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
+            {/* Add any additional navigation items here */}
+            
+            {/* Search Button */}
+            <button className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">
+              <i className="fa-solid fa-search text-theme-primary text-theme-accent  text-sm sm:text-base"></i>
+            </button>
+            
+            {/* Notifications */}
+            {/* <button className="hidden md:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50 relative">
+              <i className="fa-solid fa-bell text-theme-primary text-sm sm:text-base"></i> */}
+              {/* Notification Badge */}
+              {/* <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs"></span>
+            </button> */}
+            
+            {/* User Profile Placeholder - Replace with actual user menu */}
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary btn-theme shadow-theme flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-200">
+              <i className="fa-solid fa-user text-white text-xs sm:text-sm"></i>
+            </div>
+          </div>
         </div>
-        
-        {/* The Greeting Component */}
-        {/* <div className="text-lg font-[satoshi] text-gray-200 md:text-xl xl:text-2xl lg:px-40">
-          <GreetingComponent />
-        </div> */}
       </div>
       
-      {/* other navbar items here */}
-      <div className="flex items-center space-x-4">
-        {/* user profile*/}
+      {/* Mobile Menu Button - Add if needed */}
+      <div className="md:hidden absolute top-4 right-4">
+        <button className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">
+          <i className="fa-solid fa-bars text-theme-primary"></i>
+        </button>
       </div>
-    </div>
+    </nav>
   );
 }
 
