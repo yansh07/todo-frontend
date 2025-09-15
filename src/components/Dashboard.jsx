@@ -211,7 +211,7 @@ function Dashboard() {
       );
 
       if (response.ok) {
-        const updatedNote = await response.json();
+        const {note: updatedNote} = await response.json();
         setNotes((prevNotes) =>
           prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
         );
