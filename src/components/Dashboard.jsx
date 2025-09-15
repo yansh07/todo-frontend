@@ -566,7 +566,7 @@ function Dashboard() {
 
           {/* Mobile Floating Action Button (FAB) */}
           {/* This FAB handles both Add Note and toggling Search */}
-          <button
+          {/* <button
             onClick={
               isMobileSearchOpen
                 ? handleMobileSearchToggle // If search is open, close it
@@ -590,7 +590,7 @@ function Dashboard() {
             ) : (
               <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             )}
-          </button>
+          </button> */}
         </main>
       </div>
       <Footer />
