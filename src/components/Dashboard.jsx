@@ -41,6 +41,7 @@ function Dashboard() {
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
   const [error, setError] = useState(null);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const {
     user: auth0User,
     getAccessTokenSilently,
@@ -232,6 +233,10 @@ function Dashboard() {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+  const handleSearchClose = () => {
+    setIsSearchExpanded(false);
+    setSearchTerm("");
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -336,23 +341,22 @@ function Dashboard() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden flex justify-center items-start pt-16 px-4">
           <div className="w-full max-w-md card-theme rounded-2xl p-4 sm:p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <Search className="w-5 h-5 text-theme-primary" />
-              <input
-                type="text"
-                placeholder="Search by title, category, or content..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
-                autoFocus
-              />
-              {/* Floating Search Button (Mobile only) */}
-              <button
-                onClick={handleMobileSearchToggle}
-                className="fixed bottom-6 right-6 md:hidden w-14 h-14 rounded-full bg-orange-500 flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors z-50"
-              >
-                <Search className="w-6 h-6 text-white" />
-              </button>
-            </div>
+                <Search className="w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search by title or category..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="flex-1  text-lg font-[satoshi]"
+                  autoFocus
+                />
+                <button
+                  onClick={handleSearchClose}
+                  className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 " />
+                </button>
+              </div>
             {searchTerm && (
               <div className="text-sm text-theme-secondary font-[satoshi]">
                 {filteredNotes.length} result
