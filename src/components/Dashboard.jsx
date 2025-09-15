@@ -345,11 +345,12 @@ function Dashboard() {
                 className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
                 autoFocus
               />
+              {/* Floating Search Button (Mobile only) */}
               <button
                 onClick={handleMobileSearchToggle}
-                className="p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
+                className="fixed bottom-6 right-6 md:hidden w-14 h-14 rounded-full bg-orange-500 flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors z-50"
               >
-                <X className="w-5 h-5 text-theme-primary" />
+                <Search className="w-6 h-6 text-white" />
               </button>
             </div>
             {searchTerm && (
