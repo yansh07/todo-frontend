@@ -28,7 +28,7 @@ Built with ❤️,  debugged at 2AM, and deployed end-to-end.
 <br>
 
 ## 🖼️ Screenshots  
-img src="public/login.png" alt="main" height="300"/><img src="public/dashboard.png" alt="main" height="300"/><img src="public/profile.png" alt="main" height="300"/><img src="public/addnote.png" alt="main" height="300"/><img src="public/upload.png" alt="main" height="300"/>  
+<img src="public/login.png" alt="main" height="300"/><img src="public/dashboard.png" alt="main" height="300"/><img src="public/profile.png" alt="main" height="300"/><img src="public/addnote.png" alt="main" height="300"/><img src="public/upload.png" alt="main" height="300"/>  
 
 <br>
 <br>
