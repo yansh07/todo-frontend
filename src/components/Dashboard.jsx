@@ -332,7 +332,7 @@ function Dashboard() {
       </div>
 
       {/* Mobile Search Overlay */}
-      {isMobileSearchOpen && (
+      {/* {isMobileSearchOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden flex justify-center items-start pt-16 px-4">
           <div className="w-full max-w-md card-theme rounded-2xl p-4 sm:p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
@@ -344,7 +344,7 @@ function Dashboard() {
                 onChange={handleSearchChange}
                 className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
                 autoFocus
-              />
+              /> */}
               {/* Floating Search Button (Mobile only) */}
               {/* <button
                 onClick={handleMobileSearchToggle}
@@ -352,7 +352,7 @@ function Dashboard() {
               >
                 <Search className="w-6 h-6 text-white" />
               </button> */}
-            </div>
+            {/* </div>
             {searchTerm && (
               <div className="text-sm text-theme-secondary font-[satoshi]">
                 {filteredNotes.length} result
@@ -361,7 +361,7 @@ function Dashboard() {
             )}
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="relative z-10">
         <Usernav />
