@@ -58,6 +58,8 @@ function Dashboard() {
 
   // Reference for the desktop search input for autoFocus
   const desktopSearchInputRef = useRef(null);
+  const [editingNote, setEditingNote] = useState(null);
+  const [editContent, setEditContent] = useState("");
 
   // ... (useEffect for setupDashboard remains the same)
   useEffect(() => {
@@ -183,13 +185,52 @@ function Dashboard() {
       alert("Failed to delete note. Please try again.");
     }
   };
-
-  // ✨ 3. New handler for editing. The modal will call this.
-  const handleEdit = (note) => {
-    // Here, you'd navigate to your edit page.
-    // For now, let's assume you have a route like '/edit-note/:id'
-    navigate(`/edit-note/${note._id}`); 
+  const startEdit = (note) => {
+    setEditingNote(note._id);
+    setEditContent(note.content);
   };
+
+  const cancelEdit = () => {
+    setEditingNote(null);
+    setEditContent("");
+  };
+
+  const saveEdit = async (noteId) => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/note/${noteId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ content: editContent }),
+        }
+      );
+
+      if (response.ok) {
+        const { note: updatedNote } = await response.json();
+        setNotes((prevNotes) =>
+          prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
+        );
+        cancelEdit(); // Resets the editing state
+      } else {
+        throw new Error("Failed to update note");
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
+      alert("Failed to save changes. Please try again.");
+    }
+  };
+
+  // // ✨ 3. New handler for editing. The modal will call this.
+  // const handleEdit = (note) => {
+  //   // Here, you'd navigate to your edit page.
+  //   // For now, let's assume you have a route like '/edit-note/:id'
+  //   navigate(`/edit-note/${note._id}`); 
+  // };
 
   const handleMobileSearchToggle = () => {
     setIsMobileSearchOpen(!isMobileSearchOpen);
@@ -398,7 +439,11 @@ function Dashboard() {
               {filteredNotes.map((note) => (
                 <article
                   key={note._id || note.id}
-                  onClick={() => setSelectedNote(note)}
+                  onClick={() => {
+                    if (editingNote !== note._id) {
+                      setSelectedNote(note);
+                    }
+                  }}
                   className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 cursor-pointer ${
                     LABEL_COLORS[note.category]
                   }`}
@@ -408,6 +453,30 @@ function Dashboard() {
                     <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
+                    <div
+                      className="flex gap-1 sm:gap-2 flex-shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {editingNote === note._id ? (
+                        <>
+                          <button onClick={() => saveEdit(note._id)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Save">
+                            <Check className="w-4 h-4 text-green-500" />
+                          </button>
+                          <button onClick={cancelEdit} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Cancel">
+                            <X className="w-4 h-4 text-red-500" />
+                          </button>
+                        </>
+                      ) : (
+                         <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                          <button onClick={() => startEdit(note)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Edit">
+                            <Edit3 className="w-4 h-4 text-theme-primary" />
+                          </button>
+                          <button onClick={() => deleteNote(note._id)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Delete">
+                            <Trash2 className="w-4 h-4 text-red-500" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Label and Date */}
@@ -430,9 +499,22 @@ function Dashboard() {
                   </div>
 
                   {/* Content */}
-                  <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                  {/* <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
                     {note.content}
-                  </p>
+                  </p> */}
+                  {editingNote === note._id ? (
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] p-2 rounded-lg resize-none border border-theme-accent/30 focus:outline-none focus:ring-1 focus:ring-theme-accent/50"
+                      rows={4}
+                      autoFocus
+                    />
+                  ) : (
+                    <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                      {note.content}
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
@@ -446,7 +528,7 @@ function Dashboard() {
         isOpen={!!selectedNote}
         note={selectedNote}
         onClose={() => setSelectedNote(null)}
-        onEdit={handleEdit}
+        onEdit={startEdit}
         onDelete={deleteNote}
       />
     </div>
