@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Camera, Upload, X, Check, ArrowLeft, ImageIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ function ProfileUpload({ onUpload }) {
   const [preview, setPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
-  
+
   const { getAccessTokenSilently, user: auth0User } = useAuth0();
   const navigate = useNavigate();
 
@@ -63,41 +63,82 @@ function ProfileUpload({ onUpload }) {
     }
 
     setUploading(true);
-    
+
     try {
+      console.log("🔍 Starting upload process...");
+      console.log("📄 File details:", {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+      });
+
       const token = await getAccessTokenSilently({
         authorizationParams: {
-          audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+          audience:
+            import.meta.env.VITE_AUTH0_AUDIENCE ||
+            `${import.meta.env.VITE_BACKEND_URL}`,
         },
       });
 
+      console.log("🔑 Token obtained:", token ? "✅ Yes" : "❌ No");
+
       const formData = new FormData();
       formData.append("profilePic", file);
-      formData.append("auth0Id", auth0User.sub);
-      formData.append("email", auth0User.email);
 
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile-pic`, {
+      // Debug: Check formData contents
+      console.log("📦 FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(
+          `  ${key}:`,
+          value instanceof File ? `File(${value.name})` : value
+        );
+      }
+
+      const uploadUrl = `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/user/profile-pic`;
+      console.log("🌐 Upload URL:", uploadUrl);
+
+      const res = await fetch(uploadUrl, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
+      console.log("📡 Response status:", res.status);
+      console.log("📡 Response ok:", res.ok);
+
       const data = await res.json();
+      console.log("📊 Response data:", data);
+
       if (res.ok && data.success) {
+        console.log("✅ Upload successful!");
+        console.log(
+          "🖼️ New profile pic URL:",
+          data.user?.profilePic || data.profilePic
+        );
+
         toast.success("Profile picture updated successfully!");
-        if (onUpload) onUpload(data.user.profilePic);
+
+        // Call onUpload with the correct URL
+        const newProfilePicUrl = data.user?.profilePic || data.profilePic;
+        if (onUpload && newProfilePicUrl) {
+          console.log("🔄 Calling onUpload with:", newProfilePicUrl);
+          onUpload(newProfilePicUrl);
+        }
+
         setTimeout(() => navigate("/profile"), 1500);
       } else {
+        console.error("❌ Upload failed:", data);
         toast.error(data.error || "Upload failed");
       }
     } catch (error) {
-      console.error("Upload error:", error);
+      console.error("💥 Upload error:", error);
       toast.error("Upload failed. Please try again.");
     } finally {
       setUploading(false);
     }
   };
-
   const clearSelection = () => {
     setFile(null);
     setPreview(null);
@@ -121,11 +162,11 @@ function ProfileUpload({ onUpload }) {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          
+
           <div className="w-16 h-16 mx-auto mb-4 card-theme btn-theme shadow-theme rounded-2xl flex items-center justify-center">
             <Camera className="w-8 h-8 text-theme-primary" />
           </div>
-          
+
           <h1 className="text-3xl font-bold font-[satoshi] text-theme-primary bg-clip-text mb-2">
             Update Profile Picture
           </h1>
@@ -144,9 +185,10 @@ function ProfileUpload({ onUpload }) {
               onDragLeave={handleDragLeave}
               className={`
                 relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300
-                ${dragOver 
-                  ? 'border-purple-400 bg-purple-400/10 scale-105' 
-                  : 'border-theme-accent hover:border-purple-400/50 hover:bg-purple-400/5'
+                ${
+                  dragOver
+                    ? "border-purple-400 bg-purple-400/10 scale-105"
+                    : "border-theme-accent hover:border-purple-400/50 hover:bg-purple-400/5"
                 }
               `}
             >
@@ -157,15 +199,17 @@ function ProfileUpload({ onUpload }) {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 id="file-upload"
               />
-              
+
               <div className="space-y-4">
                 <div className="w-16 h-16 mx-auto btn-theme card-theme shadow-theme rounded-2xl flex items-center justify-center">
                   <ImageIcon className="w-8 h-8 text-theme-primary" />
                 </div>
-                
+
                 <div>
                   <p className="text-lg font-semibold text-theme-primary mb-2">
-                    {dragOver ? "Drop your image here" : "Choose or drag your photo"}
+                    {dragOver
+                      ? "Drop your image here"
+                      : "Choose or drag your photo"}
                   </p>
                   <p className="text-sm text-theme-secondary">
                     Max 1MB • 300x300px recommended
@@ -199,7 +243,7 @@ function ProfileUpload({ onUpload }) {
                     <X className="w-4 h-4" />
                   </button>
                 </div>
-                
+
                 <p className="mt-4 text-theme-primary font-medium">
                   Looking great! Ready to upload?
                 </p>
@@ -216,7 +260,7 @@ function ProfileUpload({ onUpload }) {
                 >
                   Choose Different
                 </button>
-                
+
                 <button
                   onClick={handleSubmit}
                   disabled={uploading}

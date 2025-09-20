@@ -49,7 +49,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-note" element={<AddNote />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/profile-upload" element={<ProfileUpload />} />
+        <Route path="/profile/upload" element={<ProfileUpload />} />
       </Routes>
     </div>
   );
