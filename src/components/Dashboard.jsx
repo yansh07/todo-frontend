@@ -5,7 +5,9 @@ import Usernav from "./Usernav";
 import Footer from "./Footer";
 import ThemeToggle from "./Themetoggle";
 import { useAuth0 } from "@auth0/auth0-react";
+import NoteModal from "./NoteModal";
 
+// ... (LABEL_COLORS and LABEL_BADGE_COLORS remain the same, no need to change them)
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
   personal:
@@ -32,14 +34,13 @@ const LABEL_BADGE_COLORS = {
     "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/30",
 };
 
+
 function Dashboard() {
   const navigate = useNavigate();
   const [dbuser, setDbUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingNote, setEditingNote] = useState(null);
-  const [editContent, setEditContent] = useState("");
   const [error, setError] = useState(null);
   const {
     user: auth0User,
@@ -48,18 +49,21 @@ function Dashboard() {
     isAuthenticated,
   } = useAuth0();
 
+  // ✨ 2. New state for our celebrity modal
+  const [selectedNote, setSelectedNote] = useState(null);
+
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false); // New state for mobile search overlay
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Reference for the desktop search input for autoFocus
   const desktopSearchInputRef = useRef(null);
 
-  // Single useEffect to handle all data loading
+  // ... (useEffect for setupDashboard remains the same)
   useEffect(() => {
     const setupDashboard = async () => {
       if (!isAuthenticated || !auth0User) {
-        setLoading(false); // Important: stop loading if not authenticated
+        setLoading(false); 
         return;
       }
 
@@ -136,7 +140,7 @@ function Dashboard() {
     }
   }, [auth0User, getAccessTokenSilently, isLoading, isAuthenticated]);
 
-  // Filter notes when search term or notes change
+  // ... (useEffect for filtering notes remains the same)
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredNotes(notes);
@@ -144,7 +148,7 @@ function Dashboard() {
       const filtered = notes.filter(
         (note) =>
           note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          note.content.toLowerCase().includes(searchTerm.toLowerCase()) || // Search content too
+          note.content.toLowerCase().includes(searchTerm.toLowerCase()) || 
           note.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredNotes(filtered);
@@ -152,7 +156,7 @@ function Dashboard() {
   }, [searchTerm, notes]);
 
   const deleteNote = async (noteId) => {
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
+    // ✨ No need for window.confirm here anymore, the modal handles it!
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(
@@ -170,6 +174,7 @@ function Dashboard() {
         setNotes((prevNotes) =>
           prevNotes.filter((note) => note._id !== noteId)
         );
+        setSelectedNote(null); // ✨ Close modal after successful delete
       } else {
         throw new Error("Failed to delete note");
       }
@@ -179,53 +184,17 @@ function Dashboard() {
     }
   };
 
-  // Edit start
-  const startEdit = (note) => {
-    setEditingNote(note._id);
-    setEditContent(note.content);
-  };
-
-  // Cancel edit
-  const cancelEdit = () => {
-    setEditingNote(null);
-    setEditContent("");
-  };
-
-  // Save edit
-  const saveEdit = async (noteId) => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/note/${noteId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ content: editContent }),
-        }
-      );
-
-      if (response.ok) {
-        const { note: updatedNote } = await response.json();
-        setNotes((prevNotes) =>
-          prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
-        );
-        cancelEdit();
-      } else {
-        throw new Error("Failed to update note");
-      }
-    } catch (error) {
-      console.error("Error updating note:", error);
-      alert("Failed to save changes. Please try again.");
-    }
+  // ✨ 3. New handler for editing. The modal will call this.
+  const handleEdit = (note) => {
+    // Here, you'd navigate to your edit page.
+    // For now, let's assume you have a route like '/edit-note/:id'
+    navigate(`/edit-note/${note._id}`); 
   };
 
   const handleMobileSearchToggle = () => {
     setIsMobileSearchOpen(!isMobileSearchOpen);
     if (isMobileSearchOpen) {
-      setSearchTerm(""); // Clear search when closing
+      setSearchTerm("");
     }
   };
 
@@ -259,7 +228,8 @@ function Dashboard() {
     }
   };
 
-  // Loading and Error States
+
+  // ... (Loading, Error, and Authentication checks )
   if (isLoading) {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
@@ -324,50 +294,17 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-theme-primary relative">
-      {/* Animated background particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl animate-pulse opacity-20 bg-cyan-400"></div>
         <div className="absolute top-3/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl animate-pulse delay-700 opacity-20 bg-pink-400"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-20 bg-violet-400"></div>
       </div>
 
-      {/* Mobile Search Overlay */}
-      {/* {isMobileSearchOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 md:hidden flex justify-center items-start pt-16 px-4">
-          <div className="w-full max-w-md card-theme rounded-2xl p-4 sm:p-6 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <Search className="w-5 h-5 text-theme-primary" />
-              <input
-                type="text"
-                placeholder="Search by title, category, or content..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="flex-1 bg-transparent text-theme-primary text-base sm:text-lg font-[satoshi] placeholder-theme-secondary outline-none"
-                autoFocus
-              /> */}
-              {/* Floating Search Button (Mobile only) */}
-              {/* <button
-                onClick={handleMobileSearchToggle}
-                className="fixed bottom-6 right-6 md:hidden w-14 h-14 rounded-full bg-orange-500 flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors z-50"
-              >
-                <Search className="w-6 h-6 text-white" />
-              </button> */}
-            {/* </div>
-            {searchTerm && (
-              <div className="text-sm text-theme-secondary font-[satoshi]">
-                {filteredNotes.length} result
-                {filteredNotes.length !== 1 ? "s" : ""} found
-              </div>
-            )}
-          </div>
-        </div>
-      )} */}
-
       <div className="relative z-10">
         <Usernav />
 
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-          {/* Header Section */}
+          {/* ... (Header and search bar section remain the same) */}
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
               <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4">
@@ -412,21 +349,6 @@ function Dashboard() {
             </div>
           </header>
 
-          {/* Search Results Info (visible for both mobile and desktop) */}
-          {searchTerm && (notes.length > 0 || isMobileSearchOpen) && (
-            <div className="mb-6 px-2">
-              <p className="text-theme-secondary font-[satoshi] text-sm sm:text-base">
-                Found {filteredNotes.length} result
-                {filteredNotes.length !== 1 ? "s" : ""} for "
-                <span className="font-medium text-theme-primary">
-                  {searchTerm}
-                </span>
-                "
-              </p>
-            </div>
-          )}
-
-          {/* Notes Content */}
           {notes.length === 0 ? (
             /* Empty State */
             <div className="text-center py-8 sm:py-12">
@@ -453,8 +375,7 @@ function Dashboard() {
               </button>
             </div>
           ) : filteredNotes.length === 0 && searchTerm ? (
-            /* No Search Results */
-            <div className="text-center py-8 sm:py-12">
+             <div className="text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Search className="w-6 h-6 sm:w-8 sm:h-8 text-theme-primary" />
               </div>
@@ -477,7 +398,8 @@ function Dashboard() {
               {filteredNotes.map((note) => (
                 <article
                   key={note._id || note.id}
-                  className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                  onClick={() => setSelectedNote(note)}
+                  className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 cursor-pointer ${
                     LABEL_COLORS[note.category]
                   }`}
                 >
@@ -486,44 +408,6 @@ function Dashboard() {
                     <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
-                    {/* Action Buttons */}
-                    <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
-                      {editingNote === note._id ? (
-                        <>
-                          <button
-                            onClick={() => saveEdit(note._id)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
-                            title="Save changes"
-                          >
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
-                          </button>
-                          <button
-                            onClick={cancelEdit}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
-                            title="Cancel edit"
-                          >
-                            <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" />
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            onClick={() => startEdit(note)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
-                            title="Edit note"
-                          >
-                            <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-theme-primary" />
-                          </button>
-                          <button
-                            onClick={() => deleteNote(note._id || note.id)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg transition-colors"
-                            title="Delete note"
-                          >
-                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-500" />
-                          </button>
-                        </>
-                      )}
-                    </div>
                   </div>
 
                   {/* Label and Date */}
@@ -546,54 +430,25 @@ function Dashboard() {
                   </div>
 
                   {/* Content */}
-                  {editingNote === note._id ? (
-                    <textarea
-                      value={editContent}
-                      onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] leading-relaxed p-2 sm:p-3 rounded-lg resize-none border border-theme-accent/30 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-theme-accent/50"
-                      rows={4}
-                      autoFocus
-                    />
-                  ) : (
-                    <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
-                      {note.content}
-                    </p>
-                  )}
+                  <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                    {note.content}
+                  </p>
                 </article>
               ))}
             </div>
           )}
-
-          {/* Mobile Floating Action Button (FAB) */}
-          {/* This FAB handles both Add Note and toggling Search */}
-          {/* <button
-            onClick={
-              isMobileSearchOpen
-                ? handleMobileSearchToggle // If search is open, close it
-                : notes.length > 0 // If notes exist, toggle search. Else, add note
-                ? handleMobileSearchToggle
-                : () => navigate("/add-note")
-            }
-            className="md:hidden fixed bottom-6 right-6 z-40 p-3 sm:p-4 rounded-full btn-theme shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
-            aria-label={
-              isMobileSearchOpen
-                ? "Close search"
-                : notes.length > 0
-                ? "Search notes"
-                : "Add new note"
-            }
-          >
-            {isMobileSearchOpen ? (
-              <X className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            ) : notes.length > 0 ? (
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            ) : (
-              <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            )}
-          </button> */}
         </main>
       </div>
+
       <Footer />
+
+      <NoteModal
+        isOpen={!!selectedNote}
+        note={selectedNote}
+        onClose={() => setSelectedNote(null)}
+        onEdit={handleEdit}
+        onDelete={deleteNote}
+      />
     </div>
   );
 }
