@@ -21,9 +21,9 @@ function Navbar() {
             {/* Add any additional navigation items here */}
             
             {/* Search Button */}
-            <button className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">
+            {/* <button className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">
               <i className="fa-solid fa-search text-theme-primary text-theme-accent  text-sm sm:text-base"></i>
-            </button>
+            </button> */}
             
             {/* Notifications */}
             {/* <button className="hidden md:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50 relative">
@@ -41,11 +41,11 @@ function Navbar() {
       </div>
       
       {/* Mobile Menu Button - Add if needed */}
-      <div className="md:hidden absolute top-4 right-4">
+      {/* <div className="md:hidden absolute top-4 right-4">
         <button className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">
           <i className="fa-solid fa-bars text-theme-primary"></i>
         </button>
-      </div>
+      </div> */}
     </nav>
   );
 }

@@ -38,7 +38,7 @@ function Login() {
   return (
     <div className="min-h-screen bg-theme-primary relative">
       {/* Theme Toggle - Positioned responsively */}
-      <div className="absolute top-4 right-4 z-50">
+      <div className="fixed bottom-4 right-2 z-50">
         <ThemeToggle />
       </div>
 
@@ -101,6 +101,7 @@ function Login() {
           </div>
         </div>
       </div>
+      {/* <ThemeToggle /> */}
     </div>
   );
 }
