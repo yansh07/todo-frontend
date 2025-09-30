@@ -131,91 +131,93 @@ function Profile() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header Section with Profile Info */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="max-w-6xl mx-auto">
-          {/* Profile Header */}
-          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-8 mb-8">
-            {/* Profile Picture */}
-            <div className="relative group">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full btn-theme p-[3px] shadow-2xl">
-                <div className="w-full h-full backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden card-theme">
-                  {dbUser.profilePic ? (
-                    <img
-                      src={dbUser.profilePic}
-                      alt="Profile"
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  ) : (
-                    <User className="w-12 h-12 lg:w-16 lg:h-16 text-theme-primary text-primary-accent" />
-                  )}
+      <div className="flex-grow">
+        <div className="relative px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="max-w-6xl mx-auto">
+            {/* Profile Header */}
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-8 mb-8">
+              {/* Profile Picture */}
+              <div className="relative group">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full btn-theme p-[3px] shadow-2xl">
+                  <div className="w-full h-full backdrop-blur-sm rounded-full flex items-center justify-center overflow-hidden card-theme">
+                    {dbUser.profilePic ? (
+                      <img
+                        src={dbUser.profilePic}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <User className="w-12 h-12 lg:w-16 lg:h-16 text-theme-primary text-primary-accent" />
+                    )}
+                  </div>
                 </div>
+                <button
+                  onClick={() => navigate("/profile-upload")}
+                  className="absolute -bottom-2 -right-2 w-8 h-8 lg:w-10 lg:h-10 btn-theme card-theme shadow-theme rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                >
+                  <Camera className="w-4 h-4 lg:w-5 lg:h-5 text-theme-primary" />
+                </button>
               </div>
-              <button
-                onClick={() => navigate("/profile-upload")}
-                className="absolute -bottom-2 -right-2 w-8 h-8 lg:w-10 lg:h-10 btn-theme card-theme shadow-theme rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-              >
-                <Camera className="w-4 h-4 lg:w-5 lg:h-5 text-theme-primary" />
-              </button>
-            </div>
 
-            {/* User Info */}
-            <div className="flex-1 text-center lg:text-left">
-              <h1 className="font-[satoshi] text-theme-primary text-primary-accent text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2">
-                {dbUser.fullName}
-              </h1>
+              {/* User Info */}
+              <div className="flex-1 text-center lg:text-left">
+                <h1 className="font-[satoshi] text-theme-primary text-primary-accent text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2">
+                  {dbUser.fullName}
+                </h1>
 
-              <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 sm:gap-6 text-theme-secondary mb-4">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <span className="text-sm sm:text-base font-medium">
-                    {dbUser.email}
+                <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 sm:gap-6 text-theme-secondary mb-4">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    <span className="text-sm sm:text-base font-medium">
+                      {dbUser.email}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-sm sm:text-base">
+                      Joined{" "}
+                      {new Date(dbUser.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Stats Card */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl btn-theme card-theme shadow-theme">
+                  <FileText className="w-4 h-4 text-theme-primary" />
+                  <span className="text-sm font-medium text-theme-primary">
+                    {notes.length} {notes.length === 1 ? "Note" : "Notes"}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span className="text-sm sm:text-base">
-                    Joined{" "}
-                    {new Date(dbUser.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
               </div>
 
-              {/* Stats Card */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl btn-theme card-theme shadow-theme">
-                <FileText className="w-4 h-4 text-theme-primary" />
-                <span className="text-sm font-medium text-theme-primary">
-                  {notes.length} {notes.length === 1 ? "Note" : "Notes"}
-                </span>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto lg:w-auto">
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="group relative overflow-hidden btn-theme card-theme text-primary-theme text-theme-accent shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2"
+                >
+                  <Home className="w-4 h-4" />
+                  <span>Home</span>
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="group relative overflow-hidden btn-theme card-theme shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2 text-primary-theme text-theme-accent"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto lg:w-auto">
-              <button
-                onClick={() => navigate("/dashboard")}
-                className="group relative overflow-hidden btn-theme card-theme text-primary-theme text-theme-accent shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2"
-              >
-                <Home className="w-4 h-4" />
-                <span>Home</span>
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="group relative overflow-hidden btn-theme card-theme shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2 text-primary-theme text-theme-accent"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
+            {/* About Me Section */}
+            <div className="mb-8">
+              <AboutMeInput user={dbUser} onUpdate={handleUserUpdate} />
             </div>
-          </div>
-
-          {/* About Me Section */}
-          <div className="mb-8">
-            <AboutMeInput user={dbUser} onUpdate={handleUserUpdate} />
           </div>
         </div>
       </div>

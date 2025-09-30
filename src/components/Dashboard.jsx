@@ -7,7 +7,6 @@ import ThemeToggle from "./Themetoggle";
 import { useAuth0 } from "@auth0/auth0-react";
 import NoteModal from "./NoteModal";
 
-// ... (LABEL_COLORS and LABEL_BADGE_COLORS remain the same, no need to change them)
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
   personal:
@@ -49,7 +48,7 @@ function Dashboard() {
     isAuthenticated,
   } = useAuth0();
 
-  // ✨ 2. New state for our celebrity modal
+  // New state for our celebrity modal
   const [selectedNote, setSelectedNote] = useState(null);
 
   // Search states
@@ -61,7 +60,7 @@ function Dashboard() {
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
 
-  // ... (useEffect for setupDashboard remains the same)
+  // ... (useEffect for setupDashboard)
   useEffect(() => {
     const setupDashboard = async () => {
       if (!isAuthenticated || !auth0User) {
@@ -142,7 +141,7 @@ function Dashboard() {
     }
   }, [auth0User, getAccessTokenSilently, isLoading, isAuthenticated]);
 
-  // ... (useEffect for filtering notes remains the same)
+  // ... (useEffect for filtering notes)
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredNotes(notes);
@@ -158,7 +157,7 @@ function Dashboard() {
   }, [searchTerm, notes]);
 
   const deleteNote = async (noteId) => {
-    // ✨ No need for window.confirm here anymore, the modal handles it!
+    // No need for window.confirm here anymore, the modal handles it!
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(
@@ -176,7 +175,7 @@ function Dashboard() {
         setNotes((prevNotes) =>
           prevNotes.filter((note) => note._id !== noteId)
         );
-        setSelectedNote(null); // ✨ Close modal after successful delete
+        setSelectedNote(null); //  Close modal after successful delete
       } else {
         throw new Error("Failed to delete note");
       }
@@ -335,12 +334,6 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-theme-primary relative">
-       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-3xl animate-pulse opacity-20 bg-cyan-400"></div>
-        <div className="absolute top-3/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-3xl animate-pulse delay-700 opacity-20 bg-pink-400"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-80 sm:h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-20 bg-violet-400"></div>
-      </div>
-
       <div className="relative z-10">
         <Usernav />
 
