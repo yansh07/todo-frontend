@@ -1,4 +1,5 @@
 import React from "react";
+import ThemeToggle from "./Themetoggle";
 
 function Navbar() {
   return (
@@ -19,6 +20,7 @@ function Navbar() {
           {/* Right Section - Navigation Items */}
           <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6">
             {/* Add any additional navigation items here */}
+            <ThemeToggle />
             
             {/* Search Button */}
             {/* <button className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg hover:bg-theme-secondary/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-theme-accent/50">

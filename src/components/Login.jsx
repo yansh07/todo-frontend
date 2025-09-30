@@ -38,9 +38,9 @@ function Login() {
   return (
     <div className="min-h-screen bg-theme-primary relative">
       {/* Theme Toggle - Positioned responsively */}
-      <div className="fixed bottom-4 right-2 z-50">
+      {/* <div className="fixed bottom-4 right-2 xl:right-24 z-50">
         <ThemeToggle />
-      </div>
+      </div> */}
 
       {/* Main Content Container */}
       <div className="flex items-center justify-center min-h-screen p-4 pt-16 sm:pt-4">
@@ -50,7 +50,7 @@ function Login() {
             {/* Header */}
             <div className="text-center mb-6 sm:mb-8">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full btn-theme card-theme shadow-theme flex items-center justify-center">
-                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-theme-gradient" />
+                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-theme-secondary" />
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[satoshi] font-bold text-theme-gradient glow-effect mb-2">
                 Welcome Back 🚀
