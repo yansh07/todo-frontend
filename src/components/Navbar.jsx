@@ -1,5 +1,6 @@
 import React from "react";
 import ThemeToggle from "./Themetoggle";
+import { LuNotebookPen } from "react-icons/lu";
 
 function Navbar() {
   return (
@@ -10,7 +11,10 @@ function Navbar() {
           {/* Brand & Logo Section */}
           <div className="flex items-center flex-shrink-0">
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <i className="fa-solid fa-file-word text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-theme-primary text-theme-accent"></i>
+              {/* <i className="fa-solid fa-file-word text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-theme-primary text-theme-accent"></i> */}
+              <div className="text-4xl sm:text-4xl text-theme-primary text-theme-accent">
+                <LuNotebookPen />
+              </div>
               <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[satoshi] font-extrabold text-theme-primary text-theme-accent">
                 PlanIt
               </span>

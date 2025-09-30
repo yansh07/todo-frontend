@@ -2,7 +2,8 @@ import React from "react";
 import { Github, Chrome, Shield, ArrowRight, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import ThemeToggle from "./Themetoggle.jsx";
+// import ThemeToggle from "./Themetoggle.jsx";
+
 
 function Register() {
   const navigate = useNavigate();
