@@ -44,6 +44,7 @@ function Navbar() {
             </div>
           </div>
         </div>
+        
       </div>
       
       {/* Mobile Menu Button - Add if needed */}

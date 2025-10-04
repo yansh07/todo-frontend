@@ -53,7 +53,7 @@ function Dashboard() {
 
   // Search states
   const [searchTerm, setSearchTerm] = useState("");
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  // const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Reference for the desktop search input for autoFocus
   const desktopSearchInputRef = useRef(null);
@@ -231,12 +231,12 @@ function Dashboard() {
   //   navigate(`/edit-note/${note._id}`); 
   // };
 
-  const handleMobileSearchToggle = () => {
-    setIsMobileSearchOpen(!isMobileSearchOpen);
-    if (isMobileSearchOpen) {
-      setSearchTerm("");
-    }
-  };
+  // const handleMobileSearchToggle = () => {
+  //   setIsMobileSearchOpen(!isMobileSearchOpen);
+  //   if (isMobileSearchOpen) {
+  //     setSearchTerm("");
+  //   }
+  // };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -338,7 +338,6 @@ function Dashboard() {
         <Usernav />
 
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-          {/* ... (Header and search bar section remain the same) */}
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
               <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4">
