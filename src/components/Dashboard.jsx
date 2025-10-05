@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import ThemeToggle from "./Themetoggle";
 import { useAuth0 } from "@auth0/auth0-react";
 import NoteModal from "./NoteModal";
+import { TypeAnimation } from 'react-type-animation';
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
@@ -32,7 +33,6 @@ const LABEL_BADGE_COLORS = {
   general:
     "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/30",
 };
-
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ function Dashboard() {
   useEffect(() => {
     const setupDashboard = async () => {
       if (!isAuthenticated || !auth0User) {
-        setLoading(false); 
+        setLoading(false);
         return;
       }
 
@@ -149,7 +149,7 @@ function Dashboard() {
       const filtered = notes.filter(
         (note) =>
           note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          note.content.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
           note.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredNotes(filtered);
@@ -228,7 +228,7 @@ function Dashboard() {
   // const handleEdit = (note) => {
   //   // Here, you'd navigate to your edit page.
   //   // For now, let's assume you have a route like '/edit-note/:id'
-  //   navigate(`/edit-note/${note._id}`); 
+  //   navigate(`/edit-note/${note._id}`);
   // };
 
   // const handleMobileSearchToggle = () => {
@@ -260,14 +260,13 @@ function Dashboard() {
     if (hour >= 5 && hour < 12) {
       return `Morning, ${firstName}`;
     } else if (hour >= 12 && hour < 18) {
-      return `What's good this Afternoon, ${firstName}?`;
+      return `Afternoon, ${firstName}?`;
     } else if (hour >= 18 && hour < 22) {
-      return `How was your day, ${firstName}?`;
+      return `Journal your day, ${firstName}`;
     } else {
       return `Catch some rest, ${firstName}`;
     }
   };
-
 
   // ... (Loading, Error, and Authentication checks )
   if (isLoading) {
@@ -340,8 +339,20 @@ function Dashboard() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
-              <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-4">
-                {getGreeting()} 👋
+              <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-2xl md:text-4xl lg:text-4xl mb-2 sm:mb-4">
+                
+                <TypeAnimation
+                  sequence={[
+                    `${getGreeting()}`,
+                    1000,
+                    "Transform chaos into clarity",
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  className="inline-block leading-tight"
+                  repeat={Infinity}
+                />
               </h1>
               <p className="text-theme-secondary text-base sm:text-lg font-[satoshi]">
                 Ready to capture your thoughts and ideas?
@@ -408,7 +419,7 @@ function Dashboard() {
               </button>
             </div>
           ) : filteredNotes.length === 0 && searchTerm ? (
-             <div className="text-center py-8 sm:py-12">
+            <div className="text-center py-8 sm:py-12">
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Search className="w-6 h-6 sm:w-8 sm:h-8 text-theme-primary" />
               </div>
@@ -451,19 +462,35 @@ function Dashboard() {
                     >
                       {editingNote === note._id ? (
                         <>
-                          <button onClick={() => saveEdit(note._id)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Save">
+                          <button
+                            onClick={() => saveEdit(note._id)}
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                            title="Save"
+                          >
                             <Check className="w-4 h-4 text-green-500" />
                           </button>
-                          <button onClick={cancelEdit} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Cancel">
+                          <button
+                            onClick={cancelEdit}
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                            title="Cancel"
+                          >
                             <X className="w-4 h-4 text-red-500" />
                           </button>
                         </>
                       ) : (
-                         <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-                          <button onClick={() => startEdit(note)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Edit">
+                        <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                          <button
+                            onClick={() => startEdit(note)}
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                            title="Edit"
+                          >
                             <Edit3 className="w-4 h-4 text-theme-primary" />
                           </button>
-                          <button onClick={() => deleteNote(note._id)} className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg" title="Delete">
+                          <button
+                            onClick={() => deleteNote(note._id)}
+                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                            title="Delete"
+                          >
                             <Trash2 className="w-4 h-4 text-red-500" />
                           </button>
                         </div>
