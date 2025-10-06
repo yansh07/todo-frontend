@@ -16,12 +16,12 @@ import toast from "react-hot-toast";
 import ProfileUpload from "./components/ProfileUpload";
 import { useNavigate } from "react-router-dom";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useRef } from "react";
+// import { useRef } from "react";
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const searchRef = useRef<HTMLInputElement>(null);
+  // const searchRef = useRef<HTMLInputElement>(null);
 
   const showNavbar = ["/", "/register", "/login"].includes(
     location.pathname.toLowerCase()

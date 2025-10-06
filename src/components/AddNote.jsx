@@ -115,7 +115,9 @@ function AddNote() {
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => {
+                toast.success("💡 Tip: Use Alt+H for Homepage")
+                navigate("/dashboard");}}
               className="p-3 bg-white/10 btn-theme hover:bg-white/20 backdrop-blur-sm rounded-2xl transition-all duration-300 hover:scale-105 group"
             >
               <ArrowLeft className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
@@ -213,7 +215,9 @@ function AddNote() {
               <div className="flex gap-4 pt-6">
                 <button
                   type="button"
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => {
+                    toast.success("💡 Tip: Use Alt+H for Homepage")
+                    navigate("/dashboard");}}
                   className="flex-1 px-6 py-4  backdrop-blur-sm btn-theme  font-bold rounded-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-lg"
                   disabled={isSubmitting}
                 >

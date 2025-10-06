@@ -7,6 +7,7 @@ import ThemeToggle from "./Themetoggle";
 import { useAuth0 } from "@auth0/auth0-react";
 import NoteModal from "./NoteModal";
 import { TypeAnimation } from 'react-type-animation';
+import toast from "react-hot-toast";
 
 const LABEL_COLORS = {
   work: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-l-4 border-cyan-400 shadow-cyan-500/20",
@@ -384,7 +385,10 @@ function Dashboard() {
                 </div>
               )}
               <button
-                onClick={() => navigate("/add-note")}
+                onClick={() => {
+                  toast.success("💡 Tip: Use Alt+N to quickly add notes")
+                  navigate("/add-note");
+                }}
                 className="group relative overflow-hidden font-bold py-3 px-5 btn-theme rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] text-sm flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
@@ -409,7 +413,9 @@ function Dashboard() {
                 </p>
               </div>
               <button
-                onClick={() => navigate("/add-note")}
+                onClick={() => {
+                  toast.success("💡 Tip: Use Alt+N to quickly add notes")
+                  navigate("/add-note");}}
                 className="group relative overflow-hidden font-bold py-3 sm:py-4 px-6 sm:px-8 btn-theme rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-sm sm:text-base"
               >
                 <div className="flex items-center gap-2 sm:gap-3">

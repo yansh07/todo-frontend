@@ -4,6 +4,7 @@ import "/src/index.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import ThemeToggle from "./Themetoggle";
+import toast from "react-hot-toast";
 
 function Usernav() {
   const navigate = useNavigate();
@@ -73,7 +74,9 @@ function Usernav() {
             {/* Add Note Button */}
             <div className="relative group">
               <button
-                onClick={() => navigate("/add-note")}
+                onClick={() => {
+                  toast.success("💡 Tip: Use Alt+N to quickly add notes")
+                  navigate("/add-note");}}
                 className="theme-btn shadow-card shadow-glow p-2 sm:p-3 rounded-xl sm:rounded-2xl hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 focus:outline-none focus:ring-2 focus:ring-theme-accent/50"
                 aria-label="Add new note"
               >
@@ -94,7 +97,9 @@ function Usernav() {
             {/* Profile Button */}
             <div className="relative group flex-shrink-0">
               <button
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  toast.success("💡 Tip: Use Shift+P to access your profile")
+                  navigate("/profile");}}
                 className="relative focus:outline-none focus:ring-2 focus:ring-theme-accent/50 rounded-xl"
                 aria-label="Profile & Settings"
               >

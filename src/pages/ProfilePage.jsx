@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../context/UserContext";
 import { Edit, ArrowLeft, Mail, Calendar, MapPin } from "lucide-react";
+import toast from "react-hot-toast";
 
 function ProfilePage() {
   const { user, setUser } = useUser();
@@ -67,7 +68,9 @@ function ProfilePage() {
         <div className="text-center">
           <p className="text-theme-secondary">No user data found</p>
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              toast.success("💡 Tip: Use Alt+H for Homepage")
+              navigate("/dashboard");}}
             className="mt-4 btn-theme card-theme shadow-theme px-4 py-2 rounded-xl"
           >
             Go to Dashboard
@@ -89,7 +92,9 @@ function ProfilePage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              toast.success("💡 Tip: Use Alt+H for Homepage")
+              navigate("/dashboard");}}
             className="p-3 card-theme btn-theme shadow-theme rounded-xl hover:scale-110 transition-transform duration-300"
           >
             <ArrowLeft className="w-5 h-5" />

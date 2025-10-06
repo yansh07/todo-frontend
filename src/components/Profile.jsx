@@ -197,7 +197,9 @@ function Profile() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto lg:w-auto">
                 <button
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => {
+                    toast.success("💡 Tip: Use Alt+H for Homepage")
+                    navigate("/dashboard");}}
                   className="group relative overflow-hidden btn-theme card-theme text-primary-theme text-theme-accent shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2"
                 >
                   <Home className="w-4 h-4" />
