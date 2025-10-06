@@ -260,7 +260,7 @@ function Dashboard() {
     if (hour >= 5 && hour < 12) {
       return `Morning, ${firstName}`;
     } else if (hour >= 12 && hour < 18) {
-      return `Afternoon, ${firstName}?`;
+      return `Afternoon, ${firstName}`;
     } else if (hour >= 18 && hour < 22) {
       return `Journal your day, ${firstName}`;
     } else {

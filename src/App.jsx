@@ -12,10 +12,16 @@ import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/ProfilePage";
 import 'react-toastify/dist/ReactToastify.css';
 import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import ProfileUpload from "./components/ProfileUpload";
+import { useNavigate } from "react-router-dom";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useRef } from "react";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const showNavbar = ["/", "/register", "/login"].includes(
     location.pathname.toLowerCase()
@@ -23,6 +29,22 @@ function App() {
   // const showFooter = ["/", "/login", "/register" ,"/dashboard", "/add-note", "/profile"].includes(
   //   location.pathname.toLowerCase()
   // );
+  
+  useHotkeys('alt + n', (event) => { //alt+n to open add note page
+    event.preventDefault();
+    toast.success("Opening new note..");
+    navigate('/add-note');
+  });
+  useHotkeys('alt + h', (event) => { // alt+h to redirect to homepage
+    event.preventDefault();
+    toast.success("It's home..");
+    navigate('/dashboard');
+  });
+  useHotkeys('shift + p', (event) => { // shift+p for profile page
+    event.preventDefault();
+    toast.success("Your profile page..");
+    navigate('/profile');
+  });
 
   return (
     <div className="relative">
