@@ -32,6 +32,8 @@ const LABEL_BADGE_COLORS = {
 
 function AddNote() {
   const navigate = useNavigate();
+  const isDesktop = window.innerWidth >= 1280;
+  const toastShown = localStorage.getItem("toashtShowOnce");
   const { getAccessTokenSilently } = useAuth0();
   const [formData, setFormData] = useState({
     title: "",
@@ -116,8 +118,12 @@ function AddNote() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                toast.success("💡 Tip: Use Alt+H for Homepage")
-                navigate("/dashboard");}}
+                if (!toastShown && isDesktop) {
+                  toast.success("💡 Tip: Use Alt+H for Homepage");
+                  localStorage.setItem("toastShownOnce", "true");
+                }
+                navigate("/dashboard");
+              }}
               className="p-3 bg-white/10 btn-theme hover:bg-white/20 backdrop-blur-sm rounded-2xl transition-all duration-300 hover:scale-105 group"
             >
               <ArrowLeft className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
@@ -216,8 +222,12 @@ function AddNote() {
                 <button
                   type="button"
                   onClick={() => {
-                    toast.success("💡 Tip: Use Alt+H for Homepage")
-                    navigate("/dashboard");}}
+                    if (!toastShown && isDesktop) {
+                      toast.success("💡 Tip: Use Alt+H for Homepage");
+                      localStorage.setItem("toastShownOnce", "true");
+                    }
+                    navigate("/dashboard");
+                  }}
                   className="flex-1 px-6 py-4  backdrop-blur-sm btn-theme  font-bold rounded-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-lg"
                   disabled={isSubmitting}
                 >

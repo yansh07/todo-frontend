@@ -10,25 +10,32 @@ function ProfilePage() {
   const { getAccessTokenSilently, user: auth0User } = useAuth0();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(!user);
+  const isDesktop = window.innerWidth >= 1280;
+  const toastShown = localStorage.getItem("toastShowOnce");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
-        
+
         // Auth0 token consistency
         const token = await getAccessTokenSilently({
           authorizationParams: {
-            audience: import.meta.env.VITE_AUTH0_AUDIENCE || `${import.meta.env.VITE_BACKEND_URL}`,
+            audience:
+              import.meta.env.VITE_AUTH0_AUDIENCE ||
+              `${import.meta.env.VITE_BACKEND_URL}`,
           },
         });
 
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, {
-          headers: { 
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         const data = await res.json();
         if (res.ok) {
@@ -69,8 +76,9 @@ function ProfilePage() {
           <p className="text-theme-secondary">No user data found</p>
           <button
             onClick={() => {
-              toast.success("💡 Tip: Use Alt+H for Homepage")
-              navigate("/dashboard");}}
+              toast.success("💡 Tip: Use Alt+H for Homepage");
+              navigate("/dashboard");
+            }}
             className="mt-4 btn-theme card-theme shadow-theme px-4 py-2 rounded-xl"
           >
             Go to Dashboard
@@ -93,17 +101,21 @@ function ProfilePage() {
         <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => {
-              toast.success("💡 Tip: Use Alt+H for Homepage")
-              navigate("/dashboard");}}
+              if (!toastShown && isDesktop) {
+                toast.success("💡 Tip: Use Alt+H for Homepage");
+                localStorage.setItem("toastShownOnce", "true");
+              }
+              navigate("/dashboard");
+            }}
             className="p-3 card-theme btn-theme shadow-theme rounded-xl hover:scale-110 transition-transform duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          
+
           <h1 className="text-3xl font-bold font-[satoshi] text-theme-primary">
             My Profile
           </h1>
-          
+
           <button
             onClick={() => navigate("/profile/upload")}
             className="p-3 card-theme btn-theme shadow-theme rounded-xl hover:scale-110 transition-transform duration-300"
@@ -125,18 +137,19 @@ function ProfilePage() {
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = auth0User?.picture || '/default-avatar.png';
+                      e.target.src =
+                        auth0User?.picture || "/default-avatar.png";
                     }}
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                     <span className="text-white font-bold text-2xl">
-                      {user.fullName?.charAt(0) || user.email?.charAt(0) || '?'}
+                      {user.fullName?.charAt(0) || user.email?.charAt(0) || "?"}
                     </span>
                   </div>
                 )}
               </div>
-              
+
               <button
                 onClick={() => navigate("/profile/upload")}
                 className="absolute -bottom-2 -right-2 w-10 h-10 btn-theme card-theme shadow-theme rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300"
@@ -148,7 +161,7 @@ function ProfilePage() {
             <h2 className="text-2xl font-bold text-theme-primary mt-6 mb-2">
               {user.fullName || "No Name Set"}
             </h2>
-            
+
             <div className="flex items-center justify-center gap-2 text-theme-secondary">
               <Mail className="w-4 h-4" />
               <span>{user.email}</span>
@@ -183,10 +196,9 @@ function ProfilePage() {
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-theme-secondary" />
                   <p className="text-theme-primary">
-                    {user.createdAt 
-                      ? new Date(user.createdAt).toLocaleDateString() 
-                      : "Unknown"
-                    }
+                    {user.createdAt
+                      ? new Date(user.createdAt).toLocaleDateString()
+                      : "Unknown"}
                   </p>
                 </div>
               </div>
@@ -201,7 +213,7 @@ function ProfilePage() {
             >
               Edit Profile
             </button>
-            
+
             <button
               onClick={() => navigate("/profile/upload")}
               className="flex-1 py-3 px-4 border border-theme-accent rounded-xl font-medium transition-all duration-300 hover:bg-theme-accent/10"
@@ -217,18 +229,20 @@ function ProfilePage() {
             <div className="text-2xl font-bold text-theme-primary">0</div>
             <div className="text-sm text-theme-secondary">Notes</div>
           </div>
-          
+
           <div className="card-theme p-4 rounded-2xl text-center">
             <div className="text-2xl font-bold text-theme-primary">0</div>
             <div className="text-sm text-theme-secondary">Projects</div>
           </div>
-          
+
           <div className="card-theme p-4 rounded-2xl text-center">
             <div className="text-2xl font-bold text-theme-primary">
-              {user.createdAt 
-                ? Math.floor((Date.now() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24))
-                : 0
-              }
+              {user.createdAt
+                ? Math.floor(
+                    (Date.now() - new Date(user.createdAt)) /
+                      (1000 * 60 * 60 * 24)
+                  )
+                : 0}
             </div>
             <div className="text-sm text-theme-secondary">Days</div>
           </div>

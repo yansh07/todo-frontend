@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import ThemeToggle from "./Themetoggle";
 import { useAuth0 } from "@auth0/auth0-react";
 import NoteModal from "./NoteModal";
-import { TypeAnimation } from 'react-type-animation';
+import { TypeAnimation } from "react-type-animation";
 import toast from "react-hot-toast";
 
 const LABEL_COLORS = {
@@ -37,6 +37,8 @@ const LABEL_BADGE_COLORS = {
 
 function Dashboard() {
   const navigate = useNavigate();
+  const isDesktop = window.innerWidth >= 1280;
+  const toastShown = localStorage.getItem("toashShowOnce");
   const [dbuser, setDbUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
@@ -341,7 +343,6 @@ function Dashboard() {
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
               <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-2xl md:text-4xl lg:text-4xl mb-2 sm:mb-4">
-                
                 <TypeAnimation
                   sequence={[
                     `${getGreeting()}`,
@@ -386,7 +387,10 @@ function Dashboard() {
               )}
               <button
                 onClick={() => {
-                  toast.success("💡 Tip: Use Alt+N to quickly add notes")
+                  if (!toastShown && isDesktop) {
+                    toast.success("💡 Tip: Use Alt+N to quickly add notes");
+                    localStorage.setItem("toastShownOnce", "true");
+                  }
                   navigate("/add-note");
                 }}
                 className="group relative overflow-hidden font-bold py-3 px-5 btn-theme rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] text-sm flex items-center gap-2"
@@ -414,8 +418,12 @@ function Dashboard() {
               </div>
               <button
                 onClick={() => {
-                  toast.success("💡 Tip: Use Alt+N to quickly add notes")
-                  navigate("/add-note");}}
+                  if (!toastShown && isDesktop) {
+                    toast.success("💡 Tip: Use Alt+N to quickly add notes");
+                    localStorage.setItem("toastShownOnce", "true");
+                  }
+                  navigate("/add-note");
+                }}
                 className="group relative overflow-hidden font-bold py-3 sm:py-4 px-6 sm:px-8 btn-theme rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-sm sm:text-base"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
