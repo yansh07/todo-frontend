@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Trash2, Edit3, Check, X, Search } from "lucide-react";
+import { Plus, Trash2, Edit3, Check, X, Search, GripVertical } from "lucide-react";
+import { motion, Reorder } from "framer-motion";
 import Usernav from "./Usernav";
 import Footer from "./Footer";
 import ThemeToggle from "./Themetoggle";
@@ -38,7 +39,7 @@ const LABEL_BADGE_COLORS = {
 function Dashboard() {
   const navigate = useNavigate();
   const isDesktop = window.innerWidth >= 1280;
-  const toastShown = localStorage.getItem("toashShowOnce");
+  const toastShown = localStorage.getItem("toastShownOnce");
   const [dbuser, setDbUser] = useState(null);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
@@ -51,19 +52,14 @@ function Dashboard() {
     isAuthenticated,
   } = useAuth0();
 
-  // New state for our celebrity modal
   const [selectedNote, setSelectedNote] = useState(null);
-
-  // Search states
   const [searchTerm, setSearchTerm] = useState("");
-  // const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-
-  // Reference for the desktop search input for autoFocus
   const desktopSearchInputRef = useRef(null);
   const [editingNote, setEditingNote] = useState(null);
   const [editContent, setEditContent] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  
 
-  // ... (useEffect for setupDashboard)
   useEffect(() => {
     const setupDashboard = async () => {
       if (!isAuthenticated || !auth0User) {
@@ -83,7 +79,6 @@ function Dashboard() {
           },
         });
 
-        // Step 1: Verify user with backend
         const userResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/user/verify-user`,
           {
@@ -103,14 +98,12 @@ function Dashboard() {
         );
 
         if (!userResponse.ok) {
-          const errorText = await userResponse.text();
           throw new Error(`User verification failed: ${userResponse.status}`);
         }
 
         const userData = await userResponse.json();
         setDbUser(userData);
 
-        // Step 2: Fetch notes
         const notesResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/note`,
           {
@@ -124,7 +117,6 @@ function Dashboard() {
         );
 
         if (!notesResponse.ok) {
-          const errorText = await notesResponse.text();
           throw new Error(`Failed to fetch notes: ${notesResponse.status}`);
         }
 
@@ -144,12 +136,12 @@ function Dashboard() {
     }
   }, [auth0User, getAccessTokenSilently, isLoading, isAuthenticated]);
 
-  // ... (useEffect for filtering notes)
   useEffect(() => {
+    const sortedNotes = [...notes].sort((a, b) => a.position - b.position);
     if (!searchTerm.trim()) {
-      setFilteredNotes(notes);
+      setFilteredNotes(sortedNotes);
     } else {
-      const filtered = notes.filter(
+      const filtered = sortedNotes.filter(
         (note) =>
           note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -159,8 +151,58 @@ function Dashboard() {
     }
   }, [searchTerm, notes]);
 
+  const saveNoteOrder = async (orderedNotes) => {
+    const orderUpdatePayload = orderedNotes.map((note, index) => ({
+      id: note._id,
+      position: index,
+    }));
+
+    console.log("Saving new order to backend:", orderUpdatePayload);
+    toast.success("New order saved!");
+
+    try {
+      // const token = await getAccessTokenSilently();
+      // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notes/order`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${token}`
+      //   },
+      //   body: JSON.stringify({ order: orderUpdatePayload })
+      // });
+
+      // if (!response.ok) {
+      //   throw new Error("Failed to save note order");
+      // }
+
+    } catch (error) {
+      console.error("Error saving note order:", error);
+      toast.error("Could not save new order.");
+    }
+  };
+
+  const handleReorder = (newOrder) => {
+    // Update the state immediately for a smooth UI experience.
+    const newNotesWithPositions = newOrder.map((note, index) => ({ ...note, position: index }));
+    
+    setFilteredNotes(newNotesWithPositions);
+    
+    if (!searchTerm) {
+      setNotes(newNotesWithPositions);
+    } else {
+        // If searching, we need to update the base `notes` array carefully
+        const noteIdsInOrder = newNotesWithPositions.map(n => n._id);
+        const updatedBaseNotes = [...notes].sort((a, b) => {
+            return noteIdsInOrder.indexOf(a._id) - noteIdsInOrder.indexOf(b._id);
+        }).map((note, index) => ({ ...note, position: index }));
+        setNotes(updatedBaseNotes);
+    }
+
+    // Now, call the function to save this new order to the backend.
+    saveNoteOrder(newNotesWithPositions);
+  };
+
   const deleteNote = async (noteId) => {
-    // No need for window.confirm here anymore, the modal handles it!
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(
@@ -178,7 +220,7 @@ function Dashboard() {
         setNotes((prevNotes) =>
           prevNotes.filter((note) => note._id !== noteId)
         );
-        setSelectedNote(null); //  Close modal after successful delete
+        setSelectedNote(null);
       } else {
         throw new Error("Failed to delete note");
       }
@@ -187,6 +229,7 @@ function Dashboard() {
       alert("Failed to delete note. Please try again.");
     }
   };
+
   const startEdit = (note) => {
     setEditingNote(note._id);
     setEditContent(note.content);
@@ -217,7 +260,7 @@ function Dashboard() {
         setNotes((prevNotes) =>
           prevNotes.map((n) => (n._id === noteId ? updatedNote : n))
         );
-        cancelEdit(); // Resets the editing state
+        cancelEdit();
       } else {
         throw new Error("Failed to update note");
       }
@@ -226,20 +269,6 @@ function Dashboard() {
       alert("Failed to save changes. Please try again.");
     }
   };
-
-  // // ✨ 3. New handler for editing. The modal will call this.
-  // const handleEdit = (note) => {
-  //   // Here, you'd navigate to your edit page.
-  //   // For now, let's assume you have a route like '/edit-note/:id'
-  //   navigate(`/edit-note/${note._id}`);
-  // };
-
-  // const handleMobileSearchToggle = () => {
-  //   setIsMobileSearchOpen(!isMobileSearchOpen);
-  //   if (isMobileSearchOpen) {
-  //     setSearchTerm("");
-  //   }
-  // };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -259,7 +288,7 @@ function Dashboard() {
     if (!dbuser?.fullName) return "Welcome!";
 
     const hour = new Date().getHours();
-    const firstName = dbuser.fullName.split(" ")[0]; // Get first name
+    const firstName = dbuser.fullName.split(" ")[0];
     if (hour >= 5 && hour < 12) {
       return `Morning, ${firstName}`;
     } else if (hour >= 12 && hour < 18) {
@@ -271,7 +300,6 @@ function Dashboard() {
     }
   };
 
-  // ... (Loading, Error, and Authentication checks )
   if (isLoading) {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
@@ -361,7 +389,6 @@ function Dashboard() {
               </p>
             </div>
 
-            {/* Desktop Action Bar: Search & Add Note */}
             <div className="hidden md:flex items-center gap-4">
               {notes.length > 0 && (
                 <div className="relative">
@@ -402,8 +429,12 @@ function Dashboard() {
           </header>
 
           {notes.length === 0 ? (
-            /* Empty State */
-            <div className="text-center py-8 sm:py-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center py-8 sm:py-12"
+            >
               <div className="mb-6 sm:mb-8">
                 <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                   <Plus className="w-8 h-8 sm:w-12 sm:h-12 text-theme-primary" />
@@ -431,9 +462,14 @@ function Dashboard() {
                   <span>Create Your First Note</span>
                 </div>
               </button>
-            </div>
+            </motion.div>
           ) : filteredNotes.length === 0 && searchTerm ? (
-            <div className="text-center py-8 sm:py-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center py-8 sm:py-12"
+            >
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Search className="w-6 h-6 sm:w-8 sm:h-8 text-theme-primary" />
               </div>
@@ -449,108 +485,137 @@ function Dashboard() {
               >
                 Clear search
               </button>
-            </div>
+            </motion.div>
           ) : (
-            /* Notes Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <Reorder.Group
+              // THE FIX: Changed axis from "y" to "x" to enable horizontal dragging.
+              axis="x"
+              values={filteredNotes}
+              onReorder={handleReorder}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+              layoutScroll
+            >
               {filteredNotes.map((note) => (
-                <article
+                <Reorder.Item
                   key={note._id || note.id}
-                  onClick={() => {
-                    if (editingNote !== note._id) {
-                      setSelectedNote(note);
-                    }
+                  value={note}
+                  dragListener={editingNote !== note._id}
+                  dragControls={false}
+                  onDragStart={() => setIsDragging(true)}
+                  onDragEnd={() => setIsDragging(false)}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  whileDrag={{ 
+                    scale: 1.05,
+                    zIndex: 50,
+                    cursor: "grabbing"
                   }}
-                  className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 cursor-pointer ${
-                    LABEL_COLORS[note.category]
-                  }`}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 25
+                  }}
+                  className={`relative ${editingNote === note._id ? 'cursor-auto' : 'cursor-grab active:cursor-grabbing'}`}
                 >
-                  {/* Note Header */}
-                  <div className="flex justify-between items-start mb-3 sm:mb-4">
-                    <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[Nunito] flex-1 mr-2 line-clamp-2">
-                      {note.title}
-                    </h3>
-                    <div
-                      className="flex gap-1 sm:gap-2 flex-shrink-0"
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                  <motion.article
+                    onClick={() => {
+                      if (editingNote !== note._id && !isDragging) {
+                        setSelectedNote(note);
+                      }
+                    }}
+                    className={`group relative backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 h-full flex flex-col ${
+                      editingNote !== note._id && !isDragging ? 'hover:scale-105 hover:-translate-y-2' : ''
+                    } ${LABEL_COLORS[note.category]}`}
+                    layout
+                  >
+                    {/* Note Header */}
+                    <div className="flex justify-between items-start mb-3 sm:mb-4">
+                      <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[Nunito] flex-1 mr-2 line-clamp-2">
+                        {note.title}
+                      </h3>
+                      <div
+                        className="flex gap-1 sm:gap-2 flex-shrink-0"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {editingNote === note._id ? (
+                          <>
+                            <button
+                              onClick={() => saveEdit(note._id)}
+                              className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                              title="Save"
+                            >
+                              <Check className="w-4 h-4 text-green-500" />
+                            </button>
+                            <button
+                              onClick={cancelEdit}
+                              className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                              title="Cancel"
+                            >
+                              <X className="w-4 h-4 text-red-500" />
+                            </button>
+                          </>
+                        ) : (
+                          <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                            <button
+                              onClick={() => startEdit(note)}
+                              className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                              title="Edit"
+                            >
+                              <Edit3 className="w-4 h-4 text-theme-primary" />
+                            </button>
+                            <button
+                              onClick={() => deleteNote(note._id)}
+                              className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4 text-red-500" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Label and Date */}
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3 sm:mb-4">
+                      <span
+                        className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit ${
+                          LABEL_BADGE_COLORS[note.category] ||
+                          LABEL_BADGE_COLORS.general
+                        }`}
+                      >
+                        {note.category || note.label || "general"}
+                      </span>
+                      <span className="text-theme-secondary text-xs font-[Nunito]">
+                        {note.updatedAt
+                          ? formatDate(note.updatedAt)
+                          : note.createdAt
+                          ? formatDate(note.createdAt)
+                          : "No date"}
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-grow">
                       {editingNote === note._id ? (
-                        <>
-                          <button
-                            onClick={() => saveEdit(note._id)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
-                            title="Save"
-                          >
-                            <Check className="w-4 h-4 text-green-500" />
-                          </button>
-                          <button
-                            onClick={cancelEdit}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
-                            title="Cancel"
-                          >
-                            <X className="w-4 h-4 text-red-500" />
-                          </button>
-                        </>
+                        <textarea
+                          value={editContent}
+                          onChange={(e) => setEditContent(e.target.value)}
+                          className="w-full h-full bg-theme-secondary/20 text-theme-primary font-[Nunito] p-2 rounded-lg resize-none border border-theme-accent/30 focus:outline-none focus:ring-1 focus:ring-theme-accent/50"
+                          rows={4}
+                          autoFocus
+                          onClick={(e) => e.stopPropagation()}
+                        />
                       ) : (
-                        <div className="flex gap-1 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-                          <button
-                            onClick={() => startEdit(note)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
-                            title="Edit"
-                          >
-                            <Edit3 className="w-4 h-4 text-theme-primary" />
-                          </button>
-                          <button
-                            onClick={() => deleteNote(note._id)}
-                            className="p-1.5 sm:p-2 hover:bg-theme-secondary/20 rounded-lg"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                          </button>
-                        </div>
+                        <p className="text-theme-primary font-[Nunito] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                          {note.content}
+                        </p>
                       )}
                     </div>
-                  </div>
-
-                  {/* Label and Date */}
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mb-3 sm:mb-4">
-                    <span
-                      className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider w-fit ${
-                        LABEL_BADGE_COLORS[note.category] ||
-                        LABEL_BADGE_COLORS.general
-                      }`}
-                    >
-                      {note.category || note.label || "general"}
-                    </span>
-                    <span className="text-theme-secondary text-xs font-[Nunito]">
-                      {note.updatedAt
-                        ? formatDate(note.updatedAt)
-                        : note.createdAt
-                        ? formatDate(note.createdAt)
-                        : "No date"}
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  {/* <p className="text-theme-primary font-[Nunito] leading-relaxed line-clamp-4 text-sm sm:text-base">
-                    {note.content}
-                  </p> */}
-                  {editingNote === note._id ? (
-                    <textarea
-                      value={editContent}
-                      onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-theme-secondary/20 text-theme-primary font-[Nunito] p-2 rounded-lg resize-none border border-theme-accent/30 focus:outline-none focus:ring-1 focus:ring-theme-accent/50"
-                      rows={4}
-                      autoFocus
-                    />
-                  ) : (
-                    <p className="text-theme-primary font-[Nunito] leading-relaxed line-clamp-4 text-sm sm:text-base">
-                      {note.content}
-                    </p>
-                  )}
-                </article>
+                  </motion.article>
+                </Reorder.Item>
               ))}
-            </div>
+            </Reorder.Group>
           )}
         </main>
       </div>
