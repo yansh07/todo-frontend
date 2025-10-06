@@ -73,7 +73,7 @@ const NoteModal = ({ note, isOpen, onClose, onEdit, onDelete }) => {
           <div className="p-6 border-b border-theme-accent/20">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
-                <h1 className="text-2xl md:text-3xl font-bold text-theme-primary font-[satoshi] mb-3 break-words">
+                <h1 className="text-2xl md:text-3xl font-bold text-theme-primary font-[Nunito] mb-3 break-words">
                   {note.title}
                 </h1>
                 
@@ -128,7 +128,7 @@ const NoteModal = ({ note, isOpen, onClose, onEdit, onDelete }) => {
           {/* Content */}
           <div className="p-6 overflow-y-auto max-h-[60vh]">
             <div className="prose prose-lg max-w-none">
-              <div className="text-theme-primary font-[satoshi] leading-relaxed whitespace-pre-wrap text-base md:text-lg">
+              <div className="text-theme-primary font-[Nunito] leading-relaxed whitespace-pre-wrap text-base md:text-lg">
                 {note.content}
               </div>
             </div>

@@ -64,7 +64,7 @@ function Usernav() {
         <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-[satoshi] font-bold bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
+            <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-[Nunito] font-bold bg-clip-text hover:scale-105 transition-transform duration-300 cursor-pointer">
               PlanIt
             </span>
           </div>

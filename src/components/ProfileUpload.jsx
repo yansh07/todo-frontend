@@ -167,7 +167,7 @@ function ProfileUpload({ onUpload }) {
             <Camera className="w-8 h-8 text-theme-primary" />
           </div>
 
-          <h1 className="text-3xl font-bold font-[satoshi] text-theme-primary bg-clip-text mb-2">
+          <h1 className="text-3xl font-bold font-[Nunito] text-theme-primary bg-clip-text mb-2">
             Update Profile Picture
           </h1>
           <p className="text-theme-secondary">

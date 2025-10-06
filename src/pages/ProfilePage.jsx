@@ -112,7 +112,7 @@ function ProfilePage() {
             <ArrowLeft className="w-5 h-5" />
           </button>
 
-          <h1 className="text-3xl font-bold font-[satoshi] text-theme-primary">
+          <h1 className="text-3xl font-bold font-[Nunito] text-theme-primary">
             My Profile
           </h1>
 

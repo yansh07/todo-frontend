@@ -15,7 +15,7 @@ function Navbar() {
               <div className="text-4xl sm:text-4xl text-theme-primary text-theme-accent">
                 <LuNotebookPen />
               </div>
-              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[satoshi] font-extrabold text-theme-primary text-theme-accent">
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[Nunito] font-extrabold text-theme-primary text-theme-accent">
                 PlanIt
               </span>
             </div>

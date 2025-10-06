@@ -163,7 +163,7 @@ function Profile() {
 
               {/* User Info */}
               <div className="flex-1 text-center lg:text-left">
-                <h1 className="font-[satoshi] text-theme-primary text-primary-accent text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2">
+                <h1 className="font-[Nunito] text-theme-primary text-primary-accent text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2">
                   {dbUser.fullName}
                 </h1>
 
@@ -206,7 +206,7 @@ function Profile() {
                     }
                     navigate("/dashboard");
                   }}
-                  className="group relative overflow-hidden btn-theme card-theme text-primary-theme text-theme-accent shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2"
+                  className="group relative overflow-hidden btn-theme card-theme text-primary-theme text-theme-accent shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[Nunito] flex items-center justify-center gap-2"
                 >
                   <Home className="w-4 h-4" />
                   <span>Home</span>
@@ -214,7 +214,7 @@ function Profile() {
 
                 <button
                   onClick={handleLogout}
-                  className="group relative overflow-hidden btn-theme card-theme shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] flex items-center justify-center gap-2 text-primary-theme text-theme-accent"
+                  className="group relative overflow-hidden btn-theme card-theme shadow-theme font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[Nunito] flex items-center justify-center gap-2 text-primary-theme text-theme-accent"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Logout</span>

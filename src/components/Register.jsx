@@ -29,7 +29,7 @@ function Register() {
         <div className="card-theme p-6 sm:p-8 rounded-2xl shadow-theme max-w-sm w-full">
           <div className="text-center">
             <div className="animate-spin w-8 h-8 border-2 border-theme-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-theme-primary font-[satoshi] text-base sm:text-lg">
+            <p className="text-theme-primary font-[Nunito] text-base sm:text-lg">
               Redirecting to login...
             </p>
           </div>
@@ -55,10 +55,10 @@ function Register() {
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full btn-theme card-theme shadow-theme flex items-center justify-center">
                 <UserPlus className="w-6 h-6 sm:w-8 sm:h-8 text-theme-secondary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[satoshi] font-bold text-theme-gradient mb-2">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-[Nunito] font-bold text-theme-gradient mb-2">
                 Join PlanIt 📋
               </h2>
-              <p className="text-theme-secondary font-[satoshi] text-sm sm:text-base lg:text-lg font-medium px-2">
+              <p className="text-theme-secondary font-[Nunito] text-sm sm:text-base lg:text-lg font-medium px-2">
                 Start your journey with us today 🚀
               </p>
             </div>
@@ -88,10 +88,10 @@ function Register() {
 
             {/* Footer */}
             <div className="mt-6 sm:mt-8 text-center">
-              <p className="text-theme-secondary font-[satoshi] text-xs sm:text-sm mb-3 sm:mb-4">
+              <p className="text-theme-secondary font-[Nunito] text-xs sm:text-sm mb-3 sm:mb-4">
                 Secured by Auth0 🔒
               </p>
-              <p className="font-[satoshi] text-theme-secondary text-sm sm:text-base">
+              <p className="font-[Nunito] text-theme-secondary text-sm sm:text-base">
                 Already have an account?
                 <button
                   onClick={() => navigate("/login")}

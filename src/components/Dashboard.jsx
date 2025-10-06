@@ -277,7 +277,7 @@ function Dashboard() {
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
           <div className="animate-spin w-8 h-8 border-2 border-theme-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-lg font-[satoshi]">Authenticating...</p>
+          <p className="text-lg font-[Nunito]">Authenticating...</p>
         </div>
       </div>
     );
@@ -287,7 +287,7 @@ function Dashboard() {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
-          <p className="text-lg font-[satoshi]">Please log in to continue.</p>
+          <p className="text-lg font-[Nunito]">Please log in to continue.</p>
         </div>
       </div>
     );
@@ -298,7 +298,7 @@ function Dashboard() {
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
           <div className="animate-spin w-8 h-8 border-2 border-theme-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-lg font-[satoshi]">Loading your data...</p>
+          <p className="text-lg font-[Nunito]">Loading your data...</p>
         </div>
       </div>
     );
@@ -308,12 +308,12 @@ function Dashboard() {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
-          <p className="text-lg font-[satoshi] mb-4">
+          <p className="text-lg font-[Nunito] mb-4">
             Error loading data: {error}
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg font-[satoshi] hover:bg-blue-600 transition-colors"
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg font-[Nunito] hover:bg-blue-600 transition-colors"
           >
             Retry
           </button>
@@ -326,7 +326,7 @@ function Dashboard() {
     return (
       <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-theme-primary text-center p-8">
-          <p className="text-lg font-[satoshi]">
+          <p className="text-lg font-[Nunito]">
             Error loading profile. Please try logging in again.
           </p>
         </div>
@@ -342,11 +342,11 @@ function Dashboard() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
           <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 sm:mb-12">
             <div className="mb-4 lg:mb-0">
-              <h1 className="font-[satoshi] font-medium text-theme-primary text-2xl sm:text-2xl md:text-4xl lg:text-4xl mb-2 sm:mb-4">
+              <h1 className="font-[Nunito] font-medium text-theme-primary text-2xl sm:text-2xl md:text-4xl lg:text-4xl mb-2 sm:mb-4">
                 <TypeAnimation
                   sequence={[
                     `${getGreeting()}`,
-                    1000,
+                    5000,
                     "Transform chaos into clarity",
                     1000,
                   ]}
@@ -356,7 +356,7 @@ function Dashboard() {
                   repeat={Infinity}
                 />
               </h1>
-              <p className="text-theme-secondary text-base sm:text-lg font-[satoshi]">
+              <p className="text-theme-secondary text-base sm:text-lg font-[Nunito]">
                 Ready to capture your thoughts and ideas?
               </p>
             </div>
@@ -372,7 +372,7 @@ function Dashboard() {
                     placeholder="Search notes..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-64 lg:w-72 card-theme backdrop-blur-sm border border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[satoshi] text-theme-primary placeholder-theme-secondary focus:ring-2 focus:ring-theme-accent focus:border-transparent"
+                    className="w-64 lg:w-72 card-theme backdrop-blur-sm border border-theme-accent rounded-xl py-3 pl-10 pr-4 transition-all duration-300 font-[Nunito] text-theme-primary placeholder-theme-secondary focus:ring-2 focus:ring-theme-accent focus:border-transparent"
                   />
                   {searchTerm && (
                     <button
@@ -393,7 +393,7 @@ function Dashboard() {
                   }
                   navigate("/add-note");
                 }}
-                className="group relative overflow-hidden font-bold py-3 px-5 btn-theme rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[satoshi] text-sm flex items-center gap-2"
+                className="group relative overflow-hidden font-bold py-3 px-5 btn-theme rounded-xl shadow-lg transition-all duration-300 hover:scale-105 font-[Nunito] text-sm flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 <span>Add Note</span>
@@ -408,10 +408,10 @@ function Dashboard() {
                 <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                   <Plus className="w-8 h-8 sm:w-12 sm:h-12 text-theme-primary" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-3 sm:mb-4 font-[satoshi]">
+                <h3 className="text-xl sm:text-2xl font-bold text-theme-primary mb-3 sm:mb-4 font-[Nunito]">
                   Your canvas is empty
                 </h3>
-                <p className="text-theme-secondary text-base sm:text-lg mb-6 sm:mb-8 font-[satoshi] max-w-md mx-auto">
+                <p className="text-theme-secondary text-base sm:text-lg mb-6 sm:mb-8 font-[Nunito] max-w-md mx-auto">
                   Start your journey by creating your first note. Every great
                   idea begins with a single thought.
                 </p>
@@ -424,7 +424,7 @@ function Dashboard() {
                   }
                   navigate("/add-note");
                 }}
-                className="group relative overflow-hidden font-bold py-3 sm:py-4 px-6 sm:px-8 btn-theme rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-sm sm:text-base"
+                className="group relative overflow-hidden font-bold py-3 sm:py-4 px-6 sm:px-8 btn-theme rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 font-[Nunito] text-sm sm:text-base"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -437,15 +437,15 @@ function Dashboard() {
               <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto card-theme rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Search className="w-6 h-6 sm:w-8 sm:h-8 text-theme-primary" />
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-theme-primary mb-3 sm:mb-4 font-[satoshi]">
+              <h3 className="text-lg sm:text-xl font-bold text-theme-primary mb-3 sm:mb-4 font-[Nunito]">
                 No notes found
               </h3>
-              <p className="text-theme-secondary font-[satoshi] max-w-md mx-auto mb-4">
+              <p className="text-theme-secondary font-[Nunito] max-w-md mx-auto mb-4">
                 Try searching with different keywords or clear the search.
               </p>
               <button
                 onClick={() => setSearchTerm("")}
-                className="text-theme-accent font-[satoshi] underline hover:text-theme-primary transition-colors"
+                className="text-theme-accent font-[Nunito] underline hover:text-theme-primary transition-colors"
               >
                 Clear search
               </button>
@@ -467,7 +467,7 @@ function Dashboard() {
                 >
                   {/* Note Header */}
                   <div className="flex justify-between items-start mb-3 sm:mb-4">
-                    <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[satoshi] flex-1 mr-2 line-clamp-2">
+                    <h3 className="text-theme-primary font-bold text-base sm:text-lg font-[Nunito] flex-1 mr-2 line-clamp-2">
                       {note.title}
                     </h3>
                     <div
@@ -522,7 +522,7 @@ function Dashboard() {
                     >
                       {note.category || note.label || "general"}
                     </span>
-                    <span className="text-theme-secondary text-xs font-[satoshi]">
+                    <span className="text-theme-secondary text-xs font-[Nunito]">
                       {note.updatedAt
                         ? formatDate(note.updatedAt)
                         : note.createdAt
@@ -532,19 +532,19 @@ function Dashboard() {
                   </div>
 
                   {/* Content */}
-                  {/* <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                  {/* <p className="text-theme-primary font-[Nunito] leading-relaxed line-clamp-4 text-sm sm:text-base">
                     {note.content}
                   </p> */}
                   {editingNote === note._id ? (
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
-                      className="w-full bg-theme-secondary/20 text-theme-primary font-[satoshi] p-2 rounded-lg resize-none border border-theme-accent/30 focus:outline-none focus:ring-1 focus:ring-theme-accent/50"
+                      className="w-full bg-theme-secondary/20 text-theme-primary font-[Nunito] p-2 rounded-lg resize-none border border-theme-accent/30 focus:outline-none focus:ring-1 focus:ring-theme-accent/50"
                       rows={4}
                       autoFocus
                     />
                   ) : (
-                    <p className="text-theme-primary font-[satoshi] leading-relaxed line-clamp-4 text-sm sm:text-base">
+                    <p className="text-theme-primary font-[Nunito] leading-relaxed line-clamp-4 text-sm sm:text-base">
                       {note.content}
                     </p>
                   )}

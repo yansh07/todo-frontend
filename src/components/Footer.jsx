@@ -8,15 +8,15 @@
 //         <p className="text-theme-primary text-primary-accent ml-3 mt-3 text-2xl xl:text-3xl font-medium">
 //           PlanIt
 //         </p>
-//         <p className="font-[satoshi] text-theme-secondary font-light text-lg xl:text-xl ml-3 mr-18 lg:max-w-5xl md:max-w-3xs">
+//         <p className="font-[Nunito] text-theme-secondary font-light text-lg xl:text-xl ml-3 mr-18 lg:max-w-5xl md:max-w-3xs">
 //           A minimalist canvas to save your plans, and moments.
 //         </p>
 //       </div>
 //       <div className="xl:mb-6 lg:mb-8 lg:ml-0 md:mb-12 md:ml-8">
-//         <h1 className="font-[satoshi] text-theme-primary text-primary-accent text-xl xl:text-2xl font-medium ml-3 mt-6 lg:mt-0 md:mt-0">
+//         <h1 className="font-[Nunito] text-theme-primary text-primary-accent text-xl xl:text-2xl font-medium ml-3 mt-6 lg:mt-0 md:mt-0">
 //           Connect
 //         </h1>
-//         <ul className="font-[satoshi]  ml-3 mt-2 text-lg xl:text-xl">
+//         <ul className="font-[Nunito]  ml-3 mt-2 text-lg xl:text-xl">
 //           <li className="font-light  text-theme-secondary ">
 //             <a href="https://github.com/yansh07">
 //               <i class="fa-brands fa-github  "></i>{" "}
@@ -41,7 +41,7 @@
 //         <div>
 //           <div className="border-t border-theme border-theme-accent ml-3 mr-3 mt-4 lg:absolute lg:bottom-12 lg:left-16 lg:px-58 xl:px-62 xl:ml-20 md:absolute md:bottom-14 md:px-56 md:left-36"></div>
 //         </div>
-//         <div className="md:flex md:flex-row lg:flex-row font-[satoshi] mt-3 mb-2 lg:absolute lg:bottom-2 lg:left-6 lg:px-10 xl:px-26 md:bottom-4 md:absolute md:left-46">
+//         <div className="md:flex md:flex-row lg:flex-row font-[Nunito] mt-3 mb-2 lg:absolute lg:bottom-2 lg:left-6 lg:px-10 xl:px-26 md:bottom-4 md:absolute md:left-46">
 //           <p className="text-sm font-light ml-3 xl:text-xl text-theme-secondary">© 2025 PlanIt: NotesApp.</p>
 //           <p className="font-light text-sm ml-3 xl:text-xl text-theme-secondary ">
 //             <a
@@ -93,10 +93,10 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
           {/* Brand section */}
           <div className="space-y-4">
-            <h2 className="text-3xl  text-primary-theme  bg-clip-text font-semibold font-[satoshi]">
+            <h2 className="text-3xl  text-primary-theme  bg-clip-text font-semibold font-[Nunito]">
               PlanIt
             </h2>
-            <p className="text-primary-theme text-theme-accent text-lg font-[satoshi] leading-relaxed max-w-sm">
+            <p className="text-primary-theme text-theme-accent text-lg font-[Nunito] leading-relaxed max-w-sm">
               A minimalist canvas to save your plans, and moments.
             </p>
             {/* Decorative gradient bar */}
@@ -105,7 +105,7 @@ function Footer() {
 
           {/* Connect section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-primary-theme text-primary-accent font-[satoshi] mb-6">
+            <h3 className="text-xl font-bold text-primary-theme text-primary-accent font-[Nunito] mb-6">
               Connect
             </h3>
             <div className="flex flex-col gap-4">
@@ -115,7 +115,7 @@ function Footer() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group flex items-center gap-3 text-theme-secondary text-theme-accent ${link.color} transition-all duration-300 font-[satoshi]`}
+                  className={`group flex items-center gap-3 text-theme-secondary text-theme-accent ${link.color} transition-all duration-300 font-[Nunito]`}
                 >
                   <div className="p-2 bg-white/5 rounded-lg group-hover:bg-white/10 group-hover:scale-110 transition-all duration-300">
                     {link.icon}
@@ -128,14 +128,14 @@ function Footer() {
 
           {/* Quick stats or additional info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-primary-theme  font-[satoshi] mb-6">
+            <h3 className="text-xl font-bold text-primary-theme  font-[Nunito] mb-6">
               Built with
             </h3>
             <div className="flex flex-wrap gap-2">
               {['React', 'Node.js', 'MongoDB', 'Auth0'].map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-full text-sm text-primary-theme text-theme-accent font-[satoshi] transition-all duration-300 hover:scale-105 cursor-default"
+                  className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-full text-sm text-primary-theme text-theme-accent font-[Nunito] transition-all duration-300 hover:scale-105 cursor-default"
                 >
                   {tech}
                 </span>
@@ -148,7 +148,7 @@ function Footer() {
         <div className="pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
-            <p className="text-theme-secondary text-theme-accent font-[satoshi] text-sm md:text-base">
+            <p className="text-theme-secondary text-theme-accent font-[Nunito] text-sm md:text-base">
               © 2025 PlanIt: NotesApp. All rights reserved.
             </p>
 
@@ -157,7 +157,7 @@ function Footer() {
               href="https://github.com/yansh07"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 text-primary-theme text-theme-accent  transition-colors duration-300 font-[satoshi]"
+              className="group flex items-center gap-2 text-primary-theme text-theme-accent  transition-colors duration-300 font-[Nunito]"
             >
               <span className="text-sm md:text-base">Made with</span>
               <Heart className="w-4 h-4 text-pink-500 group-hover:scale-125 transition-transform duration-300 fill-pink-500" />

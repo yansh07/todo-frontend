@@ -129,11 +129,11 @@ function AddNote() {
               <ArrowLeft className="w-6 h-6 text-gray-300 group-hover:text-white transition-colors" />
             </button>
             <div>
-              <h1 className="font-[satoshi] bg-clip-text font-black text-2xl md:text-3xl lg:text-4xl flex items-center gap-3">
+              <h1 className="font-[Nunito] bg-clip-text font-black text-2xl md:text-3xl lg:text-4xl flex items-center gap-3">
                 <Sparkles className="w-8 h-8 text-theme-primary text-primary-accent" />
                 Create Magic
               </h1>
-              <p className="font-[satoshi] mt-2">
+              <p className="font-[Nunito] mt-2">
                 Transform your thoughts into organized notes
               </p>
             </div>
@@ -154,7 +154,7 @@ function AddNote() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Heading Input */}
               <div className="space-y-2 form-group-theme">
-                <label className="block form-label-theme font-bold font-[satoshi] text-lg">
+                <label className="block form-label-theme font-bold font-[Nunito] text-lg">
                   Note Title ✨
                 </label>
                 <input
@@ -163,21 +163,21 @@ function AddNote() {
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="What's on your mind?"
-                  className="w-full px-6 py-4  input-theme rounded-2xl  font-[satoshi] text-lg transition-all duration-300"
+                  className="w-full px-6 py-4  input-theme rounded-2xl  font-[Nunito] text-lg transition-all duration-300"
                   disabled={isSubmitting}
                 />
               </div>
 
               {/* Label Selection */}
               <div className="space-y-2 form-group-theme">
-                <label className="block form-label-theme text-white font-bold font-[satoshi] text-lg">
+                <label className="block form-label-theme text-white font-bold font-[Nunito] text-lg">
                   Category 🏷️
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full px-6 py-4 rounded-2xl input-theme font-[satoshi] text-lg transition-all duration-300"
+                  className="w-full px-6 py-4 rounded-2xl input-theme font-[Nunito] text-lg transition-all duration-300"
                   disabled={isSubmitting}
                 >
                   <option value="general" className="bg-gray-900">
@@ -203,7 +203,7 @@ function AddNote() {
 
               {/* Description Input */}
               <div className="space-y-2 form-group-theme">
-                <label className="block form-label-theme font-bold font-[satoshi] text-lg">
+                <label className="block form-label-theme font-bold font-[Nunito] text-lg">
                   Your Thoughts 💭
                 </label>
                 <textarea
@@ -212,7 +212,7 @@ function AddNote() {
                   onChange={handleInputChange}
                   placeholder="Pour your thoughts here... Let your creativity flow!"
                   rows={8}
-                  className="w-full px-6 py-4 rounded-2xl input-theme backdrop-blur-sm  resize-none font-[satoshi] text-lg leading-relaxed transition-all duration-300"
+                  className="w-full px-6 py-4 rounded-2xl input-theme backdrop-blur-sm  resize-none font-[Nunito] text-lg leading-relaxed transition-all duration-300"
                   disabled={isSubmitting}
                 />
               </div>
@@ -228,7 +228,7 @@ function AddNote() {
                     }
                     navigate("/dashboard");
                   }}
-                  className="flex-1 px-6 py-4  backdrop-blur-sm btn-theme  font-bold rounded-2xl transition-all duration-300 hover:scale-105 font-[satoshi] text-lg"
+                  className="flex-1 px-6 py-4  backdrop-blur-sm btn-theme  font-bold rounded-2xl transition-all duration-300 hover:scale-105 font-[Nunito] text-lg"
                   disabled={isSubmitting}
                 >
                   Cancel
@@ -236,7 +236,7 @@ function AddNote() {
                 <button
                   // onClick={handleSubmit}
                   type="submit"
-                  className="flex-1 px-6 py-4 bg-gradient-to-r btn-theme font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 font-[satoshi] text-lg flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-4 bg-gradient-to-r btn-theme font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 font-[Nunito] text-lg flex items-center justify-center gap-2"
                   disabled={
                     isSubmitting ||
                     !formData.title.trim() ||
@@ -255,7 +255,7 @@ function AddNote() {
             <div className="backdrop-blur-sm  rounded-3xl p-8 shadow-2xl border border-theme shadow-theme">
               <div className="flex items-center gap-3 mb-6">
                 <Eye className="w-6 h-6 " />
-                <h3 className=" font-bold text-xl font-[satoshi] text-theme-primary text-primary-accent">
+                <h3 className=" font-bold text-xl font-[Nunito] text-theme-primary text-primary-accent">
                   Live Preview
                 </h3>
               </div>
@@ -266,10 +266,10 @@ function AddNote() {
                 }`}
               >
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className=" font-bold text-lg font-[satoshi] flex-1 mr-2">
+                  <h3 className=" font-bold text-lg font-[Nunito] flex-1 mr-2">
                     {formData.title || "Your amazing title will appear here..."}
                   </h3>
-                  <span className="text-theme-secondary text-xs font-[satoshi]">
+                  <span className="text-theme-secondary text-xs font-[Nunito]">
                     {formatDate(new Date())}
                   </span>
                 </div>
@@ -284,7 +284,7 @@ function AddNote() {
                   </span>
                 </div>
 
-                <p className="text-theme-secondary font-[satoshi] leading-relaxed">
+                <p className="text-theme-secondary font-[Nunito] leading-relaxed">
                   {formData.content ||
                     "Your thoughts and ideas will be beautifully displayed here. Start typing to see the magic happen!"}
                 </p>
@@ -292,10 +292,10 @@ function AddNote() {
 
               {/* Preview Tips */}
               <div className="mt-6 p-4 rounded-xl border border-theme ">
-                <h4 className=" font-bold font-[satoshi] mb-2">
+                <h4 className=" font-bold font-[Nunito] mb-2">
                   💡 Preview Tips:
                 </h4>
-                <ul className="text-theme-secondary text-sm font-[satoshi] space-y-1">
+                <ul className="text-theme-secondary text-sm font-[Nunito] space-y-1">
                   <li>• Your note will be automatically timestamped</li>
                   <li>• Colors change based on the category you select</li>
                   <li>• All notes are saved securely to your account</li>
