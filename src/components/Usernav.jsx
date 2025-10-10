@@ -76,7 +76,7 @@ function Usernav() {
               <button
                 onClick={() => {
                   if (!toastShown && isDesktop) {
-                    toast.success("💡 Tip: Use Alt+N to quickly add notes");
+                    toast.success("💡 Tip: Use shift+n to quickly add notes");
                     localStorage.setItem("toastShownOnce", "true");
                   }
                   navigate("/add-note");

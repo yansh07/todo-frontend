@@ -30,12 +30,12 @@ function App() {
   //   location.pathname.toLowerCase()
   // );
   
-  useHotkeys('alt + n', (event) => { //alt+n to open add note page
+  useHotkeys('shift + n', (event) => { //shift+n to open add note page
     event.preventDefault();
     toast.success("Opening new note..");
     navigate('/add-note');
   });
-  useHotkeys('alt + h', (event) => { // alt+h to redirect to homepage
+  useHotkeys('shift + h', (event) => { // shift+h to redirect to homepage
     event.preventDefault();
     toast.success("It's home..");
     navigate('/dashboard');

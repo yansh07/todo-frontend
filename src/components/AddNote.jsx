@@ -119,7 +119,7 @@ function AddNote() {
             <button
               onClick={() => {
                 if (!toastShown && isDesktop) {
-                  toast.success("💡 Tip: Use Alt+H for Homepage");
+                  toast.success("💡 Tip: Use shift+h for Homepage");
                   localStorage.setItem("toastShownOnce", "true");
                 }
                 navigate("/dashboard");
@@ -223,7 +223,7 @@ function AddNote() {
                   type="button"
                   onClick={() => {
                     if (!toastShown && isDesktop) {
-                      toast.success("💡 Tip: Use Alt+H for Homepage");
+                      toast.success("💡 Tip: Use shift+h for Homepage");
                       localStorage.setItem("toastShownOnce", "true");
                     }
                     navigate("/dashboard");

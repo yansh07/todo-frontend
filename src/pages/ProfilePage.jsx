@@ -76,7 +76,7 @@ function ProfilePage() {
           <p className="text-theme-secondary">No user data found</p>
           <button
             onClick={() => {
-              toast.success("💡 Tip: Use Alt+H for Homepage");
+              toast.success("💡 Tip: Use shift+h for Homepage");
               navigate("/dashboard");
             }}
             className="mt-4 btn-theme card-theme shadow-theme px-4 py-2 rounded-xl"
@@ -102,7 +102,7 @@ function ProfilePage() {
           <button
             onClick={() => {
               if (!toastShown && isDesktop) {
-                toast.success("💡 Tip: Use Alt+H for Homepage");
+                toast.success("💡 Tip: Use shift+h for Homepage");
                 localStorage.setItem("toastShownOnce", "true");
               }
               navigate("/dashboard");
