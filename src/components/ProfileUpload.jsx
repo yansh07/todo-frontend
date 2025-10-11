@@ -158,7 +158,7 @@ function ProfileUpload({ onUpload }) {
         <div className="text-center mb-8">
           <button
             onClick={() => navigate("/profile")}
-            className="absolute -top-2 -left-2 p-3 card-theme btn-theme shadow-theme rounded-xl hover:scale-110 transition-transform duration-300"
+            className="absolute -top-2 -left-2 p-3 text-theme-primary card-theme btn-theme shadow-theme rounded-xl hover:scale-110 transition-transform duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -217,7 +217,7 @@ function ProfileUpload({ onUpload }) {
                 </div>
 
                 <label htmlFor="file-upload" className="inline-block">
-                  <div className="btn-theme card-theme shadow-theme px-6 py-3 rounded-xl font-medium cursor-pointer hover:scale-105 transition-transform duration-300">
+                  <div className="btn-theme text-theme-primary card-theme shadow-theme px-6 py-3 rounded-xl font-medium cursor-pointer hover:scale-105 transition-transform duration-300">
                     <Upload className="w-4 h-4 inline mr-2" />
                     Browse Files
                   </div>
